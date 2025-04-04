@@ -19,7 +19,7 @@ param resourceGroupName string
 
 param resourceToken string
 
-
+param numberComputeInstances int
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' existing =  {
   name: resourceGroupName
@@ -84,5 +84,6 @@ module ai 'core/ai/main.bicep' = {
     searchServicename: 'srch-${projectName}-${environmentName}-${resourceToken}'
     storageAccountId:data.outputs.storageAccountId
     containerRegistryID: platform.outputs.containerRegistryID
+    numberComputeInstances:numberComputeInstances
   }
 }

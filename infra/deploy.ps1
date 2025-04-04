@@ -1,6 +1,7 @@
 param (
     [string]$Subscription,
     [string]$Location = "eastus2",
+    [int]$DevComputeInstances,
     [string]$ResourceGroupName
 )
 
@@ -71,6 +72,7 @@ $deploymentOutput = az deployment sub create `
         environmentName=$environmentName `
         projectName=$projectName `
         location=$Location `
+        numberComputeInstances=$DevComputeInstances `
         resourceGroupName=$rgName `
         resourceToken=$resourceToken `
     --query "properties.outputs"

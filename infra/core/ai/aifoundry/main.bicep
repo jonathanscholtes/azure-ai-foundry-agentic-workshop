@@ -8,6 +8,7 @@ param applicationInsightsId string
 param aiSearchTarget string
 param searchServiceId string
 param storageAccountId string
+param numberComputeInstances int =1
 
 
 @description('Resource ID of the key vault resource for storing connection strings')
@@ -70,6 +71,18 @@ module aiModels 'ai-models.bicep' = {
   dependsOn:[aiServices,aiProject]
 }
 
+
+module aiCompute 'compute/main.bicep' = if (numberComputeInstances > 0){
+name: 'aiCompute'
+params: { 
+  aiHubName:aiHub.outputs.aiHubName
+  numberComputeInstances:numberComputeInstances
+  projectName: projectName
+  environmentName: environmentName
+  location:location
+  managedIdentityName:identityName
+}
+}
 
 output aiservicesTarget string = aiServices.outputs.aiservicesTarget
 output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint

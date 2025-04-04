@@ -7,6 +7,7 @@ param searchServicename string
 param applicationInsightsId string
 param storageAccountId string
 param containerRegistryID string
+param numberComputeInstances int
 
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
@@ -37,6 +38,7 @@ module aifoundry 'aifoundry/main.bicep' = {
     aiSearchTarget:search.outputs.searchServiceEndpoint
     storageAccountId:storageAccountId
     containerRegistryID: containerRegistryID
+    numberComputeInstances: numberComputeInstances
   }
 
 }

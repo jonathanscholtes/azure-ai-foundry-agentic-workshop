@@ -27,7 +27,7 @@ cd infra
 Run the following PowerShell command to deploy the solution. Replace the placeholders with your actual subscription name and Azure region. The `-ResourceGroupName` flag is optional for deploying to an exising Azure Resource Group:
 
 ```powershell
-.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2' -ResourceGroupName '[Name of existing resource group (optional)]'
+.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2' -DevComputeInstances 1 -ResourceGroupName '[Name of existing resource group (optional)]'
 ```
 
 ✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **20 minutes** to complete.
