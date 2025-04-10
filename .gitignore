@@ -1,0 +1,7 @@
+test.bicep
+online-endpoint-example.bicep
+online-endpoint-example.yaml
+.env
+venv/
+Test/
+src/notebooks/

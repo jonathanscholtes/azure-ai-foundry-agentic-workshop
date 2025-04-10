@@ -9,7 +9,7 @@ param (
 # Variables
 $projectName = "foundry"
 $environmentName = "lab"
-$templateFile = "main.bicep"
+$templateFile = "infra/main.bicep"
 $deploymentName = "foundrylab-$Location"
 
 

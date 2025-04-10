@@ -8,7 +8,7 @@ param sku object = {
   name: 'standard'
 }
 
-param authOptions object = {}
+
 param disableLocalAuth bool = false
 param disabledDataExfiltrationOptions array = []
 param encryptionWithCmk object = {
@@ -48,7 +48,11 @@ resource search 'Microsoft.Search/searchServices@2021-04-01-preview' = {
   // The free tier does not support managed identity
   identity: searchIdentityProvider
   properties: {
-    authOptions: disableLocalAuth ? null : authOptions
+    authOptions: {
+      aadOrApiKey: {
+        aadAuthFailureMode: 'http401WithBearerChallenge'
+      }
+    }
     disableLocalAuth: disableLocalAuth
     disabledDataExfiltrationOptions: disabledDataExfiltrationOptions
     encryptionWithCmk: encryptionWithCmk

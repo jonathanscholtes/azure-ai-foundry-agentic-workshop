@@ -28,8 +28,10 @@ The deployment incorporates cutting-edge techniques for AI-driven automation and
 Follow these key steps to successfully implement and deploy the solution:
 
 ### 1️⃣ [**Workshop Setup and Solution Deployment**](docs/deployment.md)  
-- Step-by-step guide to setting up the infrastructure, configuring networking components, and deploying **Azure AI Foundry** with **Bicep** templates.  
+- Step-by-step guide for deploying **Azure AI Foundry** and supporting dependencies for the workshop.  
 
+### 2️⃣ [**Vector Search and RAG Setup**](docs/vector-search.md)  
+- Instructions for processing documents and creating embeddings using **Ada-002**, indexing them into **Azure AI Search**, and configuring **RAG** for semantic retrieval.
 
 ---
 
