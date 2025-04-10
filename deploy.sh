@@ -2,10 +2,9 @@
 
 # Usage: ./deploy.sh <subscription> [location] <dev_compute_instances> [resource_group_name]
 
-subscription=$1
-location=${2:-eastus2}
-dev_compute_instances=$3
-resource_group_name=$4
+location=${1:-eastus2}
+dev_compute_instances=$2
+resource_group_name=$3
 
 # Variables
 project_name="foundry"
@@ -31,14 +30,6 @@ generate_random_alphanumeric() {
 # Generate resource token
 resource_token=$(generate_random_alphanumeric 12 "${environment_name}${project_name}${location}${subscription}")
 
-# Clear previous account context and set Azure CLI config
-az account clear
-az config set core.enable_broker_on_windows=false
-az config set core.login_experience_v2=off
-
-# Login to Azure and set subscription
-az login
-az account set --subscription "$subscription"
 
 # If no resource group name is passed, generate one
 if [ -z "$resource_group_name" ]; then
@@ -73,5 +64,33 @@ deployment_output=$(az deployment sub create \
 
 # Extract resource group name from output if needed
 resource_group_name=$(echo "$deployment_output" | jq -r '.resourceGroupName.value')
+function_app_name=$(echo "$deployment_output" | jq -r '.functionAppName.value')
+
+echo "Waiting for App Services before pushing code"
+
+waitTime=200  # Total wait time in seconds
+
+# Display counter
+for ((i=$waitTime; i>0; i--)); do
+    echo -ne "\rWaiting: $i seconds remaining..."
+    sleep 1
+done
+
+echo -e "\rWait time completed!"
+
+# Change directory to scripts
+cd ./scripts
+
+# Deploy Function Application
+echo "*****************************************"
+echo "Deploying Function Application from scripts"
+echo "If timeout occurs, rerun the following command from scripts:"
+echo "./deploy_functionapp.sh $functionAppName $resourceGroupName"
+
+# Run the deploy script
+./deploy_functionapp.sh "$functionAppName" "$resourceGroupName"
+
+# Change directory back
+cd ..
 
 echo "Deployment Complete"

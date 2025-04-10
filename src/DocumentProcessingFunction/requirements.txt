@@ -1,0 +1,12 @@
+azure-functions
+azure-functions-durable
+azure-storage-blob
+azure-search-documents==11.4.0
+azure-identity==1.17.1
+requests
+PyMuPDF
+pypdf
+python-dotenv==1.0.0
+langchain-openai
+langchain
+langchain-community

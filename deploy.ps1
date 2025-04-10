@@ -81,6 +81,31 @@ $deploymentOutput = az deployment sub create `
 # Parse the deployment output to get app names and resource group
 $deploymentOutputJson = $deploymentOutput | ConvertFrom-Json
 $resourceGroupName = $deploymentOutputJson.resourceGroupName.value
+$functionAppName = $deploymentOutputJson.functionAppName.value
+
+Write-Host "Waiting for App Services before pushing code"
+
+$waitTime = 200  # Total wait time in seconds
+
+# Display counter
+for ($i = $waitTime; $i -gt 0; $i--) {
+    Write-Host "`rWaiting: $i seconds remaining..." -NoNewline
+    Start-Sleep -Seconds 1
+}
+
+Write-Host "`rWait time completed!" 
+
+Set-Location -Path .\scripts
 
 
-Write-Host "Deployment Complete"
+# Deploy Function Application
+Write-Output "*****************************************"
+Write-Output "Deploying Function Application from scripts"
+Write-Output "If timeout occurs, rerun the following command from scripts:"
+Write-Output ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName"
+& .\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName
+
+
+Set-Location -Path ..
+
+Write-Output "Deployment Complete"

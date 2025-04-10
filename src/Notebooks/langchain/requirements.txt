@@ -1,0 +1,9 @@
+azure-ai-projects==1.0.0b7
+azure-core-tracing-opentelemetry
+azure-monitor-opentelemetry
+azure-search-documents
+python-dotenv==1.0.0
+langchain-openai
+langchain
+langgraph 
+langchain-community

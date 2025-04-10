@@ -4,4 +4,4 @@ online-endpoint-example.yaml
 .env
 venv/
 Test/
-src/notebooks/
+

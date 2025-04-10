@@ -79,6 +79,7 @@ params: {
   numberComputeInstances:numberComputeInstances
   projectName: projectName
   environmentName: environmentName
+  resourceToken:resourceToken
   location:location
   managedIdentityName:identityName
 }

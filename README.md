@@ -1,3 +1,7 @@
+> ⚠️  
+> **This project is currently in active development and may contain breaking changes.**  
+> Updates and modifications are being made frequently, which may impact stability or functionality. This notice will be removed once development is complete and the project reaches a stable release. 
+
 # Azure AI Foundry Workshop: Vector Search, Agentic AI, and LLM Orchestration
 
 ## Overview  

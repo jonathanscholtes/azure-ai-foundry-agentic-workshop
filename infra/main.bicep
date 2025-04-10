@@ -16,7 +16,6 @@ param location string
 
 param resourceGroupName string
 
-
 param resourceToken string
 
 param numberComputeInstances int
@@ -87,3 +86,38 @@ module ai 'core/ai/main.bicep' = {
     numberComputeInstances:numberComputeInstances
   }
 }
+
+module apps 'core/app/main.bicep' ={ 
+  name: 'apps'
+  scope: resourceGroup
+  params:{
+    projectName:projectName
+    environmentName:environmentName
+    resourceToken:resourceToken
+    location: location
+  }
+}
+
+module loaderFunctionWebApp 'app/loader-function-web-app.bicep' = {
+  name: 'loaderFunctionWebApp'
+  scope: resourceGroup
+  params: { 
+    location: location
+    identityName: security.outputs.managedIdentityName
+    functionAppName: 'func-loader-${resourceToken}'
+    functionAppPlanName: apps.outputs.appServicePlanName
+    StorageAccountName: data.outputs.storageAccountName
+    logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
+    appInsightsName: monitor.outputs.applicationInsightsName
+    keyVaultUri:security.outputs.keyVaultUri
+    OpenAIEndPoint: ai.outputs.OpenAIEndPoint
+    searchServiceEndpoint: ai.outputs.searchServiceEndpoint
+    azureAiSearchBatchSize: 100
+    documentChunkOverlap: 500
+    documentChunkSize: 2000
+  
+  }
+}
+
+output resourceGroupName string = resourceGroup.name
+output functionAppName string = loaderFunctionWebApp.outputs.functionAppName
