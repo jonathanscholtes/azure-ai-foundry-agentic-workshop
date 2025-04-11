@@ -11,11 +11,14 @@ Instructions for processing documents, creating embeddings using **Ada-002**, in
 ---
 ### Resources
 
-This project implements Azure AI Search **push APIs** as the recommended method for indexing large documents, controlling execution and to use event driven indexing. For more details, refer to:  
-[Indexing Large Data Sets in Azure AI Search](https://learn.microsoft.com/en-us/azure/search/search-how-to-large-index)  
+This project leverages **Azure AI Search push APIs** as the recommended approach for indexing large documents, enabling fine-grained control over execution and supporting event-driven indexing workflows.  
+🔗 [Indexing Large Data Sets in Azure AI Search](https://learn.microsoft.com/en-us/azure/search/search-how-to-large-index)
 
-Furthermore, the document chunking strategies utilized in this project are outlined in:  
-[Chunking Large Documents for Vector Search in Azure AI Search](https://learn.microsoft.com/en-us/azure/search/vector-search-how-to-chunk-documents)
+To efficiently handle unstructured content, the project uses document chunking strategies tailored for vector search.  
+🔗 [Chunking Large Documents for Vector Search in Azure AI Search](https://learn.microsoft.com/en-us/azure/search/vector-search-how-to-chunk-documents)
+
+For a simplified, wizard-based approach that chunks content and automatically calls an embedding model during indexing and queries, refer to:  
+🔗 [Import and Vectorize Data in Azure AI Search](https://learn.microsoft.com/en-us/azure/search/search-get-started-portal-import-vectors)
 
 ---
 
