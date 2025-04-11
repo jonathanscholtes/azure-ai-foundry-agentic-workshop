@@ -110,29 +110,34 @@ To interact with your vector data in **Azure AI Search** through the Playground,
 #### 1. **Add Data Source – Azure AI Search Index**
 In the Playground, click on **`+ Add a new data source`**.  
   
-   <img src="../media/add_data_source.png" alt="add data source" style="height:300px; width:auto;">
+   <img src="../media/add_data_source.png" alt="add data source" style="height:350px; width:auto;">
 
 #### 2. **Select AI Search Source Location**
 Choose **Azure AI Search** as the data source.  
 
-  <img src="../media/vector_index_source_location.png" alt="source location" style="height:300px; width:auto;">
+  <img src="../media/vector_index_source_location.png" alt="source location" style="height:350px; width:auto;">
 
 #### 3. **Select AI Search Source Index**
 Select the deployed instance of **Azure AI Search** associated with this solution, and choose the index named `_workshop-index_`.  
-   ![source index](../media/vector_index_source_index.png)
+
+<img src="../media/vector_index_source_index.png" alt="source index" style="height:350px; width:auto;">
 
 #### 4. **Select AI Search Settings**
 To perform a vector search, specify the text embedding mode.  
-   - Select the mode `_text-embedding_`, which is deployed to **Azure AI Foundry** with this solution.  
-   ![search setting](../media/vector_index_search_setting.png)
+   - Select the mode `_text-embedding_`, which is deployed to **Azure AI Foundry** with this solution.
+
+<img src="../media/vector_index_search_setting.png" alt="search setting" style="height:350px; width:auto;">  
+
 
 #### 5. **Select AI Search Index Settings**
-Keep the default settings and proceed to the **Review and Finish** step.  
-   ![index setting](../media/vector_index_settings.png)
+Keep the default settings and proceed to the **Review and Finish** step. 
+
+<img src="../media/vector_index_settings.png" alt="index setting" style="height:350px; width:auto;">  
+
 
 #### 6. **Chat with Azure AI Search Vector Indexes**
 With the new data source added, you can now chat with the vector data using the Playground.  
 For example, if you uploaded the sample file _2024 United States Data Center Energy 
-Usage Report_, you can ask:  
-**"What is the impact of bitcoin?"**  
-   ![chat over data](../media/chat-playground.png)
+Usage Report_, you can ask:  **"What is the impact of bitcoin?"**  
+
+![chat over data](../media/chat-playground.png)
