@@ -48,18 +48,12 @@ async def blob_trigger_start(myblob: func.InputStream, client):
     # Read the blob content and encode it to base64
     base64_bytes = base64.b64encode(myblob.read())
 
-    credential = DefaultAzureCredential()
-
-    # Set the API type to `azure_ad`
-    environ["OPENAI_API_TYPE"] = "azure_ad"
-    # Set the API_KEY to the token from the Azure credential
-    token = credential.get_token("https://cognitiveservices.azure.com/.default").token
-    environ["OPENAI_API_KEY"] = token
-
-    environ["AZURE_OPENAI_AD_TOKEN"] = environ["OPENAI_API_KEY"]
+   
     
+    file_name = myblob.name.split('/')[-1] 
+
     # Start the Durable Functions orchestration
-    instance_id = await client.start_new("document_orchestrator", None, {"filename": myblob.name, "data": base64_bytes.decode('ascii')})
+    instance_id = await client.start_new("document_orchestrator", None, {"filename": file_name,"data": base64_bytes.decode('ascii')})
     logging.info(f"Started orchestration with ID = '{instance_id}'.")
 
 
@@ -72,13 +66,11 @@ def document_orchestrator(context):
     data_base64 = context.get_input()["data"]
     filename = context.get_input()["filename"]
 
-    logging.info(f"File Name: {filename}")
-    
-    # Convert the base64 data back to the original binary PDF
-    pdf_content = base64.b64decode(data_base64)
+    logging.info(f"File Name: {filename} ")
+    logging.info(f"Data: {data_base64} ")
     
     # Chunk the document
-    chunks = yield context.call_activity('chunk_pdf', pdf_content, filename)
+    chunks = yield context.call_activity('chunk_pdf', {"filename": filename,"data": data_base64})
 
     # Generate embeddings
     embeddings = yield context.call_activity('generate_embeddings', chunks)
@@ -87,47 +79,71 @@ def document_orchestrator(context):
     yield context.call_activity('update_search_index', embeddings)
 
     # Move the blob to a "completed" container
-    yield context.call_activity('move_blob', filename, pdf_content)
+    yield context.call_activity('move_blob', {"filename": filename,"data": data_base64})
     
     return "Orchestration Completed"
 
 
-### Activity Functions ###
+### Activity Functions ##
 
 # Chunking the PDF
-@myApp.activity_trigger
-def chunk_pdf(pdf_content: bytes, filename: str):
+@myApp.activity_trigger(input_name="input")
+def chunk_pdf(input: dict):
     try:
-        logging.info(f"Processing PDF: {filename}")
-        pdf_file = io.BytesIO(pdf_content)
-        doc = fitz.open(stream=pdf_file)
-        
-        documents: List[Document] = []
-        for index, page in enumerate(doc):
-            document = Document(page_content=page.get_text(), metadata={"title": filename, "page_number": index + 1})
-            documents.append(document)
 
-        # Split the document into chunks
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=int(environ.get("DOCUMENT_CHUNK_SIZE")), chunk_overlap=int(environ.get("DOCUMENT_CHUNK_OVERLAP")))
-        chunks = text_splitter.split_documents(documents)
+        data_base64 = input.get("data")
+        filename = input.get("filename")
+
+        logging.info(f"Reading and chunking PDF: {len(data_base64)} bytes")
+
+
+        base64_bytes = data_base64.encode('ascii')
+        pdf_data = base64.b64decode(base64_bytes)
+        pdf_file = io.BytesIO(pdf_data)
+        doc = fitz.open(stream=pdf_file, filetype="pdf")
+
+        documents = []
+        for index, page in enumerate(doc):
+            documents.append({
+                "page_content": page.get_text(),
+                "metadata": {"title": filename, "page_number": index + 1}
+            })
+
+        # Chunking
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=int(environ.get("DOCUMENT_CHUNK_SIZE")),
+            chunk_overlap=int(environ.get("DOCUMENT_CHUNK_OVERLAP"))
+        )
+        chunks = splitter.split_documents([Document(**doc) for doc in documents])
 
         for chunk in chunks:
             chunk.metadata["chunk_id"] = str(uuid.uuid4())
-        
-        return chunks
-    
+
+        # Return as list of plain dicts (JSON-serializable)
+        return [{"content": c.page_content, "metadata": c.metadata} for c in chunks]
+
     except Exception as ex:
         logging.error(f"Error chunking PDF: {ex}")
+        logging.error(traceback.format_exc())
         raise ex
 
 
 # Generate embeddings for the chunks
-@myApp.activity_trigger
-def generate_embeddings(chunks: List[Document]):
+@myApp.activity_trigger(input_name="chunks")
+def generate_embeddings(chunks: List[dict]):
     try:
         logging.info(f"Generating embeddings for {len(chunks)} chunks")
 
-        # Initialize Azure OpenAI Embeddings
+        credential = DefaultAzureCredential()
+
+        # Set the API type to `azure_ad`
+        environ["OPENAI_API_TYPE"] = "azure_ad"
+        # Set the API_KEY to the token from the Azure credential
+        token = credential.get_token("https://cognitiveservices.azure.com/.default").token
+        environ["OPENAI_API_KEY"] = token
+
+        environ["AZURE_OPENAI_AD_TOKEN"] = environ["OPENAI_API_KEY"]
+
         embeddings = AzureOpenAIEmbeddings(
             azure_deployment=environ.get("AZURE_OPENAI_EMBEDDING"),
             openai_api_version=environ.get("AZURE_OPENAI_API_VERSION"),
@@ -137,23 +153,32 @@ def generate_embeddings(chunks: List[Document]):
         
         embeddings_list = []
         for chunk in chunks:
-            embedding = embeddings.embed_query(chunk.page_content)
-            embeddings_list.append({
-                "chunk_id": chunk.metadata["chunk_id"],
-                "content": chunk.page_content,
-                "embedding": embedding
+            content = chunk["content"]
+            metadata = chunk.get("metadata", {})
+            embedding = embeddings.embed_query(content)
+
+            chunk_id = str(metadata.get("chunk_id"))
+            title = str(metadata.get("title"))
+            page_number = str(metadata.get("page_number")) 
+            
+            embeddings_list.append({           
+                "chunk_id": chunk_id,
+                "content": content,
+                "title": title,
+                "pageNumber": page_number,
+                "content_vector": embedding
             })
         
         return embeddings_list
-    
+
     except Exception as ex:
         logging.error(f"Error generating embeddings: {ex}")
+        logging.error(traceback.format_exc())
         raise ex
 
 
 # Update search index with the embeddings
-@myApp.activity_trigger
-@myApp.activity_trigger
+@myApp.activity_trigger(input_name="embeddings")
 def update_search_index(embeddings):
     try:
         logging.info(f"Updating search index with {len(embeddings)} embeddings")
@@ -213,7 +238,7 @@ def update_search_index(embeddings):
 
         # Now process the embeddings and upload them in batches
         documents = []
-        batch_size = environ.get("AZURE_AI_SEARCH_BATCH_SIZE") 
+        batch_size = int(environ.get("AZURE_AI_SEARCH_BATCH_SIZE"))
         total_batches = (len(embeddings) + batch_size - 1) // batch_size
         batches_processed = 0
 
@@ -224,16 +249,7 @@ def update_search_index(embeddings):
                 content = str(embedding["content"])
                 title = str(embedding["title"])
                 page_number = str(embedding["pageNumber"])
-
-                # Generate the embedding for the content
-                # Assuming AzureOpenAIEmbeddings is used to generate embeddings for the content
-                embedding_instance = AzureOpenAIEmbeddings(
-                    azure_deployment=environ.get("AZURE_OPENAI_EMBEDDING"),
-                    openai_api_version=environ.get("AZURE_OPENAI_API_VERSION"),
-                    azure_endpoint=environ.get("AZURE_OPENAI_ENDPOINT"),
-                    api_key=environ.get("AZURE_OPENAI_API_KEY")
-                )
-                content_vector = embedding_instance.embed_query(content)
+                content_vector = embedding["content_vector"]
 
                 # Add the document to the batch
                 documents.append({
@@ -256,35 +272,48 @@ def update_search_index(embeddings):
                     documents = []
             except Exception as ex:
                 logging.error(f"Error processing embedding: {ex}")
+                logging.info((embedding))
                 raise ex
 
     except Exception as ex:
         logging.error(f"Error updating search index: {ex}")
+        logging.error(traceback.format_exc())
         raise ex
 
 
 
 # Move the processed blob to the "completed" container
-@myApp.activity_trigger
-def move_blob(filename: str, pdf_content: bytes):
+@myApp.activity_trigger(input_name="input")
+def move_blob(input: dict):
     try:
+
+        data_base64 = input.get("data")
+        filename = input.get("filename")
+
         logging.info(f"Moving blob {filename} to the completed container")
+
+        base64_bytes = data_base64.encode('ascii')
+        pdf_data = base64.b64decode(base64_bytes)
+
         container_name = "load"
-        blob_name = filename
         completed_container = "completed"
 
         # Blob storage logic to move the file
         credential = DefaultAzureCredential()
-        blob_service_client = BlobServiceClient.from_connection_string(environ["BlobTriggerConnection"])
-        blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+        AZURE_STORAGE_URL = environ.get("AZURE_STORAGE_URL")
+
+        # Create the BlobServiceClient object    
+        blob_service_client =  BlobServiceClient(AZURE_STORAGE_URL, credential=credential)    
+        blob_client = blob_service_client.get_blob_client(container=container_name, blob=filename)
         
         # Upload to completed container
-        completed_blob_client = blob_service_client.get_blob_client(container=completed_container, blob=blob_name)
-        completed_blob_client.upload_blob(pdf_content, overwrite=True)
-
-        # Optionally delete the original blob
+        completed_blob_client = blob_service_client.get_blob_client(container=completed_container, blob=filename)
+        completed_blob_client.upload_blob(pdf_data, overwrite=True)
+        
+        logging.info(f"Deleted blob: {filename}")
         blob_client.delete_blob()
 
     except Exception as ex:
         logging.error(f"Error moving blob: {ex}")
+        logging.error(traceback.format_exc())
         raise ex

@@ -11,7 +11,7 @@ $projectName = "foundry"
 $environmentName = "lab"
 $templateFile = "infra/main.bicep"
 $deploymentName = "foundrylab-$Location"
-
+$timestamp = Get-Date -Format "yyyyMMddHHmmss"
 
 function Get-RandomAlphaNumeric {
     param (
@@ -32,7 +32,8 @@ function Get-RandomAlphaNumeric {
 }
 
 # Example usage: Generate a resource token based on a seed
-$resourceToken = Get-RandomAlphaNumeric -Length 12 -Seed "$environmentName$projectName$Location$Subscription"
+$resourceToken = Get-RandomAlphaNumeric -Length 12 -Seed "$Subscription$timestamp"
+
 
 
 # Clear account context and configure Azure CLI settings
@@ -45,6 +46,7 @@ az login
 az account set --subscription $Subscription
 
 
+Write-Host $resourceToken
 
 # If no resource group name is passed, generate one
 if (-not $ResourceGroupName) {

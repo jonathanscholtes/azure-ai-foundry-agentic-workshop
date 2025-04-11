@@ -13,7 +13,7 @@ module devCompute 'ai-dev-compute.bicep' = [for x in range(1, numberComputeInsta
     aiHubName:aiHubName
     location:location
     managedIdentityName:managedIdentityName
-    computeName: '${projectName}-${x}-${environmentName}-${resourceToken}'
+    computeName: '${projectName}-${x}-${resourceToken}'
     generatedAppName: 'generative-ai-app-${guid(projectName)}'
   }
 }]
