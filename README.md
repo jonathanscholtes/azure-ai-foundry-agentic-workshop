@@ -6,9 +6,8 @@
 
 ## Overview  
 
-This project provides the **Azure AI Foundry** deployment as part of an interactive workshop aimed at introducing advanced concepts like **Vector Search**, **Agentic AI**, and **Large Language Model (LLM) orchestration**. The solution is designed to help participants learn how to integrate and deploy generative AI models, orchestrate tasks using **LangChain** and **Semantic Kernel**, and implement **Vector Search** with **Azure AI Search**.
+An **Azure Ai Foundry** interactive workshop aimed at introducing concepts like **Vector Search**, **Agentic AI**, and **Large Language Model (LLM) orchestration**. This project enables participants to gain practical experience integrating and deploying generative AI models, orchestrating tasks with **LangChain**, implementing **Vector Search** using **Azure AI Search**, and developing multi-agent systems for collaborative and intelligent task execution.
 
-The deployment incorporates cutting-edge techniques for AI-driven automation and orchestration using multiple AI agents working together to perform intelligent tasks.
 
 #### Key Features  
 
@@ -20,10 +19,9 @@ The deployment incorporates cutting-edge techniques for AI-driven automation and
 
 - **Agentic AI Framework:**  
   - Leverages **Agentic AI** patterns to enable task orchestration and decision-making workflows.  
-  - Deploys autonomous agents capable of interacting with Azure services to complete tasks.
 
-- **LLM Orchestration with LangChain & Semantic Kernel:**  
-  - Integrates **LangChain** and **Semantic Kernel** for seamless orchestration of large language models (LLMs) in a modular fashion.  
+- **LLM Orchestration with LangChain:**  
+  - Integrates **LangChain** for seamless orchestration of large language models (LLMs).  
   - Enables flexible **multi-agent systems** for complex problem solving, supporting dynamic decision-making and workflow automation.
 
 
