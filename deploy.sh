@@ -85,10 +85,10 @@ cd ./scripts
 echo "*****************************************"
 echo "Deploying Function Application from scripts"
 echo "If timeout occurs, rerun the following command from scripts:"
-echo "./deploy_functionapp.sh $functionAppName $resourceGroupName"
+echo "./deploy_functionapp.sh $function_app_name $resource_group_name"
 
 # Run the deploy script
-./deploy_functionapp.sh "$functionAppName" "$resourceGroupName"
+./deploy_functionapp.sh "$function_app_name" "$resource_group_name"
 
 # Change directory back
 cd ..
