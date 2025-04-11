@@ -37,6 +37,10 @@ Follow these key steps to successfully implement and deploy the solution:
 ### 2️⃣ [**Vector Search and RAG Setup**](docs/vector-search.md)  
 - Instructions for processing documents and creating embeddings using **Ada-002**, indexing them into **Azure AI Search**, and configuring **RAG** for semantic retrieval.
 
+### 3️⃣ [**Explore Sample Notebooks**](docs/notebooks.md)  
+- Hands-on examples demonstrating:
+  - Vector search and semantic retrieval
+  - **Agentic AI patterns** using Azure AI Foundry Agents
 ---
 
 ## ♻️ **Clean-Up**
