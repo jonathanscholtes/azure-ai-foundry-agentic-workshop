@@ -20,14 +20,14 @@ module keyVault 'keyvault.bicep' = {
 }
 
 
-module securiyRoles 'security-roles.bicep' = { 
-  name:'securiyRoles'
-  params: {
-    keyVaultName: keyVaultName
-    managedIdentityName: managedIdentityName
-  }
-  dependsOn: [keyVault,managedIdentity]
-}
+//module securiyRoles 'security-roles.bicep' = { 
+//  name:'securiyRoles'
+//  params: {
+//    keyVaultName: keyVaultName
+//    managedIdentityName: managedIdentityName
+//  }
+//  dependsOn: [keyVault,managedIdentity]
+//}
 
 
 output managedIdentityName string = managedIdentity.outputs.managedIdentityName

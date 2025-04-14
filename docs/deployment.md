@@ -42,6 +42,8 @@ chmod +x deploy.sh
 chmod +x scripts/deploy_functionapp.sh
 
 # Authenticate with Azure
+az login
+# or use
 az login --identity
 
 # Set the active subscription

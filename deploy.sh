@@ -15,20 +15,19 @@ deployment_name="foundrylab-$location"
 # Function to generate random alphanumeric string (base62)
 generate_random_alphanumeric() {
     length=$1
-    seed=$2
     base62chars="abcdefghijklmnopqrstuvwxyz123456789"
     result=""
-    seed_bytes=$(echo -n "$seed" | md5sum | cut -d ' ' -f1)
-
+    
     for ((i = 0; i < length; i++)); do
-        index=$(( 0x${seed_bytes:$((i*2)):2} % ${#base62chars} ))
+        index=$(( RANDOM % ${#base62chars} ))
         result+=${base62chars:$index:1}
     done
+
     echo "$result"
 }
 
 # Generate resource token
-resource_token=$(generate_random_alphanumeric 12 "${environment_name}${project_name}${location}${subscription}")
+resource_token=$(generate_random_alphanumeric 12)
 
 
 # If no resource group name is passed, generate one
