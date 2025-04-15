@@ -66,6 +66,7 @@ deployment_output=$(az deployment sub create \
 # Extract resource group name from output if needed
 resource_group_name=$(echo "$deployment_output" | jq -r '.resourceGroupName.value')
 function_app_name=$(echo "$deployment_output" | jq -r '.functionAppName.value')
+api_app_name=$(echo "$deployment_output" | jq -r '.apiAppName.value')
 
 echo "Waiting for App Services before pushing code"
 
@@ -93,6 +94,19 @@ chmod +x deploy_functionapp.sh
 
 # Run the deploy script
 ./deploy_functionapp.sh "$function_app_name" "$resource_group_name"
+
+
+# Deploy Function Application
+echo "*****************************************"
+echo "Deploying Python FastAPI from scripts"
+echo "If timeout occurs, rerun the following command from scripts:"
+echo "./deploy_api.sh $api_app_name $resource_group_name"
+
+chmod +x deploy_api.sh
+
+# Run the deploy script
+./deploy_api.sh "$api_app_name" "$resource_group_name"
+
 
 # Change directory back
 cd ..

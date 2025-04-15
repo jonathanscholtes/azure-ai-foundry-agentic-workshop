@@ -15,19 +15,24 @@ $timestamp = Get-Date -Format "yyyyMMddHHmmss"
 
 function Get-RandomAlphaNumeric {
     param (
-        [int]$Length = 12,    
-        [string]$Seed        
+        [int]$Length = 12,
+        [string]$Seed
     )
-    
-    # Base62 characters (lowercase + digits)
-    $base62Chars = "abcdefghijklmnopqrstuvwxyz123456789"
-    
-    # Seed the random number generator using the timestamp (converted to integer)
-    $rng = New-Object System.Random -ArgumentList ( [System.BitConverter]::ToInt32([System.Text.Encoding]::UTF8.GetBytes($Seed), 0) )
 
-    # Generate the random string based on the seed
-    $randomString = -join ((1..$Length) | ForEach-Object { $base62Chars[$rng.Next($base62Chars.Length)] })
-    
+    $base62Chars = "abcdefghijklmnopqrstuvwxyz123456789"
+
+    # Convert the seed string to a hash (e.g., MD5)
+    $md5 = [System.Security.Cryptography.MD5]::Create()
+    $seedBytes = [System.Text.Encoding]::UTF8.GetBytes($Seed)
+    $hashBytes = $md5.ComputeHash($seedBytes)
+
+    # Use bytes from hash to generate characters
+    $randomString = ""
+    for ($i = 0; $i -lt $Length; $i++) {
+        $index = $hashBytes[$i % $hashBytes.Length] % $base62Chars.Length
+        $randomString += $base62Chars[$index]
+    }
+
     return $randomString
 }
 

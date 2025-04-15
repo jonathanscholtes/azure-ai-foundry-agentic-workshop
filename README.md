@@ -6,7 +6,7 @@
 
 ## Overview  
 
-An **Azure Ai Foundry** interactive workshop aimed at introducing concepts like **Vector Search**, **Agentic AI**, and **Large Language Model (LLM) orchestration**. This project enables participants to gain practical experience integrating and deploying generative AI models, orchestrating tasks with **LangChain**, implementing **Vector Search** using **Azure AI Search**, and developing multi-agent systems for collaborative and intelligent task execution.
+An **Azure Ai Foundry** interactive workshop aimed at introducing concepts like **Vector Search**, **Agentic AI**, and **Large Language Model (LLM) orchestration**. This project enables participants to gain practical experience integrating and deploying generative AI models, orchestrating tasks with **LangChain** and **Azure AI Agent Service**, implementing **Vector Search** using **Azure AI Search**, and developing multi-agent systems for collaborative and intelligent task execution.
 
 
 #### Key Features  

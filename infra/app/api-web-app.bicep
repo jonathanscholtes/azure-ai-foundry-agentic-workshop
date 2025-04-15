@@ -40,7 +40,11 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
           value: '1'
-        }        
+        }   
+        {
+          name: 'SERVER_URL'
+          value: 'https://${webAppName}.azurewebsites.net'
+        }
         {
           name: 'AZURE_STORAGE_CONTAINER'
           value: 'data'

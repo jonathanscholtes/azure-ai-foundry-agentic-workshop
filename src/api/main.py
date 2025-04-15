@@ -6,9 +6,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 from fastapi.logger import logger
+from os import environ
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 # Configure Logging to use Gunicorn log settings, if available
-
 logger = logging.getLogger(__name__)
 
 gunicorn_logger = logging.getLogger('gunicorn.error')
@@ -16,9 +19,17 @@ logger.handlers = gunicorn_logger.handlers
 logger.setLevel(gunicorn_logger.level)
 
 
+server_url = environ.get("SERVER_URL")
+
 # FastAPI Application Setup
-app = FastAPI(servers=[
-        {"url": "https://api-foundry-lab-btpya89pknxr.azurewebsites.net", "description": "Lab environment"}])
+app = FastAPI(
+    title="Data Center Energy Usage Service",
+    description="API for monitoring, analyzing, and optimizing data center energy consumption and sustainability metrics.",
+    version="1.0.0",
+    servers=[
+        {"url": server_url, "description": "Lab environment"}
+    ]
+)
 
 # Configure CORS
 app.add_middleware(

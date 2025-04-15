@@ -7,6 +7,7 @@ param identityName string
 param applicationInsightsId string
 param aiSearchTarget string
 param searchServiceId string
+param searchServicename string
 param storageAccountId string
 param numberComputeInstances int =1
 
@@ -83,6 +84,19 @@ params: {
   location:location
   managedIdentityName:identityName
 }
+}
+
+
+module addCapabilityHost 'add-capability-host.bicep' = {
+  name: 'addCapabilityHost'
+  params: {
+    capabilityHostName: '${environmentName}-${resourceToken}'
+    aiHubName: aiHub.outputs.aiHubName
+    aiProjectName: aiProjectName
+    aiSearchConnectionName: aiHub.outputs.aiServicesConnectionName
+    aoaiConnectionName: aiHub.outputs.aiServicesConnectionName
+  }
+
 }
 
 output aiservicesTarget string = aiServices.outputs.aiservicesTarget

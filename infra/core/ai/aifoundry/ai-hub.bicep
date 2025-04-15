@@ -38,6 +38,8 @@ param managedIdentityName string
 param aiSearchResourceId string
 
 
+var aiServicesConnectionName = '${aiHubName}-connection-AI-Services'
+var aiSearchConnectionName = '${aiHubName}-connection-AzureAISearch'
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
   name: managedIdentityName
@@ -68,7 +70,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
 
 resource aiServicesConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
   parent: aiHub
-  name: '${aiHubName}-connection-AI-Services'
+  name: aiServicesConnectionName
   properties: {
     category: 'AzureOpenAI'
     target: aiServicesEndpoint
@@ -86,7 +88,7 @@ resource aiServicesConnection 'Microsoft.MachineLearningServices/workspaces/conn
 
 resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
   parent: aiHub
-  name: '${aiHubName}-connection-AzureAISearch'
+  name: aiSearchConnectionName
   properties: {
     category: 'CognitiveSearch'
     target: aiSearchEndpoint
@@ -106,3 +108,5 @@ resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connec
 
 output aiHubResourceId string = aiHub.id
 output aiHubName string = aiHubName
+output aiSearchConnectionName string = aiSearchConnectionName
+output aiServicesConnectionName string = aiServicesConnectionName

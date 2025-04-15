@@ -39,6 +39,7 @@ module aifoundry 'aifoundry/main.bicep' = {
     storageAccountId:storageAccountId
     containerRegistryID: containerRegistryID
     numberComputeInstances: numberComputeInstances
+    searchServicename: searchServicename
   }
 
 }
