@@ -1,0 +1,15 @@
+fastapi
+graphql-core
+strawberry-graphql
+uvicorn
+gunicorn
+jinja2
+python-multipart
+python-dotenv==1.0.0
+azure-storage-blob
+numpy
+pandas
+pyarrow
+adlfs
+azure-core==1.30.2
+azure-identity==1.17.1

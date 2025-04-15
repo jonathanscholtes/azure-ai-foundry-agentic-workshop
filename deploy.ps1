@@ -22,18 +22,17 @@ function Get-RandomAlphaNumeric {
     # Base62 characters (lowercase + digits)
     $base62Chars = "abcdefghijklmnopqrstuvwxyz123456789"
     
-    # Set the seed for random number generation
+    # Seed the random number generator using the timestamp (converted to integer)
     $rng = New-Object System.Random -ArgumentList ( [System.BitConverter]::ToInt32([System.Text.Encoding]::UTF8.GetBytes($Seed), 0) )
-    
+
     # Generate the random string based on the seed
-    $randomString = -join ((1..$Length) | ForEach-Object { $base62Chars[$rng.Next(0, $base62Chars.Length)] })
+    $randomString = -join ((1..$Length) | ForEach-Object { $base62Chars[$rng.Next($base62Chars.Length)] })
     
     return $randomString
 }
 
 # Example usage: Generate a resource token based on a seed
-$resourceToken = Get-RandomAlphaNumeric -Length 12 -Seed "$Subscription$timestamp"
-
+$resourceToken = Get-RandomAlphaNumeric -Length 12 -Seed $timestamp
 
 
 # Clear account context and configure Azure CLI settings
@@ -84,6 +83,7 @@ $deploymentOutput = az deployment sub create `
 $deploymentOutputJson = $deploymentOutput | ConvertFrom-Json
 $resourceGroupName = $deploymentOutputJson.resourceGroupName.value
 $functionAppName = $deploymentOutputJson.functionAppName.value
+$apiAppName = $deploymentOutputJson.apiAppName.value
 
 Write-Host "Waiting for App Services before pushing code"
 
@@ -106,6 +106,13 @@ Write-Output "Deploying Function Application from scripts"
 Write-Output "If timeout occurs, rerun the following command from scripts:"
 Write-Output ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName"
 & .\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName
+
+# Deploy Python FastAPI
+Write-Output "*****************************************"
+Write-Output "Deploying Python FastAPI from scripts"
+Write-Output "If timeout occurs, rerun the following command from scripts:"
+Write-Output ".\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $resourceGroupName"
+& .\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $resourceGroupName
 
 
 Set-Location -Path ..

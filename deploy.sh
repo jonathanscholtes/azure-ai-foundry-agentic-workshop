@@ -12,6 +12,8 @@ environment_name="lab"
 template_file="infra/main.bicep"
 deployment_name="foundrylab-$location"
 
+
+
 # Function to generate random alphanumeric string (base62)
 generate_random_alphanumeric() {
     length=$1
@@ -85,6 +87,9 @@ echo "*****************************************"
 echo "Deploying Function Application from scripts"
 echo "If timeout occurs, rerun the following command from scripts:"
 echo "./deploy_functionapp.sh $function_app_name $resource_group_name"
+
+
+chmod +x deploy_functionapp.sh
 
 # Run the deploy script
 ./deploy_functionapp.sh "$function_app_name" "$resource_group_name"

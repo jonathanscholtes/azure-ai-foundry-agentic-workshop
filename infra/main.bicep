@@ -119,5 +119,22 @@ module loaderFunctionWebApp 'app/loader-function-web-app.bicep' = {
   }
 }
 
+
+module apiWebApp 'app/api-web-app.bicep' = {
+  name: 'apiWebApp'
+  scope: resourceGroup
+  params: { 
+    location: location
+    identityName: security.outputs.managedIdentityName
+    webAppName: 'api-${projectName}-${environmentName}-${resourceToken}'
+    appServicePlanName: apps.outputs.appServicePlanName
+    StorageAccountName: data.outputs.storageAccountName
+    logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
+    appInsightsName: monitor.outputs.applicationInsightsName
+    keyVaultUri:security.outputs.keyVaultUri
+  }
+}
+
 output resourceGroupName string = resourceGroup.name
 output functionAppName string = loaderFunctionWebApp.outputs.functionAppName
+output apiAppName string = apiWebApp.outputs.webAppName
