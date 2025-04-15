@@ -64,12 +64,13 @@ After downloading the notebook files, create a `.env` file in the same directory
 ```
 AZURE_AI_SEARCH_ENDPOINT='Your Azure AI Search Endpoint'
 AZURE_AI_SEARCH_KEY='Your Azure AI Search Key'
-AZURE_AI_SEARCH_INDEX='Azure AI Search Index'
+AZURE_AI_SEARCH_INDEX='workshop-index'
 AZURE_OPENAI_EMBEDDING='text-embedding'
 AZURE_OPENAI_API_VERSION='2024-06-01'
 AZURE_OPENAI_ENDPOINT='Endpoint from deployed Azure AI Service or Azure OpenAI Service'
 AZURE_OPENAI_API_KEY='Key from deployed Azure AI Service or Azure OpenAI Service'
 AZURE_OPENAI_MODEL='gpt-4o'
+AZURE_AI_PROJECT_CONNECTION_STRING='You Azure AI Project Connection String'
 ```
 
 --- 

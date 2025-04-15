@@ -7,4 +7,6 @@ langchain-openai
 langchain
 langgraph 
 langchain-community
+langchain-azure-ai
 prompty
+opentelemetry-instrumentation-threading
