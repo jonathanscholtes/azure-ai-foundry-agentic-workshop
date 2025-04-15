@@ -47,7 +47,7 @@ The push model uses APIs to upload documents directly into an existing search in
 
 #### ⚙️ Indexing Documents via Azure Function
 
-This project includes the Azure Durable Function [`DocumentProcessingFunction`](src/DocumentProcessingFunction), which listens for new PDF files in blob storage and automatically processes and indexes them into Azure AI Search.
+This project includes the Azure Durable Function [DocumentProcessingFunction](src/DocumentProcessingFunction), which listens for new PDF files in blob storage and automatically processes and indexes them into Azure AI Search.
 
 - **Authentication** is managed via **Azure Managed Identities**, offering a secure alternative to API keys.
 
@@ -56,6 +56,8 @@ This project includes the Azure Durable Function [`DocumentProcessingFunction`](
 To trigger indexing:
 
 1. Upload PDF documents to the `load` container in the Azure Storage Account.
+    1.1 The demonstration uses data from the **2024 United States Data Center Energy Usage Report**.  
+[📄lbnl-2024-united-states-data-center-energy-usage-report.pdf](../data/lbnl-2024-united-states-data-center-energy-usage-report.pdf)
 2. The Azure Function will automatically:
    - Chunk the documents
    - Generate embeddings
@@ -85,7 +87,7 @@ The **pull model** uses indexers that connect to supported data sources and auto
 
 #### ⚙️ Indexing with the Azure AI Search Vectorization Wizard
 
-Azure AI Search offers a **vectorization wizard** that lets you quickly set up an indexing and enrichment pipeline—ideal for chunking and embedding content for vector search.
+Azure AI Search offers a [vectorization wizard](https://learn.microsoft.com/en-us/azure/search/search-get-started-portal-import-vectors?tabs=sample-data-storage%2Cmodel-aoai%2Cconnect-data-storage) that lets you quickly set up an indexing and enrichment pipeline—ideal for chunking and embedding content for vector search.
 
 With minimal setup, the wizard:
 - Connects to your data source

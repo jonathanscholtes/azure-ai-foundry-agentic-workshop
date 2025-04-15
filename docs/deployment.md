@@ -57,7 +57,16 @@ az account set --subscription '[Subscription Name]'
 
 
 
+### 3. 📥 Upload Structured Data for Agent Integration
 
+After completing the deployment, you will need to update the sample dataset for the agent integration.
+
+1. Upload the **parquet** data file to the `data` container in the Azure Storage Account.
+    1.1 The demonstration utilizes synthetic data related to data center energy usage.  
+[📄usage.parquet](../data/usage.parquet)
+
+
+![Load Data](../media/storage-account-data.png)
 
 
   

@@ -72,3 +72,29 @@ AZURE_OPENAI_API_KEY='Key from deployed Azure AI Service or Azure OpenAI Service
 AZURE_OPENAI_MODEL='gpt-4o'
 ```
 
+--- 
+
+### 📓 Notebooks
+
+1. **Single Chat Agent**  
+   *Notebook: `langchain_01-azure-ai-agent`*  
+   This notebook demonstrates a basic conversational agent connected to deployed Azure AI resources (AI Services and model) for interactive chat capabilities.
+
+   <img src="../media/agents/chat_agent.png" alt="Single Chat Agent" style="height:100px; width:auto;">
+
+2. **Single Agent with Tools**  
+   *Notebook: `langchain_02-azure-ai-agent-tools`*  
+   This example extends the basic agent by introducing tool integration, enabling the agent to call simple functions and enhance its behavior during conversations.
+
+   <img src="../media/agents/chat_agent_tools.png" alt="Agent with Tools" style="height:100px; width:auto;">
+
+3. **Multi-Agent Supervisor**  
+*Notebook: `langchain_03-azure-ai-rag-agent`*  
+This notebook extends the agentic architecture by introducing a **supervisor agent** that coordinates multiple agents. It leverages vectorized data from **Azure AI Search** to ground responses and enhance task orchestration.
+
+🔗 [LangGraph Multi-agent Supervisor](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/)
+
+<img src="../media/agents/rag_agent_tools.png" alt="Agent with Tools" style="height:350px; width:auto;">
+
+
+### Azure AI Agent Service

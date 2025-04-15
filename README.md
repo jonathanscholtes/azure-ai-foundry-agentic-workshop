@@ -49,6 +49,35 @@ Get hands-on experience with **Agentic AI** through a collection of curated samp
 - Real-world Agentic AI patterns implemented with Azure AI Foundry Agents
 ---
 
+
+## 📐 Solution Design and Architecture
+
+![design](/media/diagram.png)
+
+This solution combines the power of **Azure AI Foundry**, **LangGraph**, and the **Azure AI Agents Service** to build an advanced, modular AI orchestration framework. It demonstrates a production-ready architecture designed for scalable, intelligent applications that require real-time reasoning, search, and structured data integration.
+
+At a high level, the architecture consists of the following key components:
+
+### Azure AI Foundry Core Services
+The deployment includes Azure AI Foundry’s full stack—**AI Hub**, **AI Services**, **AI Projects**, and **Compute Instances**—providing a secure and managed environment for developing and running generative AI applications. Compute Instances are pre-configured to support **Visual Studio Code (web)**, enabling a browser-based development experience for running and modifying sample notebooks directly within the Foundry environment.
+
+### Vector Search and RAG Implementation
+Unstructured data, such as PDFs, are preprocessed through an **Azure Function** that chunks documents, generates vector embeddings using **OpenAI’s Ada-002 model**, and indexes them into **Azure AI Search**. This enables **Retrieval-Augmented Generation (RAG)** capabilities by grounding responses in your custom knowledge base.
+
+### Multi-Agent System with LangGraph
+Agents are orchestrated using **LangGraph**, a framework that enables complex workflows through node-based logic. A **Supervisor Agent** coordinates multiple specialized agents, allowing for role-based delegation, context-aware task execution, and adaptive reasoning.
+
+### Tool Integration with OpenAPI and GraphQL
+To enable agents to interact with structured external data sources, the solution integrates tools via **OpenAPI** (for RESTful APIs) and **GraphQL** (for schema-based query interfaces). These tools extend agent capabilities, allowing them to fetch, query, or write to external systems dynamically during conversation.
+
+### Event-Driven Data Ingestion
+Document processing is fully event-driven. When a PDF is uploaded to the designated storage container, an Azure Function is triggered to process the document end-to-end—from chunking to indexing—ensuring the search index remains up-to-date.
+
+---
+
+This architecture not only supports RAG but also showcases the foundational patterns for building **Agentic AI** systems that are modular, event-driven, and extensible across enterprise-grade workloads using the **Azure AI Agents Service**.
+
+
 ## ♻️ **Clean-Up**
 
 After completing the workshop and testing, ensure you delete any unused Azure resources or remove the entire Resource Group to avoid additional charges.
