@@ -8,13 +8,17 @@ import logging
 from fastapi.logger import logger
 
 # Configure Logging to use Gunicorn log settings, if available
+
+logger = logging.getLogger(__name__)
+
 gunicorn_logger = logging.getLogger('gunicorn.error')
 logger.handlers = gunicorn_logger.handlers
 logger.setLevel(gunicorn_logger.level)
 
 
 # FastAPI Application Setup
-app = FastAPI()
+app = FastAPI(servers=[
+        {"url": "https://api-foundry-lab-btpya89pknxr.azurewebsites.net", "description": "Lab environment"}])
 
 # Configure CORS
 app.add_middleware(

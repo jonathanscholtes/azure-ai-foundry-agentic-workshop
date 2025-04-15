@@ -30,15 +30,23 @@ An **Azure Ai Foundry** interactive workshop aimed at introducing concepts like 
 Follow these key steps to successfully implement and deploy the solution:
 
 ### 1️⃣ [**Workshop Setup and Solution Deployment**](docs/deployment.md)  
-- Step-by-step guide for deploying **Azure AI Foundry** and supporting dependencies for the workshop.  
+Step-by-step instructions to deploy **Azure AI Foundry** and all required services for the workshop environment, including:
+
+- **Azure AI Foundry** components: AI Service, AI Hub, Projects, and Compute  
+- **Azure AI Search** for knowledge retrieval and vector-based search  
+- **Azure Storage Account** for document storage and data ingestion  
+- **Azure Functions** for event-driven document chunking, embedding generation, and indexing  
+- **Azure Web App** to enable agent interactions via OpenAPI and GraphQL integrations
 
 ### 2️⃣ [**Vector Search and RAG Setup**](docs/vector-search.md)  
-- Instructions for processing documents and creating embeddings using **Ada-002**, indexing them into **Azure AI Search**, and configuring **RAG** for semantic retrieval.
+Instructions for processing documents and creating embeddings using **Ada-002**, indexing them into **Azure AI Search**, and configuring **RAG** for semantic retrieval.
 
 ### 3️⃣ [**Explore Sample Notebooks**](docs/notebooks.md)  
-- Hands-on examples demonstrating:
-  - Vector search and semantic retrieval
-  - **Agentic AI patterns** using Azure AI Foundry Agents
+Get hands-on experience with **Agentic AI** through a collection of curated sample notebooks. These examples demonstrate:
+
+- Vector search and semantic retrieval using Azure AI Search  
+- Multi-agent orchestration integrating structured data via OpenAPI and GraphQL  
+- Real-world Agentic AI patterns implemented with Azure AI Foundry Agents
 ---
 
 ## ♻️ **Clean-Up**

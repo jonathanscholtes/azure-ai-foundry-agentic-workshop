@@ -12,7 +12,7 @@ def storage_init():
 
     credential = DefaultAzureCredential()
 
-    AZURE_STORAGE_URL = environ.get("AZURE_STORAGE_URL")
+    AZURE_STORAGE_URL = environ.get("AZURE_STORAGE_ACCOUNT")
     AZURE_STORAGE_CONTAINER = environ.get("AZURE_STORAGE_CONTAINER")
     global abfs
     global storage_account_container

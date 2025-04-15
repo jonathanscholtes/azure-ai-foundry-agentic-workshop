@@ -8,8 +8,6 @@ param appInsightsName string
 param keyVaultUri string
 
 
-var blob_uri = 'https://${StorageAccountName}.blob.core.windows.net'
-
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' existing = {
   name: appServicePlanName
 }
@@ -48,8 +46,8 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
           value: 'data'
         }
         {
-          name: 'AZURE_STORAGE_URL'
-          value: blob_uri
+          name: 'AZURE_STORAGE_ACCOUNT'
+          value: StorageAccountName
         } 
         {
           name: 'AZURE_CLIENT_ID'
