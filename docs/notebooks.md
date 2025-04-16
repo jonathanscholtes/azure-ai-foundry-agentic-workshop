@@ -95,6 +95,7 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
    This notebook demonstrates a basic conversational agent connected to deployed Azure AI resources (AI Services and model) for interactive chat capabilities.
 
    🔗 [Tracing in Azure AI Foundry](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/langchain#tracing)
+   
    <img src="../media/agents/chat_agent.png" alt="Single Chat Agent" style="height:100px; width:auto;">
 
 2. **Single Agent with Tools**  
