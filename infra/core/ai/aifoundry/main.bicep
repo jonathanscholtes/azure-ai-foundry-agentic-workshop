@@ -96,7 +96,7 @@ module addCapabilityHost 'add-capability-host.bicep' = {
     aiSearchConnectionName: aiHub.outputs.aiServicesConnectionName
     aoaiConnectionName: aiHub.outputs.aiServicesConnectionName
   }
-
+  dependsOn:[aiProject]
 }
 
 output aiservicesTarget string = aiServices.outputs.aiservicesTarget
