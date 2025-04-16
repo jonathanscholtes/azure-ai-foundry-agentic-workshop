@@ -42,6 +42,10 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
           value: '1'
         }   
         {
+          name: 'WEBSITE_ENABLE_SYNC_UPDATE_SITE'
+          value: 'false'
+        }   
+        {
           name: 'SERVER_URL'
           value: 'https://${webAppName}.azurewebsites.net'
         }

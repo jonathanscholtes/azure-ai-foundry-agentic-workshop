@@ -1,7 +1,8 @@
 azure-ai-projects==1.0.0b7
+azure-search-documents
+azure-core
 azure-core-tracing-opentelemetry
 azure-monitor-opentelemetry
-azure-search-documents
 python-dotenv==1.0.0
 langchain-openai
 langchain
@@ -11,3 +12,4 @@ langchain-azure-ai
 opentelemetry-instrumentation-threading
 openapi-schema-pydantic
 openapi-pydantic
+jsonref

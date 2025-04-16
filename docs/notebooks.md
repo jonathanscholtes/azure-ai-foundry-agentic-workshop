@@ -119,9 +119,22 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
 
 
 
+#### Azure AI Agent Service  
+
+The [Azure AI Agent Service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview) is a **fully managed agent orchestration platform** that enables developers to build and deploy intelligent agents powered by OpenAI models—without needing to manage infrastructure, model endpoints, or tool execution environments.
+
+It simplifies the creation of **context-aware, tool-using agents** by offering first-class support for OpenAPI, Azure AI Search, function calling, and structured memory.
+
+1. **Agent with OpenAPI Tooling**  
+   *Notebook: `azure_ai_agent_01-openapi`*  
+   This notebook demonstrates how to create and register an Azure AI Agent that connects to an external system via an **OpenAPI 3.0 tool definition**. This approach enables real-time data access from structured APIs—such as energy usage metrics, service alerts, or device statuses—directly into the agent’s decision loop.
+
+   🔗 [Azure AI Agent Service with OpenAPI Specified Tools](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/openapi-spec?tabs=python&pivots=overview)
+
+
 ---
 
-### 🧠 Build Smart, Actionable AI with Azure AI Agent Service
+### 🧠 Build Smart, Actionable AI with Azure AI Agent Service (Portal)
 
 The [Azure AI Agent Service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview) is a fully managed platform designed to help developers create intelligent, context-aware agents—without the overhead of managing compute or storage infrastructure. These agents are extensible, secure, and capable of reasoning over documents and interacting with external APIs.
 
@@ -135,7 +148,7 @@ In this walkthrough, you'll build an AI agent that performs two key tasks:
 
 Let’s walk through how to set up an agent that combines knowledge retrieval and dynamic API interaction.
 
----
+
 
 ##### 1. Create a New Agent
 
