@@ -41,12 +41,15 @@ Step-by-step instructions to deploy **Azure AI Foundry** and all required servic
 ### 2️⃣ [**Vector Search and RAG Setup**](docs/vector-search.md)  
 Instructions for processing documents and creating embeddings using **Ada-002**, indexing them into **Azure AI Search**, and configuring **RAG** for semantic retrieval.
 
-### 3️⃣ [**Explore Sample Notebooks**](docs/notebooks.md)  
-Get hands-on experience with **Agentic AI** through a collection of curated sample notebooks. These examples demonstrate:
 
-- Vector search and semantic retrieval using Azure AI Search  
-- Multi-agent orchestration integrating structured data via OpenAPI and GraphQL  
-- Real-world Agentic AI patterns implemented with Azure AI Foundry Agents
+### 3️⃣ [**Explore Sample Notebooks**](docs/notebooks.md)  
+Get hands-on experience with Agentic AI through a collection of curated sample notebooks. These examples demonstrate:
+
+- **Vector search** and semantic retrieval using Azure AI Search  
+-  Multi-agent orchestration with **LangGraph**, integrating structured data via OpenAPI and GraphQL 
+-  Real-world Agentic AI patterns implemented with Azure AI Foundry Agents 
+-  **Tracing** for in-depth insights into agent execution and decision-making
+
 ---
 
 

@@ -1,7 +1,20 @@
 ## Deployment: Azure AI Foundry and Dependencies
 
+This section provides a detailed guide for deploying Azure AI Foundry and the associated dependencies required for the workshop. We will walk you through the necessary prerequisites and the steps to successfully configure your environment.
+
+You will clone the repository, deploy the solution using either PowerShell or Bash, and set up the essential resources needed to implement multi-agent systems.
+
+#### Key Resources Deployed:
+- **Azure AI Foundry** components: AI Service, AI Hub, Projects, and Compute  
+- **Azure AI Search** for knowledge retrieval and vector-based search  
+- **Azure Storage Account** for document storage and data ingestion  
+- **Azure Functions** for event-driven document chunking, embedding generation, and indexing  
+- **Azure Web App** to enable agent interactions via OpenAPI and GraphQL integrations
+
+--- 
+
 ### **Prerequisites**
-Ensure you have the following before deploying the solution:
+Before diving into deployment, make sure you have the following prerequisites in place to ensure a smooth setup:
 - ✅ **Azure Subscription:** Active subscription with sufficient privileges to create and manage resources.  
 - ✅ **Azure CLI:** Install the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/get-started-with-azure-cli) for managing Azure resources.  
 - ✅ **IDE with Bicep & PowerShell Support:** Use [VS Code](https://code.visualstudio.com/download) with the **Bicep extension** for development and validation.  

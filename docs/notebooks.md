@@ -1,31 +1,38 @@
-## Explore Sample Notebooks
+## 🚀 Explore Sample Notebooks
 
-The sample notebooks demonstrate **vector search**, **semantic retrieval**, and **Agentic AI patterns** using **Azure AI Foundry** and **Azure AI Search**.
+These notebooks show how to build intelligent, agent-powered applications using **Azure AI Foundry**, **Azure AI Search**, and the **Azure AI Agent Service**. You’ll explore:
 
-These examples showcase how to build intelligent applications grounded in enterprise data using retrieval-augmented generation (RAG) and agent-based workflows.
+- 🔍 **Vector Search** & **RAG** for grounding responses  
+- 🤖 **Agentic AI** with **LangGraph** for orchestrating workflows  
+- 🔗 **OpenAPI** integration for real-time actions  
+- 🧭 **Tracing** for step-by-step visibility into agent behavior  
+
+From simple chat agents to complex, multi-step interactions, these examples help you deliver smart, context-aware AI—fast.
+
 
 ---
 
-### Optional: Set Up VS Code Container on Azure AI Foundry
+###  Optional: Enhance Your Dev Experience with a VS Code Container
 
-To run the notebooks on your Azure AI Foundry compute instance, you can optionally set up a VS Code container for a more integrated development experience.
+You can run these notebooks directly on your Azure AI Foundry compute instance. For a more integrated development experience, spin up a **VS Code dev container** inside your project. This gives you a fully configured environment with built-in support for the Azure AI CLI, preloaded dependencies, and seamless GitHub integration.
 
-#### Steps:
+#### Quick Start:
 
-1. In your **Azure AI Project**, navigate to **Templates** and select **VS Code Compute**.
-2. Ensure your compute instance is running, then click **Set up Container**.
+1. In your **Azure AI Project**, go to **Templates** and select **VS Code Compute**.
+2. Start your compute instance and click **Set up Container**.
 
-   > ⚠️ This setup may take a few minutes to complete.
+   > ⏳ This setup may take a few minutes to complete.
 
 ![setup container](../media/template-setup.png)
 
-3. Once the container is ready, you’ll see a **Ready** status indicator.
+3. Once it’s ready, you’ll see a green **Ready** status.
 
 ![container ready](../media/template-ready.png)
 
-4. To launch VS Code in the browser, use the dropdown menu and select the **Web** option.
+4. From the dropdown menu, launch **VS Code (Web)** to open your dev container right in the browser.
 
 ![container launch](../media/container-vs-code-web.png)
+
 
 ---
 
@@ -52,14 +59,14 @@ This approach downloads only the relevant [src/Notebooks](../src/Notebooks) dire
 
 ---
 
-### ⚙️ Environment Variables for Notebooks
+### ⚙️ Configure Your Environment
 
-After downloading the notebook files, create a `.env` file in the same directory to connect your code to the deployed Azure AI resources.
+To connect your notebooks to your Azure AI resources, create a .env file with your specific service credentials.
 
 #### Steps:
 
-1. Copy the contents of `sample.env` to a new file named `.env`.
-2. Update the values in `.env` with your specific Azure resource details:
+1. Copy `sample.env` to a new file named `.env`
+2. Replace the placeholder values with your Azure resource info:
 
 ```
 AZURE_AI_SEARCH_ENDPOINT='Your Azure AI Search Endpoint'
