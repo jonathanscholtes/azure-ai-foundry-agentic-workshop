@@ -78,6 +78,7 @@ AZURE_OPENAI_ENDPOINT='Endpoint from deployed Azure AI Service or Azure OpenAI S
 AZURE_OPENAI_API_KEY='Key from deployed Azure AI Service or Azure OpenAI Service'
 AZURE_OPENAI_MODEL='gpt-4o'
 AZURE_AI_PROJECT_CONNECTION_STRING='You Azure AI Project Connection String'
+OPENAPI_URL='Endpoint to deployed API openAPI json schema - https://api-foundry-lab-[random].azurewebsites.net/openapi.json'
 ```
 
 --- 
@@ -108,6 +109,13 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
    🔗 [LangGraph Multi-agent Supervisor](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/)
 
    <img src="../media/agents/rag_agent_tools.png" alt="Agent with Tools" style="height:350px; width:auto;">
+
+4. **Multi-Agent Supervisor with OpenAPI Integration**  
+   *Notebook: `langchain_04-azure-ai-rag-agent_openapi`*  
+   This notebook enhances the multi-agent supervisor architecture by incorporating the ability to call external APIs via an OpenAPI specification. It combines vectorized retrieval from **Azure AI Search** with real-time data access, such as energy usage metrics from a data center, to deliver grounded and actionable responses. This demonstrates how agents can orchestrate tasks that span both unstructured and structured data sources.
+
+   <img src="../media/agents/openapi_agent.png" alt="OpenAPI Agent Integration" style="height:350px; width:auto;">
+
 
 
 ---

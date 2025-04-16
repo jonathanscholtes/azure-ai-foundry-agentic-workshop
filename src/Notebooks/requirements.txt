@@ -8,5 +8,6 @@ langchain
 langgraph 
 langchain-community
 langchain-azure-ai
-prompty
 opentelemetry-instrumentation-threading
+openapi-schema-pydantic
+openapi-pydantic

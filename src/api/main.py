@@ -45,7 +45,7 @@ app.include_router(energy_usage.router)
 
 # Include GraphQL
 graphql_app = GraphQLRouter(schema)
-app.include_router(graphql_app, prefix="/graphql")
+app.include_router(graphql_app, prefix="/graphql", include_in_schema=False)
 
 
 @app.get("/")
