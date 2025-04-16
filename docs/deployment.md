@@ -52,8 +52,6 @@ The third argument (resource group name) is optional.
 # Make the script executable
 chmod +x deploy.sh
 
-chmod +x scripts/deploy_functionapp.sh
-
 # Authenticate with Azure
 az login
 # or use
