@@ -2,32 +2,42 @@
 > **This project is currently in active development and may contain breaking changes.**  
 > Updates and modifications are being made frequently, which may impact stability or functionality. This notice will be removed once development is complete and the project reaches a stable release. 
 
-# Azure AI Foundry Workshop: Vector Search, Agentic AI, and LLM Orchestration
+# Azure AI Foundry Workshop: Vector Search, Agentic AI, and LLM Orchestration  
 
 ## Overview  
 
-An **Azure Ai Foundry** interactive workshop aimed at introducing concepts like **Vector Search**, **Agentic AI**, and **Large Language Model (LLM) orchestration**. This project enables participants to gain practical experience integrating and deploying generative AI models, orchestrating tasks with **LangChain** and **Azure AI Agent Service**, implementing **Vector Search** using **Azure AI Search**, and developing multi-agent systems for collaborative and intelligent task execution.
+This **Azure AI Foundry Workshop** provides participants with practical, hands-on experience in building and deploying **Retrieval-Augmented Generation (RAG)** and **Agentic AI** solutions using **Azure AI Foundry**, **Azure AI Search**, **Azure AI Agent Service**, and **LangGraph**.
+
+Participants will learn how to create intelligent agents that not only respond, but also take action. Through integrating OpenAPI endpoints and orchestrating workflows across multiple agents, you’ll build solutions that are dynamic, context-aware, and production-ready.
 
 
-#### Key Features  
+By the end of the workshop, you'll have:
 
-- **Azure AI Foundry Deployment:**  
-  - Deploys **AI Hub**, **AI Project**, and **AI Services** with secure access and managed identities for integration with AI models.  
+- Deploy a fully functional AI workshop environment using **Azure AI Foundry**.
+- Built RAG pipelines using **Azure AI Search** and **document embeddings**.
+- Explored **agentic patterns** using **LangGraph**: single-agent, supervisor-agent, and networked agents.
+- Integrated structured external data via OpenAPI and GraphQL endpoints—giving agents the ability to query real-time data and take action through external systems.
+- Built intelligent agents using Python code, while also exploring low-code tools for LLM orchestration and agent implementation.
 
-- **Vector Search with Azure AI Search:**  
-  - Implements **Vector Search** to enable **Retrieval-Augmented Generation (RAG)** using indexed embeddings from documents.  
+---
 
-- **Agentic AI Framework:**  
-  - Leverages **Agentic AI** patterns to enable task orchestration and decision-making workflows.  
+## 🔧 What You’ll Build
 
-- **LLM Orchestration with LangChain:**  
-  - Integrates **LangChain** for seamless orchestration of large language models (LLMs).  
-  - Enables flexible **multi-agent systems** for complex problem solving, supporting dynamic decision-making and workflow automation.
+- **Vector Search & RAG with Azure AI Search**  
+  Learn to index documents, generate embeddings, and implement semantic retrieval to support LLM-based answers grounded in your data.
+
+- **Agentic AI with LangGraph & Azure AI Agent Service**  
+  Use prebuilt and custom agents to delegate tasks, make decisions, and interact with APIs. Experiment with orchestration patterns including single-agent flows, supervisor models, and decentralized networks.
+
+- **Real-World Integrations with OpenAPI & GraphQL**  
+  Connect your agents to external services, enabling them to perform real-world actions like retrieving live data, triggering workflows, or interacting with apps and systems.
+
+---
 
 
-## 🛠️ **Core Steps for Solution Implementation**
+## 🛠️ **Workshop Steps**
 
-Follow these key steps to successfully implement and deploy the solution:
+Follow these key steps to successfully implement and deploy the workshop:
 
 ### 1️⃣ [**Workshop Setup and Solution Deployment**](docs/deployment.md)  
 Step-by-step instructions to deploy **Azure AI Foundry** and all required services for the workshop environment, including:
@@ -53,7 +63,7 @@ Get hands-on experience with Agentic AI through a collection of curated sample n
 ---
 
 
-## 📐 Solution Design and Architecture
+## 📐 Workshop Design and Architecture
 
 ![design](/media/diagram.png)
 
@@ -75,10 +85,6 @@ To enable agents to interact with structured external data sources, the solution
 
 ### Event-Driven Data Ingestion
 Document processing is fully event-driven. When a PDF is uploaded to the designated storage container, an Azure Function is triggered to process the document end-to-end—from chunking to indexing—ensuring the search index remains up-to-date.
-
----
-
-This architecture not only supports RAG but also showcases the foundational patterns for building **Agentic AI** systems that are modular, event-driven, and extensible across enterprise-grade workloads using the **Azure AI Agents Service**.
 
 
 ## ♻️ **Clean-Up**

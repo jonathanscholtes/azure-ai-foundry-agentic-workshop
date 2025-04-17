@@ -40,7 +40,7 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
           value: '1'
-        }   
+        }    
         {
           name: 'WEBSITE_ENABLE_SYNC_UPDATE_SITE'
           value: 'false'
