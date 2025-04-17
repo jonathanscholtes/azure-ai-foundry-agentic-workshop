@@ -79,6 +79,7 @@ AZURE_OPENAI_API_KEY='Key from deployed Azure AI Service or Azure OpenAI Service
 AZURE_OPENAI_MODEL='gpt-4o'
 AZURE_AI_PROJECT_CONNECTION_STRING='You Azure AI Project Connection String'
 OPENAPI_URL='Endpoint to deployed API openAPI json schema - https://api-foundry-lab-[random].azurewebsites.net/openapi.json'
+GRAPHQL_URL='Endpoint to deployed GraphQL - https://api-foundry-lab-[random].azurewebsites.net/graphql'
 ```
 
 --- 
@@ -118,7 +119,11 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
 
    <img src="../media/agents/openapi_agent.png" alt="OpenAPI Agent Integration" style="height:350px; width:auto;">
 
+5. **Multi-Agent, Multi-Tool Supervisor with GraphQL Integration**  
+   *Notebook: `langchain_05-azure-ai-rag-agent_graphql`*  
+   This notebook expands the multi-agent supervisor framework by integrating multiple tools, including temperature conversion and real-time weather retrieval. It combines document retrieval using **Azure AI Search** with dynamic querying of data center energy usage via a GraphQL endpoint. This showcases how agents can coordinate across diverse tools and data sources—both structured and unstructured—to deliver enriched, context-aware responses.
 
+   <img src="../media/agents/graphql_agent.png" alt="OpenAPI Agent Integration" style="height:350px; width:auto;">
 
 #### Azure AI Agent Service  
 

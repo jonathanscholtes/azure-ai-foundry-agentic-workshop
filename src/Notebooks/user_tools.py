@@ -1,5 +1,5 @@
 from langchain_core.tools import tool
-
+from typing import Union
 from user_functions import vector_search
 
 
@@ -12,6 +12,15 @@ def get_weather_tool(location: str):
     else:
         return "It's 90 degrees and sunny."
 
+@tool
+def convert_fahrenheit_to_celsius(fahrenheit: float) -> str:
+    """
+    Converts a temperature from Fahrenheit (F) to Celsius (C) and returns a string formatted as 'X°C'.
+    
+    Use this tool when you are given a temperature in Fahrenheit and need to return the value in Celsius.
+    """
+    celsius = (fahrenheit - 32) * 5 / 9
+    return f"{celsius:.1f}°C"
 
 @tool
 def vector_search_tool(query: str):

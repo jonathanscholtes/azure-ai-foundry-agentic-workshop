@@ -13,3 +13,4 @@ opentelemetry-instrumentation-threading
 openapi-schema-pydantic
 openapi-pydantic
 jsonref
+gql
