@@ -3,8 +3,7 @@
 # Usage: ./deploy.sh <subscription> [location] <dev_compute_instances> [resource_group_name]
 
 location=${1:-eastus2}
-dev_compute_instances=$2
-resource_group_name=$3
+resource_group_name=$2
 
 # Variables
 project_name="foundry"
@@ -58,9 +57,9 @@ deployment_output=$(az deployment sub create \
         environmentName="$environment_name" \
         projectName="$project_name" \
         location="$location" \
-        numberComputeInstances="$dev_compute_instances" \
         resourceGroupName="$rg_name" \
         resourceToken="$resource_token" \
+        projectConfig=@./project_resource_config.json \
     --query "properties.outputs" -o json)
 
 # Extract resource group name from output if needed

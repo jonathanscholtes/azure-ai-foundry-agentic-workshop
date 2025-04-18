@@ -7,11 +7,14 @@ param searchServicename string
 param applicationInsightsId string
 param storageAccountId string
 param containerRegistryID string
-param numberComputeInstances int
+
+param projectConfig array
+
 
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
+var aiServicesName  = 'ais-${projectName}-${environmentName}-${resourceToken}'
 
 
 module search 'aisearch/main.bicep' = { 
@@ -22,6 +25,27 @@ module search 'aisearch/main.bicep' = {
   searchServicename: searchServicename
 
   }
+}
+
+
+
+module aiServices 'azure-ai-services.bicep' = {
+  name: 'aiServices'
+  params: {
+    aiServicesName: aiServicesName
+    location: location
+    identityName: identityName
+    customSubdomain: 'openai-app-${resourceToken}'
+    
+  }
+}
+
+module aiModels 'ai-models.bicep' = {
+  name:'aiModels'
+  params:{
+    aiServicesName:aiServicesName
+  }
+  dependsOn:[aiServices]
 }
 
 module aifoundry 'aifoundry/main.bicep' = {
@@ -38,14 +62,15 @@ module aifoundry 'aifoundry/main.bicep' = {
     aiSearchTarget:search.outputs.searchServiceEndpoint
     storageAccountId:storageAccountId
     containerRegistryID: containerRegistryID
-    numberComputeInstances: numberComputeInstances
-    searchServicename: searchServicename
+    projectConfig:projectConfig
+    aiServicesResourceId:aiServices.outputs.aiservicesID
+    aiServicesEndpoint: '${aiServices.outputs.OpenAIEndPoint}/'
   }
 
 }
 
 
 
-output aiservicesTarget string = aifoundry.outputs.aiservicesTarget
-output OpenAIEndPoint string = aifoundry.outputs.OpenAIEndPoint
+output aiservicesTarget string = aiServices.outputs.aiservicesTarget
+output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint
 output searchServiceEndpoint string = search.outputs.searchServiceEndpoint

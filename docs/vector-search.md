@@ -55,7 +55,7 @@ This project includes the Azure Durable Function [DocumentProcessingFunction](sr
 
 To trigger indexing:
 
-1. Upload PDF documents to the `load` container in the Azure Storage Account.
+1. Upload PDF documents to the `load` container in the Azure Storage Account. Ensure the user has the `Storage Blob Data Contributor` role to upload data to the Azure Storage Account.
     1.1 The demonstration uses data from the **2024 United States Data Center Energy Usage Report**.  
 [📄lbnl-2024-united-states-data-center-energy-usage-report.pdf](../data/lbnl-2024-united-states-data-center-energy-usage-report.pdf)
 2. The Azure Function will automatically:

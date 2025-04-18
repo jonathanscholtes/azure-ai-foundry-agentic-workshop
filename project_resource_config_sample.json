@@ -1,0 +1,26 @@
+[
+  {
+    "projectName": "team1",
+    "devComputeInstances":1,
+    "users": [
+    {
+      "user": "johndoe@example.com",
+      "objectId": "9e3c74f9-0131-4ab7-a18e-8d0a833b8f5d"
+    }
+  ]
+  },
+  {
+    "projectName": "team2",
+    "devComputeInstances":1,
+    "users": [
+    {
+      "user": "johndoe@example.com",
+      "objectId": "9e3c74f9-0131-4ab7-a18e-8d0a833b8f5d"
+    },
+    {
+      "user": "johnsmith@example.com",
+      "objectId": "b0c1f2d4-ff62-4a49-b158-6e4b99b464a9"
+    }
+  ]
+  }
+]

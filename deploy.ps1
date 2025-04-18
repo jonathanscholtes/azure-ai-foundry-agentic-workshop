@@ -1,7 +1,6 @@
 param (
     [string]$Subscription,
     [string]$Location = "eastus2",
-    [int]$DevComputeInstances,
     [string]$ResourceGroupName
 )
 
@@ -49,9 +48,6 @@ az config set core.login_experience_v2=off
 az login 
 az account set --subscription $Subscription
 
-
-Write-Host $resourceToken
-
 # If no resource group name is passed, generate one
 if (-not $ResourceGroupName) {
     $rgName = "rg-$projectName-$environmentName-$Location-$resourceToken"
@@ -69,6 +65,8 @@ if (-not $resourceGroup) {
     Write-Host "Resource group '$rgName' already exists."
 }
 
+
+
 # Start the deployment
 $deploymentOutput = az deployment sub create `
     --name $deploymentName `
@@ -78,9 +76,9 @@ $deploymentOutput = az deployment sub create `
         environmentName=$environmentName `
         projectName=$projectName `
         location=$Location `
-        numberComputeInstances=$DevComputeInstances `
         resourceGroupName=$rgName `
         resourceToken=$resourceToken `
+        projectConfig=@./project_resource_config.json `
     --query "properties.outputs"
 
 

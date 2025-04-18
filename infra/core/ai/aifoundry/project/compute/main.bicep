@@ -8,12 +8,12 @@ param environmentName string
 param resourceToken string
 
 module devCompute 'ai-dev-compute.bicep' = [for x in range(1, numberComputeInstances): {
-  name:'devCompute-${x}'
+  name:'Compute-${projectName}-${x}'
   params: {
     aiHubName:aiHubName
     location:location
     managedIdentityName:managedIdentityName
-    computeName: '${projectName}-${x}-${resourceToken}'
+    computeName: '${projectName}-${x}-${environmentName}'
     generatedAppName: 'generative-ai-app-${guid(projectName)}'
   }
 }]

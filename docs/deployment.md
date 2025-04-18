@@ -21,7 +21,7 @@ Before diving into deployment, make sure you have the following prerequisites in
 
 ---
 
-### **1. Clone the Repository**
+### 1. Clone the Repository
 Clone the repository to your local machine and navigate into the project directory:
 
 ```bash
@@ -31,14 +31,58 @@ cd azure-ai-foundry-agentic-workshop
 ```
 
 
-### 2. Deploy the Solution  
+### 2. Configure Azure AI Projects and Assign Users
+
+This workshop enables the deployment of multiple Azure AI Projects and can automatically assign participants the `AI Developer` role for each project.
+
+#### Steps:
+
+1. Duplicate the `project_resource_config_sample.json` file and rename it to `project_resource_config.json`.
+2. Update the file with the following:
+   - Specify the desired project names.
+   - Set the number of compute instances to deploy for each project. *(Note: Compute instances are technically created within the AI Hub, but they will be named to align with the project for convenience.)*
+   - *(Optional)* Add a `users` array for each project to assign the `AI Developer` role. If the `users` property is omitted, no users will be assigned roles for that project - but can be assigned later.
+
+#### Example `project_resource_config.json`:
+
+```json
+[
+  {
+    "projectName": "team1",
+    "devComputeInstances":1,
+    "users": [
+    {
+      "user": "johndoe@example.com",
+      "objectId": "9e3c74f9-0131-4ab7-a18e-8d0a833b8f5d"
+    }
+  ]
+  },
+  {
+    "projectName": "team2",
+    "devComputeInstances":1,
+    "users": [
+    {
+      "user": "johndoe@example.com",
+      "objectId": "9e3c74f9-0131-4ab7-a18e-8d0a833b8f5d"
+    },
+    {
+      "user": "johnsmith@example.com",
+      "objectId": "b0c1f2d4-ff62-4a49-b158-6e4b99b464a9"
+    }
+  ]
+  }
+]
+```
+
+### 3. Deploy the Solution  
+
 
 #### 🔹 PowerShell (Windows)
 
-Run the following PowerShell command to deploy the solution. Replace the placeholders with your actual subscription name and Azure region. The `-ResourceGroupName` flag is optional for deploying to an exising Azure Resource Group:
+Run the following PowerShell command to deploy the solution. Replace the placeholders with your actual subscription name and Azure region. The `-ResourceGroupName` flag is optional for deploying to an exising Azure Resource Group. 
 
 ```powershell
-.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2' -DevComputeInstances 1 -ResourceGroupName '[Name of existing resource group (optional)]'
+.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2' -ResourceGroupName '[Name of existing resource group (optional)]' 
 ```
 
 #### 🔹 Bash (Linux)
@@ -61,21 +105,22 @@ az login --identity
 az account set --subscription '[Subscription Name]'
 
 # Deploy the solution to the secified Location, with DevComputeInstances
-./deploy.sh 'eastus2' 1 '[Existing Resource Group Name (optional)]'
+./deploy.sh 'eastus2' '[Existing Resource Group Name (optional)]'
 ```
 
 ✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **20 minutes** to complete.
 
 
 
-### 3. 📥 Upload Structured Data for Agent Integration
+### 4. 📥 Upload Structured Data for Agent Integration
 
-After completing the deployment, you will need to update the sample dataset for the agent integration.
+Once the deployment is complete, you'll need to update the sample dataset for agent integration. Ensure the user has the `Storage Blob Data Contributor` role to upload the sample data to the Azure Storage Account.
 
-1. Upload the **parquet** data file to the `data` container in the Azure Storage Account.
-    1.1 The demonstration utilizes synthetic data related to data center energy usage.  
-[📄usage.parquet](../data/usage.parquet)
+#### Steps:
 
+1. Upload the **parquet** data file to the `data` container in your Azure Storage Account.
+    - This demonstration uses synthetic data related to data center energy usage.  
+    [📄usage.parquet](../data/usage.parquet)
 
 ![Load Data](../media/storage-account-data.png)
 

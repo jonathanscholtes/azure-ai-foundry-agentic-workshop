@@ -66,6 +66,7 @@ resource aiHub 'Microsoft.MachineLearningServices/workspaces@2024-10-01-preview'
     publicNetworkAccess: 'Enabled'
   }
   kind: 'hub'
+ 
 }
 
 resource aiServicesConnection 'Microsoft.MachineLearningServices/workspaces/connections@2024-01-01-preview' = {
@@ -104,7 +105,14 @@ resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connec
   }
 }
 
-
+#disable-next-line BCP081
+resource hubCapabilityHost 'Microsoft.MachineLearningServices/workspaces/capabilityHosts@2024-10-01-preview' = {
+  name: '${aiHubName}-capabilityHost'
+  parent: aiHub
+  properties: {
+     capabilityHostKind: 'Agents'
+  }
+}
 
 output aiHubResourceId string = aiHub.id
 output aiHubName string = aiHubName

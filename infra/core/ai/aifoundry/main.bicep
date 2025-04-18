@@ -7,29 +7,16 @@ param identityName string
 param applicationInsightsId string
 param aiSearchTarget string
 param searchServiceId string
-param searchServicename string
 param storageAccountId string
-param numberComputeInstances int =1
-
+param projectConfig array
+param aiServicesResourceId string
+param aiServicesEndpoint string
 
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
 param containerRegistryID string
 
-var aiServicesName  = 'ais-${projectName}-${environmentName}-${resourceToken}'
-var aiProjectName  = 'prj-${projectName}-${environmentName}-${resourceToken}'
-
-module aiServices 'azure-ai-services.bicep' = {
-  name: 'aiServices'
-  params: {
-    aiServicesName: aiServicesName
-    location: location
-    identityName: identityName
-    customSubdomain: 'openai-app-${resourceToken}'
-    
-  }
-}
 
 
 module aiHub 'ai-hub.bicep' = {
@@ -37,8 +24,8 @@ module aiHub 'ai-hub.bicep' = {
   params:{
     aiHubName: 'hub-${projectName}-${environmentName}-${resourceToken}'
     aiHubDescription: 'Hub for AI Workshop'
-    aiServicesResourceId:aiServices.outputs.aiservicesID
-    aiServicesEndpoint: '${aiServices.outputs.OpenAIEndPoint}/'
+    aiServicesResourceId:aiServicesResourceId
+    aiServicesEndpoint: aiServicesEndpoint
     keyVaultResourceId: keyVaultId
     location: location
     aiHubFriendlyName: 'AI Workshop Hub'
@@ -53,51 +40,22 @@ module aiHub 'ai-hub.bicep' = {
 
 
 
-module aiProject 'ai-project.bicep' = {
-  name: 'aiProject'
-  params:{
-    aiHubResourceId:aiHub.outputs.aiHubResourceId
-    location: location
-    aiProjectName: aiProjectName
-    aiProjectFriendlyName: 'AI Workshop Project'
-    aiProjectDescription: 'Project for Workshop'    
-  }
-}
-
-module aiModels 'ai-models.bicep' = {
-  name:'aiModels'
-  params:{
-    aiServicesName:aiServicesName
-  }
-  dependsOn:[aiServices,aiProject]
-}
-
-
-module aiCompute 'compute/main.bicep' = if (numberComputeInstances > 0){
-name: 'aiCompute'
-params: { 
-  aiHubName:aiHub.outputs.aiHubName
-  numberComputeInstances:numberComputeInstances
-  projectName: projectName
-  environmentName: environmentName
-  resourceToken:resourceToken
-  location:location
-  managedIdentityName:identityName
-}
-}
-
-
-module addCapabilityHost 'add-capability-host.bicep' = {
-  name: 'addCapabilityHost'
+module aiProjects 'project/main.bicep' = [for proj in projectConfig: {
+  name: 'aiProjects-${proj.projectName}'
   params: {
-    capabilityHostName: '${environmentName}-${resourceToken}'
-    aiHubName: aiHub.outputs.aiHubName
-    aiProjectName: aiProjectName
+    aiHubResourceId: aiHub.outputs.aiHubResourceId
+    location: location
+    aiProjectName: '${proj.projectName}'
     aiSearchConnectionName: aiHub.outputs.aiServicesConnectionName
     aoaiConnectionName: aiHub.outputs.aiServicesConnectionName
+    aiHubName:aiHub.outputs.aiHubName
+    identityName:identityName
+    numberComputeInstances: proj.devComputeInstances
+    resourceToken:resourceToken
+    environmentName:environmentName
+    users: proj.?users ?? []
   }
-  dependsOn:[aiProject]
-}
+}]
 
-output aiservicesTarget string = aiServices.outputs.aiservicesTarget
-output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint
+
+
