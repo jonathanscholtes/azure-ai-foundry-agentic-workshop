@@ -56,7 +56,7 @@ Step-by-step instructions for vectorizing document data with **Azure AI Search**
 
 
 
-### 3️⃣ Hands-On with Agents  
+### 3️⃣ [**Hands-On with Agents**](docs/notebooks.md)  
 Discover interactive Notebooks and guides that walk you through building intelligent, task-driven agents. These curated resources cover:
 
 - **Semantic retrieval** and vector search powered by Azure AI Search  
