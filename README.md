@@ -6,7 +6,7 @@
 
 ## Overview  
 
-This **Azure AI Foundry Workshop** provides participants with practical, hands-on experience in building and deploying **Retrieval-Augmented Generation (RAG)** and **Agentic AI** solutions using **Azure AI Foundry**, **Azure AI Search**, **Azure AI Agent Service**, and **LangGraph**.
+This **Azure AI Foundry Workshop** provides participants with practical, hands-on experience in building and deploying **Retrieval-Augmented Generation (RAG)** and **Agentic AI** solutions using **Azure AI Foundry**, **Azure AI Search**, **Azure AI Agent Service**, **LangGraph** and **Semantic Kernel Agent Framework**.
 
 Participants will learn how to create intelligent agents that not only respond, but also take action. Through integrating OpenAPI endpoints and orchestrating workflows across multiple agents, you’ll build solutions that are dynamic, context-aware, and production-ready.
 
@@ -15,7 +15,7 @@ By the end of the workshop, you'll have:
 
 - Deploy a fully functional AI workshop environment using **Azure AI Foundry**.
 - Built RAG pipelines using **Azure AI Search** and **document embeddings**.
-- Explored **agentic patterns** using **LangGraph**: single-agent, supervisor-agent, and networked agents.
+- Explored **agentic patterns** using **LangGraph** and **Semantic Kernel**: single-agent, supervisor-agent, and networked agents.
 - Integrated structured external data via OpenAPI and GraphQL endpoints—giving agents the ability to query real-time data and take action through external systems.
 - Built intelligent agents using Python code, while also exploring low-code tools for LLM orchestration and agent implementation.
 
@@ -26,7 +26,7 @@ By the end of the workshop, you'll have:
 - **Vector Search & RAG with Azure AI Search**  
   Learn to index documents, generate embeddings, and implement semantic retrieval to support LLM-based answers grounded in your data.
 
-- **Agentic AI with LangGraph & Azure AI Agent Service**  
+- **Agentic AI with LangGraph, Azure AI Agent Service and Semantic Kernel**  
   Use prebuilt and custom agents to delegate tasks, make decisions, and interact with APIs. Experiment with orchestration patterns including single-agent flows, supervisor models, and decentralized networks.
 
 - **Real-World Integrations with OpenAPI & GraphQL**  

@@ -3,8 +3,8 @@
 These notebooks show how to build intelligent, agent-powered applications using **Azure AI Foundry**, **Azure AI Search**, and the **Azure AI Agent Service**. You’ll explore:
 
 - 🔍 **Vector Search** & **RAG** for grounding responses  
-- 🤖 **Agentic AI** with **LangGraph** for orchestrating workflows  
-- 🔗 **OpenAPI** integration for real-time actions  
+- 🤖 **Agentic AI** with **LangGraph**, **Semantic Kernel** and **Azure AI Agent Service** for orchestrating workflows  
+- 🔗 **OpenAPI** and **GraphQL** integration for real-time actions  
 - 🧭 **Tracing** for step-by-step visibility into agent behavior  
 
 From simple chat agents to complex, multi-step interactions, these examples help you deliver smart, context-aware AI—fast.
