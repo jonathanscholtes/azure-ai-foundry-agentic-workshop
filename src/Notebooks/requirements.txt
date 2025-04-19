@@ -12,5 +12,6 @@ langchain-azure-ai
 opentelemetry-instrumentation-threading
 openapi-schema-pydantic
 openapi-pydantic
+semantic-kernel
 jsonref
 gql

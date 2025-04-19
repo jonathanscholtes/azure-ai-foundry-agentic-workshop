@@ -108,9 +108,11 @@ az account set --subscription '[Subscription Name]'
 ./deploy.sh 'eastus2' '[Existing Resource Group Name (optional)]'
 ```
 
-✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **20 minutes** to complete.
+✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **40 minutes** to complete.
 
+The deployment will automatically create all necessary resources for Azure AI Foundry, including Hub and Project configurations, along with any required dependency connections.
 
+<img src="../media/deployed_projects.png" alt="Project Deployment" style="height:350px; width:auto;">
 
 ### 4. 📥 Upload Structured Data for Agent Integration
 
