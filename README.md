@@ -48,17 +48,21 @@ Step-by-step instructions to deploy **Azure AI Foundry** and all required servic
 - **Azure Functions** for event-driven document chunking, embedding generation, and indexing  
 - **Azure Web App** to enable agent interactions via OpenAPI and GraphQL integrations
 
-### 2️⃣ [**Vector Search and RAG Setup**](docs/vector-search.md)  
-Instructions for processing documents and creating embeddings using **Ada-002**, indexing them into **Azure AI Search**, and configuring **RAG** for semantic retrieval.
+### 2️⃣ [**RAG Setup with Azure AI Search and "Chatting Over Your Data"**](docs/vector-search.md)  
+Step-by-step instructions for vectorizing document data with **Azure AI Search** and quickly leveraging the data using **Azure AI Foundry's** built-in _Chat Playground_.
+
+- Processing documents, chunking them, generating embeddings with **Ada-002**, and indexing them into **Azure AI Search**  
+- Interacting with indexed data for semantic retrieval using the Azure AI Foundry Chat Playground  
 
 
-### 3️⃣ [**Explore Sample Notebooks**](docs/notebooks.md)  
-Get hands-on experience with Agentic AI through a collection of curated sample notebooks. These examples demonstrate:
 
-- **Vector search** and semantic retrieval using Azure AI Search  
--  Multi-agent orchestration with **LangGraph**, integrating structured data via OpenAPI and GraphQL 
--  Real-world Agentic AI patterns implemented with Azure AI Foundry Agents 
--  **Tracing** for in-depth insights into agent execution and decision-making
+### 3️⃣ Hands-On with Agents  
+Discover interactive Notebooks and guides that walk you through building intelligent, task-driven agents. These curated resources cover:
+
+- **Semantic retrieval** and vector search powered by Azure AI Search  
+- Orchestrating **multi-agent workflows** with LangGraph, Azure AI Agent Service, and Semantic Kernel  
+- Integration with real-time **external systems and APIs** via OpenAPI and GraphQL, allowing agents to access dynamic, structured data sources  
+- Built-in **tracing and diagnostics** to analyze and understand agent decision-making and behavior
 
 ---
 

@@ -107,9 +107,9 @@ With minimal setup, the wizard:
 
 ---
 
-### Testing the Vector Index with Azure AI Foundry
+### "Chatting Over Your Data" with Azure AI Foundry
 
-To interact with your vector data in **Azure AI Search** through the Playground, add your Azure AI Search index as a data source.
+To begin interacting with your vectorized data in **Azure AI Search** using the Chat Playground, add your Azure AI Search index as a data source.
 
 
 #### 1. **Add Data Source – Azure AI Search Index**

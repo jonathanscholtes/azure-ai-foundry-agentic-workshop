@@ -1,3 +1,5 @@
+######### Shared Functions ###########
+
 
 from azure.search.documents import SearchClient
 from langchain_community.vectorstores.azuresearch import AzureSearch
@@ -42,3 +44,4 @@ def vector_search(query: str):
 
     return "\n\n".join(formatted_docs)
     
+
