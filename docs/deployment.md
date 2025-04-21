@@ -1,5 +1,7 @@
 ## Deployment: Azure AI Foundry and Dependencies
 
+
+
 This section provides a detailed guide for deploying Azure AI Foundry and the associated dependencies required for the workshop. We will walk you through the necessary prerequisites and the steps to successfully configure your environment.
 
 You will clone the repository, deploy the solution using either PowerShell or Bash, and set up the essential resources needed to implement multi-agent systems.

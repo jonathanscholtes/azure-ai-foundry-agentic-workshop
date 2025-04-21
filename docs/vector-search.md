@@ -1,12 +1,21 @@
 ## Vector Search and RAG Setup
 
-Instructions for processing documents, creating embeddings using **Ada-002**, indexing them into **Azure AI Search**, and configuring **RAG** for semantic retrieval.
+This section guides you through setting up **Vector Search** and enabling **Retrieval-Augmented Generation (RAG)** by processing documents, generating embeddings with **Ada-002**, and indexing them into **Azure AI Search** for semantic retrieval.
+
+You can choose between two indexing methods:
+
+- **Azure Durable Function:** Automatically triggers on file upload to an Azure Storage Account, chunking documents and indexing them. This event-driven approach offers greater flexibility and supports a wide range of document types.
+- **Vectorization Wizard:** A no-code experience for quickly creating an indexer directly from a storage container—ideal for rapid prototyping or simple use cases.
+
+Once indexing is complete, you'll be able to **"chat over your data"** using the **Azure AI Foundry Playground**, enabling intelligent Q&A over your custom knowledge base.
+
+---
 
 ### Prerequisites
 
-- ✅ **Workshop Deployment**  
-  Ensure the workshop environment and all required services (AI Foundry, Storage Account, and Azure AI Search) are deployed.  
-  ➤ [**Workshop Setup and Solution Deployment**](deployment.md)
+Ensure your workshop environment is deployed, including AI Foundry, Azure Storage, and Azure AI Search:  
+➡️ [**Workshop Setup and Solution Deployment**](deployment.md)
+
 
 ---
 ### Resources

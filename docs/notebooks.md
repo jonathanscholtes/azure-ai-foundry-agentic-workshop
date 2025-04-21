@@ -123,7 +123,37 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
    *Notebook: `langchain_05-azure-ai-rag-agent_graphql`*  
    This notebook expands the multi-agent supervisor framework by integrating multiple tools, including temperature conversion and real-time weather retrieval. It combines document retrieval using **Azure AI Search** with dynamic querying of data center energy usage via a GraphQL endpoint. This showcases how agents can coordinate across diverse tools and data sources—both structured and unstructured—to deliver enriched, context-aware responses.
 
-   <img src="../media/agents/graphql_agent.png" alt="OpenAPI Agent Integration" style="height:350px; width:auto;">
+   <img src="../media/agents/graphql_agent.png" alt="GraphQL Agent Integration" style="height:350px; width:auto;">
+
+6. **Multi-Agent Subgraphs for Reuse and Complex Systems**  
+   *Notebook: `langchain_06a-azure-ai-rag-agent_subgraph`*  
+   This notebook showcases a multi-agent pattern that uses **subgraphs** to encapsulate agent workflows into independent, reusable components. These subgraphs can be composed and orchestrated across complex systems, enabling modular design and improved maintainability.
+
+   🔗 [Subgraphs in LangGraph](https://langchain-ai.github.io/langgraph/concepts/low_level/#subgraphs)
+
+
+   <img src="../media/agents/subgraph_agent_tools.png" alt="SubGraph Agent" style="height:400px; width:auto;">
+
+
+#### Semantic Kernel Agents  
+
+This section highlights how to build AI agents using the [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/) framework. Semantic Kernel is a lightweight SDK for integrating AI services into applications, with native support for function calling, memory, planners, and plugins. These capabilities allow you to embed agentic patterns into any app with high flexibility and control.
+
+These notebooks, powered by **Azure AI Foundry**, showcase practical patterns for building and deploying intelligent agents using Semantic Kernel.
+
+1. **Agent Plugins with Function Calling**  
+   *Notebook: `semantic-kernel_01-azure-ai-agent-plugins`*  
+   This notebook demonstrates how to use Semantic Kernel Plugins to enable agents to perform complex tasks through function calling. It shows how to register and invoke custom plugins that extend the agent’s capabilities, allowing integration with APIs, tools, or business logic.
+
+   🔗 [Configuring Agents with Semantic Kernel Plugins](https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/agent-functions?pivots=programming-language-python)
+
+ 
+<br/>
+
+2. **RAG Agent with Plugins**  
+   *Notebook: `semantic-kernel_02-azure-ai-rag-agent`*  
+   This notebook demonstrates how to build a Retrieval-Augmented Generation (RAG) agent by combining Semantic Kernel plugins with function calling and vector search using **Azure AI Search**. The result is an intelligent agent capable of grounding its responses in enterprise knowledge for more accurate and context-aware interactions.
+
 
 #### Azure AI Agent Service  
 
