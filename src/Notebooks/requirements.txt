@@ -3,6 +3,11 @@ azure-search-documents
 azure-core
 azure-core-tracing-opentelemetry
 azure-monitor-opentelemetry
+azure-storage-blob
+numpy
+pandas
+pyarrow
+adlfs
 python-dotenv==1.0.0
 langchain-openai
 langchain
@@ -15,3 +20,4 @@ openapi-pydantic
 semantic-kernel
 jsonref
 gql
+tabulate

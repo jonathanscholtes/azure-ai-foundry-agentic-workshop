@@ -72,6 +72,7 @@ To connect your notebooks to your Azure AI resources, create a .env file with yo
 AZURE_AI_SEARCH_ENDPOINT='Your Azure AI Search Endpoint'
 AZURE_AI_SEARCH_KEY='Your Azure AI Search Key'
 AZURE_AI_SEARCH_INDEX='workshop-index'
+AZURE_STORAGE_CONNECTION_STRING='Your Storage Account Connection String for testing Pandas Dataframe Agents'
 AZURE_OPENAI_EMBEDDING='text-embedding'
 AZURE_OPENAI_API_VERSION='2024-06-01'
 AZURE_OPENAI_ENDPOINT='Endpoint from deployed Azure AI Service or Azure OpenAI Service'
@@ -134,6 +135,11 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
 
    <img src="../media/agents/subgraph_agent_tools.png" alt="SubGraph Agent" style="height:400px; width:auto;">
 
+7. **Multi-Agent Subgraphs for Dynamic Data Query and Code Execution**  
+   *Notebook: `langchain_07a-azure-ai-agent_dataframe`*  
+   This notebook demonstrates how to use a subgraph to write and execute a query against a structured data source. In this example, a Parquet file stored in an Azure Storage Account is used. The agent generates Python code to filter a pandas DataFrame and extract the relevant data to answer user queries.
+
+   <img src="../media/agents/subgraph_agent_dataframe.png" alt="SubGraph Dataframe" style="height:400px; width:auto;">
 
 #### Semantic Kernel Agents  
 

@@ -4,6 +4,9 @@
 from azure.search.documents import SearchClient
 from langchain_community.vectorstores.azuresearch import AzureSearch
 from langchain_openai import AzureOpenAIEmbeddings
+import pandas as pd
+import numpy as np
+from adlfs import AzureBlobFileSystem
 from dotenv import load_dotenv
 from os import environ
 
@@ -45,3 +48,11 @@ def vector_search(query: str):
     return "\n\n".join(formatted_docs)
     
 
+def get_datafame_from_storage(full_blob_path:str):
+
+    abfs  =  AzureBlobFileSystem()
+
+    with abfs.open(full_blob_path, 'rb') as f:
+        df = pd.read_parquet(f, engine="pyarrow")
+
+    return df
