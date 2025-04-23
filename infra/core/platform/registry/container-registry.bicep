@@ -36,38 +36,40 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2024-11-01-pr
 }
 
 
-var acrPullRole = resourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
-var acrPushRole = resourceId('Microsoft.Authorization/roleDefinitions', '8311e382-0749-4cb8-b61a-304f252e45ec')
-var contributorRole = resourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') 
-
-
-
-resource rolePullAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(containerRegistry.id, managedIdentity.id, acrPullRole)
-  scope: containerRegistry
+resource acrBuildCustomRole 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {
+  name: guid(containerRegistryName, 'ACRBuildCustomRole')
   properties: {
-    roleDefinitionId: acrPullRole
-    principalId: managedIdentity.properties.principalId
-    principalType: 'ServicePrincipal'
+    roleName: 'ACR Build Custom Role'
+    description: 'Custom role for building and pushing images to ACR'
+    assignableScopes: [
+      containerRegistry.id
+    ]
+    permissions: [
+      {
+        actions: [
+          'Microsoft.ContainerRegistry/registries/push/write'
+          'Microsoft.ContainerRegistry/registries/pull/read'
+          'Microsoft.ContainerRegistry/registries/read'
+          'Microsoft.ContainerRegistry/registries/write'
+          'Microsoft.ContainerRegistry/registries/listBuildSourceUploadUrl/action'
+          'Microsoft.ContainerRegistry/registries/scheduleRun/action'
+          'Microsoft.ContainerRegistry/registries/runs/listLogSasUrl/action'
+        ]
+        notActions: []
+        dataActions: []
+        notDataActions: []
+      }
+    ]
   }
 }
 
 
-resource rolePushAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(containerRegistry.id, managedIdentity.id, acrPushRole)
+// Assign the custom role to the managed identity
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(containerRegistryName, managedIdentity.id, acrBuildCustomRole.id)
   scope: containerRegistry
   properties: {
-    roleDefinitionId: acrPushRole
-    principalId: managedIdentity.properties.principalId
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource roleContributorAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(containerRegistry.id, managedIdentity.id, contributorRole)
-  scope: containerRegistry
-  properties: {
-    roleDefinitionId: contributorRole
+    roleDefinitionId: acrBuildCustomRole.id
     principalId: managedIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }

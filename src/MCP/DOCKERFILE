@@ -1,10 +1,25 @@
-FROM mcr.microsoft.com/devcontainers/python:3.10
+FROM python:3.12
 
+# Install Nginx and supervisor
+RUN apt-get update && apt-get install -y nginx supervisor
+
+# Install dependencies for your services
 WORKDIR /app
-COPY . .
-
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-EXPOSE 8000 8001 8002 8003
+# Copy your application files
+COPY weather_server.py .
 
-CMD ["bash", "start.sh"]
+# Copy the Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose necessary ports (80 for Nginx, 8001-8003 for your services)
+EXPOSE 80 443 8001 8002 8003
+
+# Copy the supervisor configuration
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Start Nginx and your application with supervisord
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+

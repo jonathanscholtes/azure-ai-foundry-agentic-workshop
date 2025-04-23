@@ -1,4 +1,5 @@
 from mcp.server.fastmcp import FastMCP
+import uvicorn
 
 mcp = FastMCP("Weather")
 
@@ -21,5 +22,5 @@ def convert_fahrenheit_to_celsius(fahrenheit: float) -> str:
     return f"{celsius:.1f}°C"
 
 if __name__ == "__main__":
-    mcp.run(transport="sse", host="0.0.0.0", port=8001)
+    mcp.run(transport="sse")
 
