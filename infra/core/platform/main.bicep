@@ -19,10 +19,12 @@ module containerregistry 'registry/container-registry.bicep' = {
 module buildImage 'registry/build-image.bicep' = {
   name: 'buildImage'
   params:{ 
-     containerRegistryName:containerRegistryName
+     containerRegistryName:containerregistry.outputs.containerRegistryName
       location:location 
+      managedIdentityName:managedIdentityName
   }
+  dependsOn:[containerregistry]
 }
 
 output containerRegistryID string = containerregistry.outputs.containerRegistryID
-output containerRegistryName string = containerRegistryName
+output containerRegistryName string = containerregistry.outputs.containerRegistryName

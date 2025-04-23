@@ -152,5 +152,6 @@ module mcpContainerApp 'app/mcp-container-app.bicep' ={
 }
 
 output resourceGroupName string = resourceGroup.name
-output functionAppName string = ''// loaderFunctionWebApp.outputs.functionAppName
-output apiAppName string = ''// apiWebApp.outputs.webAppName
+output functionAppName string = 'test'// loaderFunctionWebApp.outputs.functionAppName
+output apiAppName string = 'test'//apiWebApp.outputs.webAppName
+

@@ -16,24 +16,44 @@ param repo string = 'azure-ai-foundry-agentic-workshop'
 @description('Git branch containing the Docker context')
 param branch string = 'main'
 
+@description('The name of the user-assigned managed identity used by the container app.')
+param managedIdentityName string
+
+
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: managedIdentityName
+}
+
+
 resource buildImage 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: 'buildAcrImageScript'
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }
   location: location
   kind: 'AzureCLI'
   properties: {
     azCliVersion: '2.53.0'
     scriptContent: '''
+      echo "Building image:"
+      git clone --branch ${branch} https://github.com/${org}/${repo}.git
+      cd ${repo}/src/MCP
       az acr build \
-        --registry $containerRegistryName \
-        --image $imageName:latest \
+        --registry ${containerRegistryName} \
+        --image ${containerRegistryName}.azurecr.io/${imageName}:${imageTag} \
         --file Dockerfile \
-        --context https://github.com/${org}/${repo}.git#${branch}:src/MCP
+        .
     '''
     environmentVariables: [
       { name: 'containerRegistryName'
        value: containerRegistryName }
       { name: 'imageName'
        value: imageName }
+       { name: 'imageTag'
+       value: 'latest' }
       { name: 'org'
        value: org }
       { name: 'repo'

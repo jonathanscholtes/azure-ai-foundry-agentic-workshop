@@ -88,9 +88,10 @@ $resourceGroupName = $deploymentOutputJson.resourceGroupName.value
 $functionAppName = $deploymentOutputJson.functionAppName.value
 $apiAppName = $deploymentOutputJson.apiAppName.value
 
+
 Write-Host "Waiting for App Services before pushing code"
 
-$waitTime = 200  # Total wait time in seconds
+$waitTime = 200  # Total wait time in seconds 200
 
 # Display counter
 for ($i = $waitTime; $i -gt 0; $i--) {
