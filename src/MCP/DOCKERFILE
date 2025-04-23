@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/devcontainers/python:3.10
+
+WORKDIR /app
+COPY . .
+
+RUN pip install -r requirements.txt
+
+EXPOSE 8000 8001 8002 8003
+
+CMD ["bash", "start.sh"]

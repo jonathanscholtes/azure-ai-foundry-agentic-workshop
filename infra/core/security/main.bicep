@@ -31,6 +31,7 @@ module keyVault 'keyvault.bicep' = {
 
 
 output managedIdentityName string = managedIdentity.outputs.managedIdentityName
+output managedIdentityId string = managedIdentity.outputs.managedIdentityId
 output keyVaultID string = keyVault.outputs.keyVaultId
 output keyVaultName string = keyVaultName
 output keyVaultUri string = keyVault.outputs.keyVaultUri

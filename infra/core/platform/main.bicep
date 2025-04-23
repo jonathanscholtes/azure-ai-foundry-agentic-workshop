@@ -1,7 +1,8 @@
 param containerRegistryName string
 param location string
 
-
+@description('The name of the user-assigned managed identity used by the container app.')
+param managedIdentityName string
 
 
 module containerregistry 'registry/container-registry.bicep' = {
@@ -9,10 +10,19 @@ module containerregistry 'registry/container-registry.bicep' = {
   params: {
     containerRegistryName: containerRegistryName
     location: location
+    managedIdentityName:managedIdentityName
   }
 
 }
 
+
+module buildImage 'registry/build-image.bicep' = {
+  name: 'buildImage'
+  params:{ 
+     containerRegistryName:containerRegistryName
+      location:location 
+  }
+}
 
 output containerRegistryID string = containerregistry.outputs.containerRegistryID
 output containerRegistryName string = containerRegistryName

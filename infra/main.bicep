@@ -41,8 +41,8 @@ module monitor 'core/monitor/main.bicep' = {
   scope: resourceGroup
   params:{ 
    location:location 
-   logAnalyticsName: 'log-${projectName}-${environmentName}'
-   applicationInsightsName: 'appi-${projectName}-${environmentName}'
+   logAnalyticsName: 'log-${projectName}-${environmentName}-${resourceToken}'
+   applicationInsightsName: 'appi-${projectName}-${environmentName}-${resourceToken}'
   }
 }
 
@@ -66,10 +66,12 @@ module platform 'core/platform/main.bicep' = {
   params: { 
     containerRegistryName: 'cr${projectName}${environmentName}${resourceToken}'
     location:location
+    managedIdentityName:security.outputs.managedIdentityName
+  
   }
 }
 
-module ai 'core/ai/main.bicep' = {
+/*module ai 'core/ai/main.bicep' = {
   name: 'ai'
   scope: resourceGroup
   params: { 
@@ -85,7 +87,7 @@ module ai 'core/ai/main.bicep' = {
     containerRegistryID: platform.outputs.containerRegistryID
     projectConfig:projectConfig
   }
-}
+}*/
 
 module apps 'core/app/main.bicep' ={ 
   name: 'apps'
@@ -98,7 +100,7 @@ module apps 'core/app/main.bicep' ={
   }
 }
 
-module loaderFunctionWebApp 'app/loader-function-web-app.bicep' = {
+/*module loaderFunctionWebApp 'app/loader-function-web-app.bicep' = {
   name: 'loaderFunctionWebApp'
   scope: resourceGroup
   params: { 
@@ -133,8 +135,22 @@ module apiWebApp 'app/api-web-app.bicep' = {
     appInsightsName: monitor.outputs.applicationInsightsName
     keyVaultUri:security.outputs.keyVaultUri
   }
+}*/
+
+
+module mcpContainerApp 'app/mcp-container-app.bicep' ={
+  name: 'mcpContainerApp'
+   scope:resourceGroup
+  params: {
+    containerAppName: '${projectName}-${environmentName}-${resourceToken}'
+    containerRegistryName: platform.outputs.containerRegistryName
+    managedIdentityName: security.outputs.managedIdentityName
+    searchServiceEndpoint: ''
+    location:location
+    logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
+        }
 }
 
 output resourceGroupName string = resourceGroup.name
-output functionAppName string = loaderFunctionWebApp.outputs.functionAppName
-output apiAppName string = apiWebApp.outputs.webAppName
+output functionAppName string = ''// loaderFunctionWebApp.outputs.functionAppName
+output apiAppName string = ''// apiWebApp.outputs.webAppName
