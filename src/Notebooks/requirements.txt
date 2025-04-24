@@ -1,4 +1,5 @@
 azure-ai-projects==1.0.0b7
+azure-ai-evaluation
 azure-search-documents
 azure-core
 azure-core-tracing-opentelemetry
@@ -18,7 +19,7 @@ langchain-mcp-adapters
 opentelemetry-instrumentation-threading
 openapi-schema-pydantic
 openapi-pydantic
-semantic-kernel
+semantic-kernel==1.20.0
 jsonref
 gql
 tabulate
