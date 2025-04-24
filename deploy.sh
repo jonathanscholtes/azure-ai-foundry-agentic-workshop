@@ -82,7 +82,7 @@ echo -e "\rWait time completed!"
 # Change directory to scripts
 cd ./scripts
 
-# Deploy Function Application
+# Deploy Azure Function for Loading AI Search Indexes from PDFs 
 echo "*****************************************"
 echo "Deploying Function Application from scripts"
 echo "If timeout occurs, rerun the following command from scripts:"
@@ -95,16 +95,28 @@ chmod +x deploy_functionapp.sh
 ./deploy_functionapp.sh "$function_app_name" "$resource_group_name"
 
 
-# Deploy Function Application
+# Deploy Python MCP Weather Server
 echo "*****************************************"
-echo "Deploying Python FastAPI from scripts"
+echo "Deploying Weather MCP Server from scripts"
 echo "If timeout occurs, rerun the following command from scripts:"
-echo "./deploy_api.sh $api_app_name $resource_group_name"
+echo "./deploy_api.sh $api_app_name $resource_group_name ../src/MCP/weather"
 
 chmod +x deploy_api.sh
 
 # Run the deploy script
-./deploy_api.sh "$api_app_name" "$resource_group_name"
+./deploy_api.sh "$api_app_name" "$resource_group_name" "../src/MCP/weather"
+
+
+# Deploy Python FastAPI for OpenAPI and GraphQL
+echo "*****************************************"
+echo "Deploying Python FastAPI from scripts"
+echo "If timeout occurs, rerun the following command from scripts:"
+echo "./deploy_api.sh $api_app_name $resource_group_name ../src/api"
+
+chmod +x deploy_api.sh
+
+# Run the deploy script
+./deploy_api.sh "$api_app_name" "$resource_group_name" "../src/api"
 
 
 # Change directory back

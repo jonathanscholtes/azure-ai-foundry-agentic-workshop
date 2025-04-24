@@ -1,10 +1,11 @@
 # Params
 param (
     [string]$apiAppName,
-    [string]$resourceGroupName
+    [string]$resourceGroupName,
+    [string]$pythonAppPath
 )
 
-$pythonAppPath = "..\src\api"
+#$pythonAppPath = "..\src\api"
 $tempDir = "artifacts\api\temp"
 $zipFilePath = "artifacts\api\app.zip"
 

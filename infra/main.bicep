@@ -66,12 +66,11 @@ module platform 'core/platform/main.bicep' = {
   params: { 
     containerRegistryName: 'cr${projectName}${environmentName}${resourceToken}'
     location:location
-    managedIdentityName:security.outputs.managedIdentityName
-  
+
   }
 }
 
-/*module ai 'core/ai/main.bicep' = {
+module ai 'core/ai/main.bicep' = {
   name: 'ai'
   scope: resourceGroup
   params: { 
@@ -87,7 +86,7 @@ module platform 'core/platform/main.bicep' = {
     containerRegistryID: platform.outputs.containerRegistryID
     projectConfig:projectConfig
   }
-}*/
+}
 
 module apps 'core/app/main.bicep' ={ 
   name: 'apps'
@@ -100,7 +99,7 @@ module apps 'core/app/main.bicep' ={
   }
 }
 
-/*module loaderFunctionWebApp 'app/loader-function-web-app.bicep' = {
+module loaderFunctionWebApp 'app/loader-function-web-app.bicep' = {
   name: 'loaderFunctionWebApp'
   scope: resourceGroup
   params: { 
@@ -135,23 +134,24 @@ module apiWebApp 'app/api-web-app.bicep' = {
     appInsightsName: monitor.outputs.applicationInsightsName
     keyVaultUri:security.outputs.keyVaultUri
   }
-}*/
-
-
-module mcpContainerApp 'app/mcp-container-app.bicep' ={
-  name: 'mcpContainerApp'
-   scope:resourceGroup
-  params: {
-    containerAppName: '${projectName}-${environmentName}-${resourceToken}'
-    containerRegistryName: platform.outputs.containerRegistryName
-    managedIdentityName: security.outputs.managedIdentityName
-    searchServiceEndpoint: ''
-    location:location
-    logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
-        }
 }
 
-output resourceGroupName string = resourceGroup.name
-output functionAppName string = 'test'// loaderFunctionWebApp.outputs.functionAppName
-output apiAppName string = 'test'//apiWebApp.outputs.webAppName
 
+module mcpWeatherServer 'app/mcp--weather-web-app.bicep' = {
+  name: 'mcpWeatherServer'
+  scope: resourceGroup
+  params: { 
+    location: location
+    identityName: security.outputs.managedIdentityName
+    webAppName: 'mcp-weather-${environmentName}-${resourceToken}'
+    appServicePlanName: apps.outputs.appServicePlanName
+    logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
+    appInsightsName: monitor.outputs.applicationInsightsName
+  }
+}
+
+
+output resourceGroupName string = resourceGroup.name
+output functionAppName string = loaderFunctionWebApp.outputs.functionAppName
+output apiAppName string = apiWebApp.outputs.webAppName
+output mcpWeatherAppName string = mcpWeatherServer.outputs.webAppName

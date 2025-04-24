@@ -3,8 +3,9 @@
 # Params
 apiAppName=$1
 resourceGroupName=$2
+pythonAppPath=$3
 
-pythonAppPath="../src/api"
+#pythonAppPath="../src/api"
 tempDir="artifacts/api/temp"
 zipFilePath="artifacts/api/app.zip"
 

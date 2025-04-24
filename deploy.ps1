@@ -87,7 +87,7 @@ $deploymentOutputJson = $deploymentOutput | ConvertFrom-Json
 $resourceGroupName = $deploymentOutputJson.resourceGroupName.value
 $functionAppName = $deploymentOutputJson.functionAppName.value
 $apiAppName = $deploymentOutputJson.apiAppName.value
-
+$mcpWeatherAppName = $deploymentOutputJson.mcpWeatherAppName.value
 
 Write-Host "Waiting for App Services before pushing code"
 
@@ -104,19 +104,27 @@ Write-Host "`rWait time completed!"
 Set-Location -Path .\scripts
 
 
-# Deploy Function Application
+# Deploy Azure Function for Loading AI Search Indexes from PDFs 
 Write-Output "*****************************************"
 Write-Output "Deploying Function Application from scripts"
 Write-Output "If timeout occurs, rerun the following command from scripts:"
 Write-Output ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName"
 & .\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName
 
-# Deploy Python FastAPI
+
+# Deploy Python MCP Weather Server
+Write-Output "*****************************************"
+Write-Output "Deploying Weather MCP Server from scripts"
+Write-Output "If timeout occurs, rerun the following command from scripts:"
+Write-Output ".\deploy_api.ps1 -apiAppName $mcpWeatherAppName -resourceGroupName $resourceGroupName -pythonAppPath ..\src\MCP\weather"
+& .\deploy_api.ps1 -apiAppName $mcpWeatherAppName -resourceGroupName $resourceGroupName -pythonAppPath "..\src\MCP\weather"
+
+# Deploy Python FastAPI for OpenAPI and GraphQL
 Write-Output "*****************************************"
 Write-Output "Deploying Python FastAPI from scripts"
 Write-Output "If timeout occurs, rerun the following command from scripts:"
-Write-Output ".\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $resourceGroupName"
-& .\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $resourceGroupName
+Write-Output ".\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $resourceGroupName -pythonAppPath ..\src\api"
+& .\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $resourceGroupName -pythonAppPath "..\src\api"
 
 
 Set-Location -Path ..
