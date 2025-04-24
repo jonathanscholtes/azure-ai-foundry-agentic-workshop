@@ -14,8 +14,6 @@ param projectConfig array
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
-var aiServicesName  = 'ais-${projectName}-${environmentName}-${resourceToken}'
-
 
 module search 'aisearch/main.bicep' = { 
   name: 'aisearch'
@@ -27,26 +25,6 @@ module search 'aisearch/main.bicep' = {
   }
 }
 
-
-
-module aiServices 'azure-ai-services.bicep' = {
-  name: 'aiServices'
-  params: {
-    aiServicesName: aiServicesName
-    location: location
-    identityName: identityName
-    customSubdomain: 'openai-app-${resourceToken}'
-    
-  }
-}
-
-module aiModels 'ai-models.bicep' = {
-  name:'aiModels'
-  params:{
-    aiServicesName:aiServicesName
-  }
-  dependsOn:[aiServices]
-}
 
 module aifoundry 'aifoundry/main.bicep' = {
   name: 'aifoundry'
@@ -63,14 +41,13 @@ module aifoundry 'aifoundry/main.bicep' = {
     storageAccountId:storageAccountId
     containerRegistryID: containerRegistryID
     projectConfig:projectConfig
-    aiServicesResourceId:aiServices.outputs.aiservicesID
-    aiServicesEndpoint: '${aiServices.outputs.OpenAIEndPoint}/'
+
   }
 
 }
 
 
 
-output aiservicesTarget string = aiServices.outputs.aiservicesTarget
-output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint
+output aiservicesTarget string = aifoundry.outputs.aiservicesTarget
+output OpenAIEndPoint string = aifoundry.outputs.OpenAIEndPoint
 output searchServiceEndpoint string = search.outputs.searchServiceEndpoint

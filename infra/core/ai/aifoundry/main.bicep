@@ -9,13 +9,27 @@ param aiSearchTarget string
 param searchServiceId string
 param storageAccountId string
 param projectConfig array
-param aiServicesResourceId string
-param aiServicesEndpoint string
+
 
 @description('Resource ID of the key vault resource for storing connection strings')
 param keyVaultId string
 
 param containerRegistryID string
+
+var aiServicesName  = 'ais-${projectName}-${environmentName}-${resourceToken}'
+
+
+
+module aiServices 'azure-ai-services.bicep' = {
+  name: 'aiServices'
+  params: {
+    aiServicesName: aiServicesName
+    location: location
+    identityName: identityName
+    customSubdomain: 'openai-app-${resourceToken}'
+    
+  }
+}
 
 
 
@@ -24,8 +38,8 @@ module aiHub 'ai-hub.bicep' = {
   params:{
     aiHubName: 'hub-${projectName}-${environmentName}-${resourceToken}'
     aiHubDescription: 'Hub for AI Workshop'
-    aiServicesResourceId:aiServicesResourceId
-    aiServicesEndpoint: aiServicesEndpoint
+    aiServicesResourceId:aiServices.outputs.aiservicesID
+    aiServicesEndpoint: '${aiServices.outputs.OpenAIEndPoint}/'
     keyVaultResourceId: keyVaultId
     location: location
     aiHubFriendlyName: 'AI Workshop Hub'
@@ -57,5 +71,13 @@ module aiProjects 'project/main.bicep' = [for proj in projectConfig: {
   }
 }]
 
+module aiModels 'ai-models.bicep' = {
+  name:'aiModels'
+  params:{
+    aiServicesName:aiServicesName
+  }
+  dependsOn:[aiServices]
+}
 
-
+output aiservicesTarget string = aiServices.outputs.aiservicesTarget
+output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint

@@ -18,6 +18,7 @@ By the end of the workshop, you'll have:
 - Explored **agentic patterns** using **LangGraph** and **Semantic Kernel**: single-agent, supervisor-agent, and networked agents.
 - Integrated structured external data via OpenAPI and GraphQL endpoints—giving agents the ability to query real-time data and take action through external systems.
 - Built intelligent agents using Python code, while also exploring low-code tools for LLM orchestration and agent implementation.
+- Levereged **Model Context Protocol (MCP)**  to define tools once and expose them uniformly, supporting scalable, modular architectures by grouping tools across MCP servers  
 
 ---
 
@@ -29,8 +30,9 @@ By the end of the workshop, you'll have:
 - **Agentic AI with LangGraph, Azure AI Agent Service and Semantic Kernel**  
   Use prebuilt and custom agents to delegate tasks, make decisions, and interact with APIs. Experiment with orchestration patterns including single-agent flows, supervisor models, and decentralized networks.
 
-- **Real-World Integrations with OpenAPI & GraphQL**  
-  Connect your agents to external services, enabling them to perform real-world actions like retrieving live data, triggering workflows, or interacting with apps and systems.
+- **Real-World Integrations with OpenAPI, GraphQL, and MCP**  
+  Connect your agents to external services to perform real-world actions like retrieving live data, triggering workflows, or interacting with apps and systems — leveraging Model Context Protocol (MCP) to define tools once and expose them consistently across scalable, modular architectures.
+
 
 ---
 
