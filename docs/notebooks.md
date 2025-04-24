@@ -153,6 +153,11 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
 
    <img src="../media/agents/subgraph_agent_dataframe.png" alt="SubGraph Dataframe" style="height:400px; width:auto;">
 
+8. **Connecting to a Remote MCP Server for Seamless Agent Interaction**  
+   *Notebook: `langchain_08-azure-ai-mcp`*  
+   This notebook demonstrates how to connect to a remote MCP Server using LangChain's MultiServerMCPClient. The Model Context Protocol (MCP) allows for the modularization and scaling of tools, enabling efficient tool invocation across distributed systems. This example shows how to define and use tools hosted on a remote server for seamless agent interaction and task execution.
+
+
 #### Semantic Kernel Agents  
 
 This section highlights how to build AI agents using the [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/) framework. Semantic Kernel is a lightweight SDK for integrating AI services into applications, with native support for function calling, memory, planners, and plugins. These capabilities allow you to embed agentic patterns into any app with high flexibility and control.
@@ -172,6 +177,13 @@ These notebooks, powered by **Azure AI Foundry**, showcase practical patterns fo
    *Notebook: `semantic-kernel_02-azure-ai-rag-agent`*  
    This notebook demonstrates how to build a Retrieval-Augmented Generation (RAG) agent by combining Semantic Kernel plugins with function calling and vector search using **Azure AI Search**. The result is an intelligent agent capable of grounding its responses in enterprise knowledge for more accurate and context-aware interactions.
 
+<br/>
+
+4. **Remote Integration with MCP and Semantic Kernel**  
+   *Notebook: `semantic-kernel_04-azure-ai-mcp-agent`*  
+   This notebook shows how to connect to a remote MCP Server using Semantic Kernel’s `MCPSsePlugin`. The Model Context Protocol (MCP) enables scalable, modular tool integration across distributed systems. You'll learn how to configure and use tools hosted remotely, allowing agents to invoke functions and perform tasks through seamless server-side interaction.
+
+<br/>
 
 #### Azure AI Agent Service  
 
