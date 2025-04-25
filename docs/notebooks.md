@@ -99,7 +99,7 @@ MCP_WEATHER_SERVER_URL='https://mcp-weather-lab-[random].azurewebsites.net'
 
 ### 📓 Notebooks
 
-#### LangGraph Agents  
+### LangGraph Agents  
 This collection of notebooks showcases how to build and orchestrate AI agents using [LangGraph](https://langchain-ai.github.io/langgraph/), a powerful low-level orchestration framework designed for building controllable, stateful, and multi-step agent workflows. LangGraph provides the flexibility needed to define deterministic agent behavior, integrate tools, and support dynamic memory and decision-making.
 
 These samples are built using **Azure AI Foundry** and demonstrate practical patterns for deploying and testing intelligent agents at scale.
@@ -118,9 +118,9 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
 
    <img src="../media/agents/chat_agent_tools.png" alt="Agent with Tools" style="height:100px; width:auto;">
 
-3. **Multi-Agent Supervisor**  
+3. **Multi-Agent Supervisor Orchestration**  
    *Notebook: `langchain_03-azure-ai-rag-agent`*  
-   This notebook extends the agentic architecture by introducing a **supervisor agent** that coordinates multiple agents. It leverages vectorized data from **Azure AI Search** to ground responses and enhance task orchestration.
+   This notebook introduces a **supervisor agent** that orchestrates multiple specialized agents to solve complex tasks. It uses vectorized data from **Azure AI Search** for grounding, ensuring context-aware responses. The workflow is evaluated using the **Azure AI Evaluation SDK**, which measures the coherence and groundedness of the agent outputs.
 
    🔗 [LangGraph Multi-agent Supervisor](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/)
 
@@ -158,7 +158,7 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
    This notebook demonstrates how to connect to a remote MCP Server using LangChain's MultiServerMCPClient. The Model Context Protocol (MCP) allows for the modularization and scaling of tools, enabling efficient tool invocation across distributed systems. This example shows how to define and use tools hosted on a remote server for seamless agent interaction and task execution.
 
 
-#### Semantic Kernel Agents  
+### Semantic Kernel Agents  
 
 This section highlights how to build AI agents using the [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/) framework. Semantic Kernel is a lightweight SDK for integrating AI services into applications, with native support for function calling, memory, planners, and plugins. These capabilities allow you to embed agentic patterns into any app with high flexibility and control.
 
@@ -179,13 +179,20 @@ These notebooks, powered by **Azure AI Foundry**, showcase practical patterns fo
 
 <br/>
 
+3. **Structured Data Querying with Semantic Kernel Process Framework**  
+   *Notebook: `semantic-kernel_03-azure-ai-process-framework`*  
+   This notebook showcases the **Semantic Kernel Process Framework**, an orchestration SDK that streamlines the development and execution of AI-driven processes. It demonstrates how an agent can dynamically generate and run Python code to query structured data—in this case, a Parquet file stored in an Azure Storage Account—by filtering a pandas DataFrame to retrieve relevant information in response to user queries.
+
+   🔗 [Semantic Kernel Process Framework](https://learn.microsoft.com/en-us/semantic-kernel/frameworks/process/process-framework)
+<br/>
+
 4. **Remote Integration with MCP and Semantic Kernel**  
    *Notebook: `semantic-kernel_04-azure-ai-mcp-agent`*  
    This notebook shows how to connect to a remote MCP Server using Semantic Kernel’s `MCPSsePlugin`. The Model Context Protocol (MCP) enables scalable, modular tool integration across distributed systems. You'll learn how to configure and use tools hosted remotely, allowing agents to invoke functions and perform tasks through seamless server-side interaction.
 
 <br/>
 
-#### Azure AI Agent Service  
+### Azure AI Agent Service  
 
 The [Azure AI Agent Service](https://learn.microsoft.com/en-us/azure/ai-services/agents/overview) is a **fully managed agent orchestration platform** that enables developers to build and deploy intelligent agents powered by OpenAI models—without needing to manage infrastructure, model endpoints, or tool execution environments.
 
