@@ -1,4 +1,6 @@
-from fastmcp import FastMCP
+from fastmcp.server.openapi import FastMCPOpenAPI
+from mcp.types import TextContent
+from typing import Any
 from fastmcp.server.openapi import RouteMap, RouteType
 import httpx
 import uvicorn
@@ -17,7 +19,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-# Load OpenAPI spec from environment
 try:
     openapi_url = environ["OPENAPI_URL"]
     logger.info(f"Fetching OpenAPI spec from {openapi_url}...")
@@ -32,17 +33,33 @@ try:
     api_client = httpx.AsyncClient(base_url=openapi_url)
 
     custom_maps = [
-    # Force all usage endpoints to be Tools
     RouteMap(methods=["GET"], 
             pattern=r"^/usage/.*", 
             route_type=RouteType.TOOL)]
 
     # Create an MCP server from the OpenAPI spec
-    mcp = FastMCP.from_openapi(openapi_spec=spec,
+    mcp = FastMCPOpenAPI.from_openapi(openapi_spec=spec,
     client=api_client, port=int(environ.get("MCP_PORT", 8083)),
     message_path="/energy/messages/",
     name="Data Center Energy Usage Service",
     route_maps=custom_maps) 
+
+    ## Override the tool calling to work with pydantic models from API
+    original_call_tool = mcp._tool_manager.call_tool
+
+    async def custom_call_tool(name: str, arguments: dict, context: Any = None) -> Any:
+        
+        logger.info(f"Tool Call: {name} with args: {arguments}")
+        result = await original_call_tool(name, arguments, context=context)
+        
+        if isinstance(result, dict):
+            result_text = json.dumps(result)
+        else:
+            result_text = str(result)
+
+        return [TextContent(text=result_text, type="text")]
+
+    mcp._tool_manager.call_tool = custom_call_tool
     
 except KeyError as e:
     logger.error(f"Missing required environment variable: {e}")
