@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # FastMCP setup
-mcp = FastMCP("Server for Azure AI Search", port=int(environ.get("MCP_PORT", 8082)), on_duplicate_tools="error")
+mcp = FastMCP("Server for Azure AI Search", port=int(environ.get("MCP_PORT", 8082)), on_duplicate_tools="error", message_path="/search/messages/")
 
 class AzureSearchClient:
     """Client for Azure AI Search service."""
