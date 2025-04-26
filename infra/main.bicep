@@ -70,6 +70,7 @@ module platform 'core/platform/main.bicep' = {
   }
 }
 
+
 module ai 'core/ai/main.bicep' = {
   name: 'ai'
   scope: resourceGroup
@@ -99,44 +100,8 @@ module apps 'core/app/main.bicep' ={
   }
 }
 
-module loaderFunctionWebApp 'app/loader-function-web-app.bicep' = {
-  name: 'loaderFunctionWebApp'
-  scope: resourceGroup
-  params: { 
-    location: location
-    identityName: security.outputs.managedIdentityName
-    functionAppName: 'func-loader-${resourceToken}'
-    functionAppPlanName: apps.outputs.appServicePlanName
-    StorageAccountName: data.outputs.storageAccountName
-    logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
-    appInsightsName: monitor.outputs.applicationInsightsName
-    keyVaultUri:security.outputs.keyVaultUri
-    OpenAIEndPoint: ai.outputs.OpenAIEndPoint
-    searchServiceEndpoint: ai.outputs.searchServiceEndpoint
-    azureAiSearchBatchSize: 100
-    documentChunkOverlap: 500
-    documentChunkSize: 2000
-  
-  }
-}
 
-
-module apiWebApp 'app/api-web-app.bicep' = {
-  name: 'apiWebApp'
-  scope: resourceGroup
-  params: { 
-    location: location
-    identityName: security.outputs.managedIdentityName
-    webAppName: 'api-${projectName}-${environmentName}-${resourceToken}'
-    appServicePlanName: apps.outputs.appServicePlanName
-    StorageAccountName: data.outputs.storageAccountName
-    logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
-    appInsightsName: monitor.outputs.applicationInsightsName
-    keyVaultUri:security.outputs.keyVaultUri
-  }
-}
-
-
+/*
 module mcpWeatherServer 'app/mcp--weather-web-app.bicep' = {
   name: 'mcpWeatherServer'
   scope: resourceGroup
@@ -148,10 +113,15 @@ module mcpWeatherServer 'app/mcp--weather-web-app.bicep' = {
     logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
     appInsightsName: monitor.outputs.applicationInsightsName
   }
-}
+}*/
 
 
-output resourceGroupName string = resourceGroup.name
-output functionAppName string = loaderFunctionWebApp.outputs.functionAppName
-output apiAppName string = apiWebApp.outputs.webAppName
-output mcpWeatherAppName string = mcpWeatherServer.outputs.webAppName
+output managedIdentityName string = security.outputs.managedIdentityName
+output appServicePlanName string = apps.outputs.appServicePlanName 
+output storageAccountName string = data.outputs.storageAccountName 
+output logAnalyticsWorkspaceName string = monitor.outputs.logAnalyticsWorkspaceName
+output applicationInsightsName string = monitor.outputs.applicationInsightsName
+output keyVaultUri string = security.outputs.keyVaultUri
+output OpenAIEndPoint string = ai.outputs.OpenAIEndPoint 
+output searchServiceEndpoint string = ai.outputs.searchServiceEndpoint 
+output containerRegistryName string = platform.outputs.containerRegistryName

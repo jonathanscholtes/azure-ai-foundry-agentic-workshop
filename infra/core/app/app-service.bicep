@@ -6,9 +6,9 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: name
   location: location
   sku: {
-    name: 'B3'
+    name: 'B2'
     tier: 'Basic'
-    size: 'B3'
+    size: 'B2'
    family: 'B'
     capacity: 2
   }

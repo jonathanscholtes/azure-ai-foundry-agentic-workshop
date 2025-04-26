@@ -8,8 +8,6 @@ param (
 # Variables
 $projectName = "foundry"
 $environmentName = "lab"
-$templateFile = "infra/main.bicep"
-$deploymentName = "foundrylab-$Location"
 $timestamp = Get-Date -Format "yyyyMMddHHmmss"
 
 function Get-RandomAlphaNumeric {
@@ -67,9 +65,11 @@ if (-not $resourceGroup) {
 
 
 
-# Start the deployment
+# Step 1: Deploy Infrastructure
+$deploymentNameInfra = "deployment-infra-$resourceToken"
+$templateFile = "infra/main.bicep"
 $deploymentOutput = az deployment sub create `
-    --name $deploymentName `
+    --name $deploymentNameInfra `
     --location $Location `
     --template-file $templateFile `
     --parameters `
@@ -83,15 +83,76 @@ $deploymentOutput = az deployment sub create `
 
 
 # Parse the deployment output to get app names and resource group
-$deploymentOutputJson = $deploymentOutput | ConvertFrom-Json
-$resourceGroupName = $deploymentOutputJson.resourceGroupName.value
+$deploymentOutputJsonInfra = $deploymentOutput | ConvertFrom-Json
+$managedIdentityName = $deploymentOutputJsonInfra.managedIdentityName.value
+$appServicePlanName = $deploymentOutputJsonInfra.appServicePlanName.value
+$storageAccountName = $deploymentOutputJsonInfra.storageAccountName.value
+$logAnalyticsWorkspaceName = $deploymentOutputJsonInfra.logAnalyticsWorkspaceName.value
+$applicationInsightsName = $deploymentOutputJsonInfra.applicationInsightsName.value
+$keyVaultUri = $deploymentOutputJsonInfra.keyVaultUri.value
+$OpenAIEndPoint = $deploymentOutputJsonInfra.OpenAIEndPoint.value
+$searchServiceEndpoint = $deploymentOutputJsonInfra.searchServiceEndpoint.value 
+$containerRegistryName = $deploymentOutputJsonInfra.containerRegistryName.value
+
+
+Write-Host "=== Building Images for MCP Server ==="
+Write-Host "Using ACR: $containerRegistryName"
+Write-Host "Resource Group: $rgName`n"
+
+# Define image names and paths
+$images = @(
+    @{ name = "weather-mcp"; path = ".\src\MCP\weather" },
+    @{ name = "search-mcp"; path = ".\src\MCP\search" },
+    @{ name = "energy-mcp"; path = ".\src\MCP\energy" },
+    @{ name = "nginx-mcp-gateway"; path = ".\src\MCP\nginx" }
+)
+
+# Build images
+foreach ($image in $images) {
+    Write-Host "Building image '$($image.name):latest' from '$($image.path)'..."
+    Write-Host "az acr build --resource-group $rgName --registry $containerRegistryName --image $($image.name):latest $image.path"
+
+    az acr build `
+        --resource-group $rgName `
+        --registry $containerRegistryName `
+        --image "$($image.name):latest" `
+        $image.path
+}
+
+
+# Step 2: Deploy Apps
+$deploymentNameApps = "deployment-apps-$resourceToken"
+$appsTemplateFile = "infra/app/main.bicep"
+$deploymentOutputApps = az deployment sub create  `
+    --name $deploymentNameApps `
+    --location $Location `
+    --template-file $appsTemplateFile `
+    --parameters `
+        environmentName=$environmentName `
+        projectName=$projectName `
+        location=$Location `
+        resourceGroupName=$rgName `
+        resourceToken=$resourceToken `
+        managedIdentityName=$managedIdentityName `
+        logAnalyticsWorkspaceName=$logAnalyticsWorkspaceName `
+        appInsightsName=$applicationInsightsName `
+        containerRegistryName=$containerRegistryName `
+        appServicePlanName=$appServicePlanName `
+        storageAccountName=$storageAccountName `
+        keyVaultUri=$keyVaultUri `
+        OpenAIEndPoint=$OpenAIEndPoint `
+        searchServiceEndpoint=$searchServiceEndpoint `
+    --query "properties.outputs"
+
+
+$deploymentOutputJson = $deploymentOutputApps | ConvertFrom-Json
 $functionAppName = $deploymentOutputJson.functionAppName.value
 $apiAppName = $deploymentOutputJson.apiAppName.value
-$mcpWeatherAppName = $deploymentOutputJson.mcpWeatherAppName.value
+
 
 Write-Host "Waiting for App Services before pushing code"
 
-$waitTime = 200  # Total wait time in seconds 200
+$waitTime = 180  # Total wait time in seconds 180
 
 # Display counter
 for ($i = $waitTime; $i -gt 0; $i--) {
@@ -108,23 +169,16 @@ Set-Location -Path .\scripts
 Write-Output "*****************************************"
 Write-Output "Deploying Function Application from scripts"
 Write-Output "If timeout occurs, rerun the following command from scripts:"
-Write-Output ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName"
-& .\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $resourceGroupName
+Write-Output ".\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $rgName"
+& .\deploy_functionapp.ps1 -functionAppName $functionAppName -resourceGroupName $rgName
 
-
-# Deploy Python MCP Weather Server
-Write-Output "*****************************************"
-Write-Output "Deploying Weather MCP Server from scripts"
-Write-Output "If timeout occurs, rerun the following command from scripts:"
-Write-Output ".\deploy_api.ps1 -apiAppName $mcpWeatherAppName -resourceGroupName $resourceGroupName -pythonAppPath ..\src\MCP\weather"
-& .\deploy_api.ps1 -apiAppName $mcpWeatherAppName -resourceGroupName $resourceGroupName -pythonAppPath "..\src\MCP\weather"
 
 # Deploy Python FastAPI for OpenAPI and GraphQL
 Write-Output "*****************************************"
 Write-Output "Deploying Python FastAPI from scripts"
 Write-Output "If timeout occurs, rerun the following command from scripts:"
-Write-Output ".\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $resourceGroupName -pythonAppPath ..\src\api"
-& .\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $resourceGroupName -pythonAppPath "..\src\api"
+Write-Output ".\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $rgName -pythonAppPath ..\src\api"
+& .\deploy_api.ps1 -apiAppName $apiAppName -resourceGroupName $rgName -pythonAppPath "..\src\api"
 
 
 Set-Location -Path ..

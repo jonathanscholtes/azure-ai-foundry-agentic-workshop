@@ -1,10 +1,19 @@
 from mcp.server.fastmcp import FastMCP
 import uvicorn
 import logging
+from os import environ
+from dotenv import load_dotenv
 
-mcp = FastMCP("Weather")
+# Load environment variables
+load_dotenv(override=True)
 
+# Initialize logger
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# FastMCP setup
+mcp = FastMCP("Weather", port=int(environ.get("MCP_PORT", 8082)), on_duplicate_tools="error",message_path="/weather/messages/")
+
 
 @mcp.tool()
 def get_weather_tool(location: str):
