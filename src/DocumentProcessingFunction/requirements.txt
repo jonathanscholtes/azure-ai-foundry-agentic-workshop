@@ -1,8 +1,9 @@
 azure-functions
 azure-functions-durable
 azure-storage-blob
-azure-search-documents==11.4.0
+azure-search-documents==11.5.2
 azure-identity==1.17.1
+azure-core
 requests
 PyMuPDF
 pypdf

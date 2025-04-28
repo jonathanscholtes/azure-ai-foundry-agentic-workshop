@@ -1,6 +1,7 @@
 import azure.functions as func
 import azure.durable_functions as df
 from azure.identity import DefaultAzureCredential
+from azure.core.credentials import AzureKeyCredential
 from azure.storage.blob import BlobServiceClient
 from azure.search.documents import SearchClient
 from azure.search.documents.indexes import SearchIndexClient
@@ -17,7 +18,7 @@ from azure.search.documents.indexes.models import (
     HnswAlgorithmConfiguration,
     SemanticSearch,
     AzureOpenAIVectorizer,
-    Vectorizer
+    AzureOpenAIVectorizerParameters
 )
 from azure.core.exceptions import ResourceNotFoundError
 from langchain_openai import AzureOpenAIEmbeddings
@@ -179,18 +180,24 @@ def generate_embeddings(chunks: List[dict]):
         raise ex
 
 
+
+
 # Update search index with the embeddings
 @myApp.activity_trigger(input_name="embeddings")
 def update_search_index(embeddings):
     try:
         logging.info(f"Updating search index with {len(embeddings)} embeddings")
 
-        # Initialize the Azure credentials
-        credential = DefaultAzureCredential()
+        
 
         # Configuration for Azure Cognitive Search
         search_endpoint = environ["AZURE_AI_SEARCH_ENDPOINT"]
         index_name = environ["AZURE_AI_SEARCH_INDEX"]
+        search_api_key = environ["AZURE_AI_SEARCH_API_KEY"]
+
+        ### Switched to Key to resolve - occasional random failures:Failed to get Azure RBAC authorization decision ##
+        # Initialize the Azure credentials
+        credential = AzureKeyCredential(search_api_key)
 
         # Create SearchClient
         search_client = SearchClient(endpoint=search_endpoint, index_name=index_name, credential=credential)
@@ -228,23 +235,28 @@ def update_search_index(embeddings):
                 ],
                 semantic_search=SemanticSearch(configurations=[semantic_config]),
                 vector_search=VectorSearch(
-                    profiles=[VectorSearchProfile(name="my-vector-config", algorithm_configuration_name="my-algorithms-config")],
-                    algorithms=[HnswAlgorithmConfiguration(name="my-algorithms-config", kind="hnsw")]
-                ),
-                vectorizers=[
+                    profiles=[VectorSearchProfile(name="my-vector-config", algorithm_configuration_name="my-algorithms-config",vectorizer_name="my-vectorizer")],
+                    algorithms=[HnswAlgorithmConfiguration(name="my-algorithms-config", kind="hnsw")],
+                    vectorizers=[
                     AzureOpenAIVectorizer(
-                        name="my-vectorizer",
-                        resource_uri=environ["AZURE_OPENAI_ENDPOINT"],   
-                        deployment_id=environ["AZURE_OPENAI_EMBEDDING"],
-                        kind="azureOpenAI"
+                        vectorizer_name="my-vectorizer",
+                        kind= "azureOpenAI",
+                         parameters=AzureOpenAIVectorizerParameters(
+                                resource_url=environ["AZURE_OPENAI_ENDPOINT"],   
+                                deployment_name=environ["AZURE_OPENAI_EMBEDDING"],
+                                model_name="text-embedding-ada-002"
+                                )
                         )
                 ]
+                )
+                
             )
 
             try:
                 search_index_client.create_index(index)
             except Exception as ex:
-                logging.info("Index was created on different thread")
+                logging.error(f"Error creating search index: {ex}")
+                logging.error(traceback.format_exc())
 
         # Now process the embeddings and upload them in batches
         documents = []

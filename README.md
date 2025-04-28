@@ -49,6 +49,7 @@ Step-by-step instructions to deploy **Azure AI Foundry** and all required servic
 - **Azure Storage Account** for document storage and data ingestion  
 - **Azure Functions** for event-driven document chunking, embedding generation, and indexing  
 - **Azure Web App** to enable agent interactions via OpenAPI and GraphQL integrations
+- **Azure Container Apps** to host NGINX-routed Model Context Protocol (MCP) containers, providing agent tools for weather data, OpenAPI access, and Azure AI hybrid search
 
 ### 2️⃣ [**RAG Setup with Azure AI Search and "Chatting Over Your Data"**](docs/vector-search.md)  
 Step-by-step instructions for vectorizing document data with **Azure AI Search** and quickly leveraging the data using **Azure AI Foundry's** built-in _Chat Playground_.
@@ -61,10 +62,12 @@ Step-by-step instructions for vectorizing document data with **Azure AI Search**
 ### 3️⃣ [**Hands-On with Agents**](docs/notebooks.md)  
 Discover interactive Notebooks and guides that walk you through building intelligent, task-driven agents. These curated resources cover:
 
-- **Semantic retrieval** and vector search powered by Azure AI Search  
-- Orchestrating **multi-agent workflows** with LangGraph, Azure AI Agent Service, and Semantic Kernel  
-- Integration with real-time **external systems and APIs** via OpenAPI and GraphQL, allowing agents to access dynamic, structured data sources  
-- Built-in **tracing and diagnostics** to analyze and understand agent decision-making and behavior
+- Semantic retrieval and vector search powered by **Azure AI Search**  
+- Orchestrating multi-agent workflows with **LangGraph**, **Azure AI Agent Service**, and **Semantic Kernel Agent Framework**  
+- Connecting to external tools and services through the **Model Context Protocol (MCP)** for scalable, modular agent tool invocation  
+- Integration with real-time external systems and APIs via **OpenAPI** and **GraphQL**, enabling agents to interact with dynamic, structured data sources  
+- Built-in agent evaluation using the **Azure AI Evaluation SDK** to measure groundedness, coherence, and overall performance  
+- Tracing and diagnostics with **Azure AI Inference Tracer** to monitor, debug, and optimize agent behavior across workflows
 
 ---
 

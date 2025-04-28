@@ -125,3 +125,4 @@ output keyVaultUri string = security.outputs.keyVaultUri
 output OpenAIEndPoint string = ai.outputs.OpenAIEndPoint 
 output searchServiceEndpoint string = ai.outputs.searchServiceEndpoint 
 output containerRegistryName string = platform.outputs.containerRegistryName
+output azureAISearchName string = ai.outputs.azureAISearchName
