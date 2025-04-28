@@ -4,3 +4,5 @@ mcp
 python-dotenv==1.0.0
 azure-search-documents
 azure-identity==1.17.1
+langchain-community
+langchain-azure-ai

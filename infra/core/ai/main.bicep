@@ -19,7 +19,7 @@ module search 'aisearch/main.bicep' = {
   name: 'aisearch'
   params: {
   location:location
-  identityName: identityName
+  managedIdentityName: identityName
   searchServicename: searchServicename
 
   }

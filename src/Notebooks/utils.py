@@ -2,6 +2,21 @@ from langchain_core.messages import convert_to_messages
 from langchain_core.messages import HumanMessage,SystemMessage,AIMessage,ToolMessage
 
 def pretty_print_messages(update):
+    """
+    Prints updates from a graph or subgraph, displaying node-specific messages.
+
+    If the update comes from a subgraph, the subgraph ID is printed. Then, for each node in the update, 
+    the messages are printed using `pretty_print`.
+
+    Args:
+        update (tuple or dict): 
+            - If a tuple, the first element is the namespace (`ns`), and the second is the update.
+            - If a dict, it directly contains node updates.
+
+    The function prints:
+        - Subgraph ID (if applicable).
+        - Messages for each node in the update.
+    """
     if isinstance(update, tuple):
         ns, update = update
         # skip parent graph updates in the printouts
@@ -50,6 +65,20 @@ def extract_graph_response(query, graph):
 
 
 def pretty_print_response(conversation):
+    """
+    Prints a conversation in a human-readable format, distinguishing between 
+    human, AI, and tool messages.
+
+    Args:
+        conversation (dict): A dictionary containing a 'messages' key with a list 
+                              of message objects (HumanMessage, AIMessage, ToolMessage).
+    
+    Message formats:
+        - "Human: " for human messages.
+        - "AI: " for AI messages, with tool calls logged.
+        - "Tool `<tool_name>` Response: " for tool responses.
+        - "Unknown Message Type: " for unrecognized messages.
+    """
     for message in conversation['messages']:
         if isinstance(message, HumanMessage):
             print(f"Human: {message.content}")

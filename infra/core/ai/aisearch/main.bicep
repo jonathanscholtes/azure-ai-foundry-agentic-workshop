@@ -1,5 +1,5 @@
 param searchServicename string
-param identityName string
+param managedIdentityName string
 param location string
 
 module search_service 'search-service.bicep' = { 
@@ -10,13 +10,14 @@ module search_service 'search-service.bicep' = {
     semanticSearch: 'standard'
     disableLocalAuth: false
     publicNetworkAccess: 'enabled'
+    managedIdentityName:managedIdentityName
  }
 }
 
 module search_roles 'search-roles.bicep' = { 
   name: 'search_roles'
   params: { 
-    identityName: identityName
+    identityName: managedIdentityName
      searchServicename: searchServicename
   }
   dependsOn:[search_service]

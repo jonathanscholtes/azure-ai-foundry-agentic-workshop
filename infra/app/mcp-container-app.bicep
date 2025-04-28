@@ -116,6 +116,10 @@ resource mcpApp 'Microsoft.App/containerApps@2023-05-01' = {
             }
             {name:'AZURE_AI_SEARCH_INDEX'
           value:'workshop-index'}
+          {
+            name: 'AZURE_CLIENT_ID'
+            value: managedIdentity.properties.clientId
+          } 
           ]
         }
         {

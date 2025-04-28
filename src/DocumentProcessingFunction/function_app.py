@@ -15,7 +15,9 @@ from azure.search.documents.indexes.models import (
     VectorSearchProfile,
     SemanticPrioritizedFields,
     HnswAlgorithmConfiguration,
-    SemanticSearch
+    SemanticSearch,
+    AzureOpenAIVectorizer,
+    Vectorizer
 )
 from azure.core.exceptions import ResourceNotFoundError
 from langchain_openai import AzureOpenAIEmbeddings
@@ -148,7 +150,7 @@ def generate_embeddings(chunks: List[dict]):
             azure_deployment=environ.get("AZURE_OPENAI_EMBEDDING"),
             openai_api_version=environ.get("AZURE_OPENAI_API_VERSION"),
             azure_endpoint=environ.get("AZURE_OPENAI_ENDPOINT"),
-            api_key=environ.get("AZURE_OPENAI_API_KEY")
+            api_key=environ.get("OPENAI_API_KEY")
         )
         
         embeddings_list = []
@@ -228,7 +230,15 @@ def update_search_index(embeddings):
                 vector_search=VectorSearch(
                     profiles=[VectorSearchProfile(name="my-vector-config", algorithm_configuration_name="my-algorithms-config")],
                     algorithms=[HnswAlgorithmConfiguration(name="my-algorithms-config", kind="hnsw")]
-                )
+                ),
+                vectorizers=[
+                    AzureOpenAIVectorizer(
+                        name="my-vectorizer",
+                        resource_uri=environ["AZURE_OPENAI_ENDPOINT"],   
+                        deployment_id=environ["AZURE_OPENAI_EMBEDDING"],
+                        kind="azureOpenAI"
+                        )
+                ]
             )
 
             try:
