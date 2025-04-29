@@ -51,5 +51,5 @@ module aifoundry 'aifoundry/main.bicep' = {
 output aiservicesTarget string = aifoundry.outputs.aiservicesTarget
 output OpenAIEndPoint string = aifoundry.outputs.OpenAIEndPoint
 output searchServiceEndpoint string = search.outputs.searchServiceEndpoint
-output azureAISearchName string = searchServicename
+output azureAISearchKey string = search.outputs.azureAISearchKey
 

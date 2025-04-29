@@ -71,4 +71,5 @@ resource search 'Microsoft.Search/searchServices@2021-04-01-preview' = {
 
 output searchServiceId string = search.id
 output searchServiceEndpoint string = 'https://${name}.search.windows.net/'
+output azureAISearchKey string = listAdminKeys(search.id, search.apiVersion).primaryKey
 //output principalId string = search.identity.principalId 

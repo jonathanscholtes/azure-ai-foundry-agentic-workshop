@@ -26,3 +26,4 @@ module search_roles 'search-roles.bicep' = {
 
 output searchServiceId string = search_service.outputs.searchServiceId
 output searchServiceEndpoint string = search_service.outputs.searchServiceEndpoint
+output azureAISearchKey string = search_service.outputs.azureAISearchKey

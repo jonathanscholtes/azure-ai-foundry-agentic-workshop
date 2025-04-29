@@ -93,7 +93,7 @@ $keyVaultUri = $deploymentOutputJsonInfra.keyVaultUri.value
 $OpenAIEndPoint = $deploymentOutputJsonInfra.OpenAIEndPoint.value
 $searchServiceEndpoint = $deploymentOutputJsonInfra.searchServiceEndpoint.value 
 $containerRegistryName = $deploymentOutputJsonInfra.containerRegistryName.value
-$azureAISearchName = $deploymentOutputJsonInfra.azureAISearchName.value
+$azureAISearchKey = $deploymentOutputJsonInfra.azureAISearchKey.value
 
 Write-Host "=== Building Images for MCP Server ==="
 Write-Host "Using ACR: $containerRegistryName"
@@ -142,7 +142,7 @@ $deploymentOutputApps = az deployment sub create  `
         keyVaultUri=$keyVaultUri `
         OpenAIEndPoint=$OpenAIEndPoint `
         searchServiceEndpoint=$searchServiceEndpoint `
-        azureAISearchName=$azureAISearchName `
+        azureAISearchKey=$azureAISearchKey `
     --query "properties.outputs"
 
 
@@ -153,7 +153,7 @@ $apiAppName = $deploymentOutputJson.apiAppName.value
 
 Write-Host "Waiting for App Services before pushing code"
 
-$waitTime = 250  # Total wait time in seconds 200
+$waitTime = 60  # Total wait time in seconds 200
 
 # Display counter
 for ($i = $waitTime; $i -gt 0; $i--) {

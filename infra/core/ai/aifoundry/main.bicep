@@ -50,6 +50,7 @@ module aiHub 'ai-hub.bicep' = {
     storageAccountResourceId:storageAccountId
     containerRegistryID:containerRegistryID
   }
+  dependsOn:[aiServices]
 }
 
 
@@ -69,6 +70,7 @@ module aiProjects 'project/main.bicep' = [for proj in projectConfig: {
     environmentName:environmentName
     users: proj.?users ?? []
   }
+  dependsOn:[aiHub]
 }]
 
 module aiModels 'ai-models.bicep' = {

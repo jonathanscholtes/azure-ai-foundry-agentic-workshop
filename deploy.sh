@@ -8,8 +8,7 @@ resource_group_name=$2
 # Variables
 project_name="foundry"
 environment_name="lab"
-template_file="infra/main.bicep"
-deployment_name="foundrylab-$location"
+
 
 
 
@@ -48,28 +47,103 @@ else
     echo "Resource group '$rg_name' already exists."
 fi
 
-# Deploy the Bicep template
-deployment_output=$(az deployment sub create \
-    --name "$deployment_name" \
-    --location "$location" \
-    --template-file "$template_file" \
-    --parameters \
-        environmentName="$environment_name" \
-        projectName="$project_name" \
-        location="$location" \
-        resourceGroupName="$rg_name" \
-        resourceToken="$resource_token" \
-        projectConfig=@./project_resource_config.json \
-    --query "properties.outputs" -o json)
+# Variables (make sure these are already set in your environment or passed in)
+deploymentNameInfra="deployment-infra-$resourceToken"
+templateFile="infra/main.bicep"
 
-# Extract resource group name from output if needed
-resource_group_name=$(echo "$deployment_output" | jq -r '.resourceGroupName.value')
-function_app_name=$(echo "$deployment_output" | jq -r '.functionAppName.value')
-api_app_name=$(echo "$deployment_output" | jq -r '.apiAppName.value')
+# Step 1: Deploy Infrastructure
+deploymentOutput=$(az deployment sub create \
+    --name "$deploymentNameInfra" \
+    --location "$Location" \
+    --template-file "$templateFile" \
+    --parameters \
+        environmentName="$environmentName" \
+        projectName="$projectName" \
+        location="$Location" \
+        resourceGroupName="$rgName" \
+        resourceToken="$resourceToken" \
+        projectConfig="@./project_resource_config.json" \
+    --query "properties.outputs" \
+    --output json)
+
+# Parse the deployment output to get app names and resource group
+managedIdentityName=$(echo "$deploymentOutput" | jq -r '.managedIdentityName.value')
+appServicePlanName=$(echo "$deploymentOutput" | jq -r '.appServicePlanName.value')
+storageAccountName=$(echo "$deploymentOutput" | jq -r '.storageAccountName.value')
+logAnalyticsWorkspaceName=$(echo "$deploymentOutput" | jq -r '.logAnalyticsWorkspaceName.value')
+applicationInsightsName=$(echo "$deploymentOutput" | jq -r '.applicationInsightsName.value')
+keyVaultUri=$(echo "$deploymentOutput" | jq -r '.keyVaultUri.value')
+OpenAIEndPoint=$(echo "$deploymentOutput" | jq -r '.OpenAIEndPoint.value')
+searchServiceEndpoint=$(echo "$deploymentOutput" | jq -r '.searchServiceEndpoint.value')
+containerRegistryName=$(echo "$deploymentOutput" | jq -r '.containerRegistryName.value')
+azureAISearchKey=$(echo "$deploymentOutput" | jq -r '.azureAISearchKey.value')
+
+echo "=== Building Images for MCP Server ==="
+echo "Using ACR: $containerRegistryName"
+echo "Resource Group: $rgName"
+echo
+
+# Define image names and paths as an associative array of arrays
+images=(
+    "weather-mcp ./src/MCP/weather"
+    "search-mcp ./src/MCP/search"
+    "energy-mcp ./src/MCP/energy"
+    "nginx-mcp-gateway ./src/MCP/nginx"
+)
+
+# Build images
+for image_info in "${images[@]}"; do
+    image_name=$(echo "$image_info" | awk '{print $1}')
+    image_path=$(echo "$image_info" | awk '{print $2}')
+    
+    echo "Building image '${image_name}:latest' from '${image_path}'..."
+    echo "az acr build --resource-group $rgName --registry $containerRegistryName --image ${image_name}:latest ${image_path}"
+
+    az acr build \
+        --resource-group "$rgName" \
+        --registry "$containerRegistryName" \
+        --image "${image_name}:latest" \
+        "$image_path"
+done
+
+echo "=== Step 2: Deploy Apps ==="
+
+deploymentNameApps="deployment-apps-$resourceToken"
+appsTemplateFile="infra/app/main.bicep"
+
+# Run the deployment
+deploymentOutputApps=$(az deployment sub create \
+    --name "$deploymentNameApps" \
+    --location "$Location" \
+    --template-file "$appsTemplateFile" \
+    --parameters \
+        environmentName="$environmentName" \
+        projectName="$projectName" \
+        location="$Location" \
+        resourceGroupName="$rgName" \
+        resourceToken="$resourceToken" \
+        managedIdentityName="$managedIdentityName" \
+        logAnalyticsWorkspaceName="$logAnalyticsWorkspaceName" \
+        appInsightsName="$applicationInsightsName" \
+        containerRegistryName="$containerRegistryName" \
+        appServicePlanName="$appServicePlanName" \
+        storageAccountName="$storageAccountName" \
+        keyVaultUri="$keyVaultUri" \
+        OpenAIEndPoint="$OpenAIEndPoint" \
+        searchServiceEndpoint="$searchServiceEndpoint" \
+        azureAISearchKey="$azureAISearchKey" \
+    --query "properties.outputs")
+
+# Parse output using jq
+functionAppName=$(echo "$deploymentOutputApps" | jq -r '.functionAppName.value')
+apiAppName=$(echo "$deploymentOutputApps" | jq -r '.apiAppName.value')
+
+echo "Function App Name: $functionAppName"
+echo "API App Name: $apiAppName"
 
 echo "Waiting for App Services before pushing code"
 
-waitTime=200  # Total wait time in seconds
+waitTime=60  # Total wait time in seconds
 
 # Display counter
 for ((i=$waitTime; i>0; i--)); do
@@ -86,37 +160,25 @@ cd ./scripts
 echo "*****************************************"
 echo "Deploying Function Application from scripts"
 echo "If timeout occurs, rerun the following command from scripts:"
-echo "./deploy_functionapp.sh $function_app_name $resource_group_name"
+echo "./deploy_functionapp.sh $function_app_name $rgName"
 
 
 chmod +x deploy_functionapp.sh
 
 # Run the deploy script
-./deploy_functionapp.sh "$function_app_name" "$resource_group_name"
-
-
-# Deploy Python MCP Weather Server
-echo "*****************************************"
-echo "Deploying Weather MCP Server from scripts"
-echo "If timeout occurs, rerun the following command from scripts:"
-echo "./deploy_api.sh $api_app_name $resource_group_name ../src/MCP/weather"
-
-chmod +x deploy_api.sh
-
-# Run the deploy script
-./deploy_api.sh "$api_app_name" "$resource_group_name" "../src/MCP/weather"
+./deploy_functionapp.sh "$function_app_name" "$rgName"
 
 
 # Deploy Python FastAPI for OpenAPI and GraphQL
 echo "*****************************************"
 echo "Deploying Python FastAPI from scripts"
 echo "If timeout occurs, rerun the following command from scripts:"
-echo "./deploy_api.sh $api_app_name $resource_group_name ../src/api"
+echo "./deploy_api.sh $api_app_name $rgName ../src/api"
 
 chmod +x deploy_api.sh
 
 # Run the deploy script
-./deploy_api.sh "$api_app_name" "$resource_group_name" "../src/api"
+./deploy_api.sh "$api_app_name" "$rgName" "../src/api"
 
 
 # Change directory back

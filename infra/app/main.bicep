@@ -40,7 +40,7 @@ param OpenAIEndPoint string
 
 param searchServiceEndpoint string
 
-param azureAISearchName string
+param azureAISearchKey string
 
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' existing =  {
@@ -63,7 +63,7 @@ module loaderFunctionWebApp 'loader-function-web-app.bicep' = {
     keyVaultUri:keyVaultUri
     OpenAIEndPoint: OpenAIEndPoint
     searchServiceEndpoint: searchServiceEndpoint
-    azureAISearchName:azureAISearchName
+    azureAISearchKey:azureAISearchKey
     azureAiSearchBatchSize: 100
     documentChunkOverlap: 500
     documentChunkSize: 2000

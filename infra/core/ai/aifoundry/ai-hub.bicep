@@ -105,7 +105,6 @@ resource aiSearchConnection 'Microsoft.MachineLearningServices/workspaces/connec
   }
 }
 
-#disable-next-line BCP081
 resource hubCapabilityHost 'Microsoft.MachineLearningServices/workspaces/capabilityHosts@2024-10-01-preview' = {
   name: '${aiHubName}-capabilityHost'
   parent: aiHub

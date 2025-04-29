@@ -16,5 +16,5 @@ $args = "$pythonAppPath $zipFilePath $tempDir --exclude_dirs venv --exclude_file
 Start-Process "python" -ArgumentList "directory_zipper.py $args" -NoNewWindow -Wait
 
 # Deploy the zip file to the Azure Web App
-az webapp deploy --resource-group $resourceGroupName --name $apiAppName --src-path $zipFilePath --type 'zip' --timeout 60000 --track-status false --async true
+az webapp deploy --resource-group $resourceGroupName --name $apiAppName --src-path $zipFilePath --type 'zip' --timeout 600 --track-status false --async true
 

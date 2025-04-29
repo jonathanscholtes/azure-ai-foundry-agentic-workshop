@@ -188,14 +188,15 @@ def update_search_index(embeddings):
     try:
         logging.info(f"Updating search index with {len(embeddings)} embeddings")
 
-        
-
+    
         # Configuration for Azure Cognitive Search
         search_endpoint = environ["AZURE_AI_SEARCH_ENDPOINT"]
         index_name = environ["AZURE_AI_SEARCH_INDEX"]
         search_api_key = environ["AZURE_AI_SEARCH_API_KEY"]
 
-        ### Switched to Key to resolve - occasional random failures:Failed to get Azure RBAC authorization decision ##
+        ### Switched to Key to resolve ###
+        ### - occasional random failures:Failed to get Azure RBAC authorization decision ###
+
         # Initialize the Azure credentials
         credential = AzureKeyCredential(search_api_key)
 

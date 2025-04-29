@@ -11,16 +11,13 @@ param searchServiceEndpoint string
 param documentChunkSize int = 2000
 param documentChunkOverlap int = 500
 param azureAiSearchBatchSize int = 100
-param azureAISearchName string
+param azureAISearchKey string
 
 
 
 var blob_uri = 'https://${StorageAccountName}.blob.core.windows.net'
 var queue_uri = 'https://${StorageAccountName}.queue.core.windows.net'
 
-resource aiSearch 'Microsoft.Search/searchServices@2021-04-01-preview' existing = {
-  name: azureAISearchName
-}
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' existing = {
   name: functionAppPlanName
@@ -110,7 +107,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         } 
         {
           name:'AZURE_AI_SEARCH_API_KEY'
-          value:listKeys(aiSearch.id, aiSearch.apiVersion).key1
+          value:azureAISearchKey
         }
         {
           name: 'AZURE_AI_SEARCH_BATCH_SIZE'
