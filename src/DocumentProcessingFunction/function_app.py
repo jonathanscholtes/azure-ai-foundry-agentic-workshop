@@ -247,7 +247,8 @@ def update_search_index(embeddings):
                                 resource_url=environ["AZURE_OPENAI_ENDPOINT"],   
                                 deployment_name=environ["AZURE_OPENAI_EMBEDDING"],
                                 model_name="text-embedding-ada-002",
-                                auth_identity= SearchIndexerDataUserAssignedIdentity(resource_id=environ["AZURE_CLIENT_RESOURCE_ID"])
+                                auth_identity= SearchIndexerDataUserAssignedIdentity(odata_type="#Microsoft.Azure.Search.DataUserAssignedIdentity",
+                                 resource_id=str(environ["AZURE_CLIENT_RESOURCE_ID"]))
                                 )
                         )
                 ]

@@ -31,6 +31,10 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
   name: identityName
 }
 
+// resourceGroups breaks SearchIndexerDataUserAssignedIdentity
+var resource_id = managedIdentity.id
+var adj_resource_id = replace(resource_id, 'resourceGroups', 'resourcegroups')
+
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   name: functionAppName
   location: location
@@ -87,7 +91,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         } 
         {
           name:'AZURE_CLIENT_RESOURCE_ID'
-          value:managedIdentity.id
+          value:adj_resource_id
         }
         {
           name:'KeyVaultUri'
