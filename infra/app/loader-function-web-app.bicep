@@ -86,6 +86,10 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           value: managedIdentity.properties.clientId
         } 
         {
+          name:'AZURE_CLIENT_RESOURCE_ID'
+          value:managedIdentity.id
+        }
+        {
           name:'KeyVaultUri'
           value:keyVaultUri
         }    

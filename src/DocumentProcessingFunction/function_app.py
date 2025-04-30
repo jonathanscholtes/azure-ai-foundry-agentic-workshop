@@ -18,7 +18,8 @@ from azure.search.documents.indexes.models import (
     HnswAlgorithmConfiguration,
     SemanticSearch,
     AzureOpenAIVectorizer,
-    AzureOpenAIVectorizerParameters
+    AzureOpenAIVectorizerParameters,
+    SearchIndexerDataUserAssignedIdentity 
 )
 from azure.core.exceptions import ResourceNotFoundError
 from langchain_openai import AzureOpenAIEmbeddings
@@ -245,7 +246,8 @@ def update_search_index(embeddings):
                          parameters=AzureOpenAIVectorizerParameters(
                                 resource_url=environ["AZURE_OPENAI_ENDPOINT"],   
                                 deployment_name=environ["AZURE_OPENAI_EMBEDDING"],
-                                model_name="text-embedding-ada-002"
+                                model_name="text-embedding-ada-002",
+                                auth_identity= SearchIndexerDataUserAssignedIdentity(resource_id=environ["AZURE_CLIENT_RESOURCE_ID"])
                                 )
                         )
                 ]
