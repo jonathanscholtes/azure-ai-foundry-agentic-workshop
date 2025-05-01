@@ -16,14 +16,11 @@ param keyVaultId string
 
 param containerRegistryID string
 
-var aiServicesName  = 'ais-${projectName}-${environmentName}-${resourceToken}'
-
-
 
 module aiServices 'azure-ai-services.bicep' = {
   name: 'aiServices'
   params: {
-    aiServicesName: aiServicesName
+    aiServicesName: 'ais-${projectName}-${environmentName}-${resourceToken}'
     location: location
     identityName: identityName
     customSubdomain: 'openai-app-${resourceToken}'
@@ -50,7 +47,7 @@ module aiHub 'ai-hub.bicep' = {
     storageAccountResourceId:storageAccountId
     containerRegistryID:containerRegistryID
   }
-  dependsOn:[aiServices]
+
 }
 
 
@@ -70,15 +67,15 @@ module aiProjects 'project/main.bicep' = [for proj in projectConfig: {
     environmentName:environmentName
     users: proj.?users ?? []
   }
-  dependsOn:[aiHub]
+ 
 }]
 
 module aiModels 'ai-models.bicep' = {
   name:'aiModels'
   params:{
-    aiServicesName:aiServicesName
+    aiServicesName:aiServices.outputs.aiServicesName
   }
-  dependsOn:[aiServices]
+  
 }
 
 output aiservicesTarget string = aiServices.outputs.aiservicesTarget

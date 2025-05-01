@@ -5,7 +5,7 @@ This section guides you through setting up **Vector Search** and enabling **Retr
 You can choose between two indexing methods:
 
 - **Azure Durable Function:** Automatically triggers on file upload to an Azure Storage Account, chunking documents and indexing them. This event-driven approach offers greater flexibility and supports a wide range of document types.
-- **Vectorization Wizard:** A no-code experience for quickly creating an indexer directly from a storage container—ideal for rapid prototyping or simple use cases.
+- **Azure AI Search Indexer** Automate document indexing for your RAG solution using Azure AI Search. The indexer coordinates data ingestion, chunking, enrichment (via skillsets), and vectorization—supporting both one-time indexing and recurring schedules for incremental updates.
 
 Once indexing is complete, you'll be able to **"chat over your data"** using the **Azure AI Foundry Playground**, enabling intelligent Q&A over your custom knowledge base.
 
@@ -38,11 +38,11 @@ In Azure AI Search, queries run against content loaded into a search index. Ther
 2. **Pull** data in using a search indexer
 
 
-#### 🔄 Push Data Using Azure AI Search APIs
+### 🔄 Push Data Using Azure AI Search APIs
 
 The push model uses APIs to upload documents directly into an existing search index.
 
-##### Key Benefits
+**Key Benefits**
 
 - **Flexible Data Sources**  
   You can index content from any source, as long as it’s formatted as JSON and matches your index schema.
@@ -77,12 +77,14 @@ To trigger indexing:
 > 💡 Once the Azure Function has successfully processed, chunked, generated embeddings, and indexed the content into Azure AI Search, the uploaded PDF files will be moved to the `completed` container.
 ---
 
-####  Pull Data with Azure AI Search Indexers
+<br/>
+
+###  Pull Data with Azure AI Search Indexers
 
 The **pull model** uses indexers that connect to supported data sources and automatically ingest data into your Azure AI Search index. Indexers are available for many Microsoft data sources, with additional support through third-party connectors.
 
 
-##### Key Benefits of Using Indexers
+**Key Benefits of Using Indexers**
 
 - **Automated Data Ingestion**  
   Indexers directly connect to structured sources (e.g., tables, views), transforming rows into JSON and uploading them to your index automatically.
@@ -93,6 +95,7 @@ The **pull model** uses indexers that connect to supported data sources and auto
 - **Built-In Scheduling**  
   Define how frequently your index is refreshed with built-in scheduling support, ensuring data stays current without manual intervention.
 
+<br/>
 
 #### ⚙️ Indexing with the Azure AI Search Vectorization Wizard
 
@@ -115,6 +118,20 @@ With minimal setup, the wizard:
 ![Index Wizard](../media/ai-search-index-wizard.png)
 
 ---
+
+<br/>
+
+#### ⚙️ Build an Automated Indexing Pipeline for RAG with Azure AI Search
+
+Follow this tutorial to learn how to create a fully automated indexing pipeline for a Retrieval-Augmented Generation (RAG) solution using Azure AI Search. The pipeline uses an indexer to handle data ingestion, skillset execution, chunking, and vectorization—supporting both one-time and scheduled incremental updates.
+
+🔗 [Tutorial: Build an indexing pipeline for RAG on Azure AI Search](https://learn.microsoft.com/en-us/azure/search/tutorial-rag-build-solution-pipeline)
+
+
+---
+
+<br/>
+
 
 ### "Chatting Over Your Data" with Azure AI Foundry
 

@@ -72,6 +72,10 @@ This workshop enables the deployment of multiple Azure AI Projects and can autom
       "objectId": "b0c1f2d4-ff62-4a49-b158-6e4b99b464a9"
     }
   ]
+  },
+  {
+    "projectName": "team3",
+    "devComputeInstances":0
   }
 ]
 ```

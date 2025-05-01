@@ -14,37 +14,28 @@ $args = "$pythonAppPath $zipFilePath $tempDir --exclude_dirs venv  --exclude_fil
 # Execute the Python script
 Start-Process "python" -ArgumentList "directory_zipper.py $args" -NoNewWindow -Wait
 
-Write-Host "Ping the Function App to wake it up..."
-try {
-    Invoke-WebRequest -Uri "https://$functionAppName.azurewebsites.net" -Method Get -UseBasicParsing -TimeoutSec 10
-    Start-Sleep -Seconds 10
-} catch {
-    Write-Host "Initial warm-up ping failed, continuing anyway..."
-}
-
 Write-Host "Deploy the Function App via zip deploy (with remote build)..."
 
 $maxRetries = 3
 $delaySeconds = 30
-$success = $false
 
 for ($i = 1; $i -le $maxRetries; $i++) {
-    try {
-        az functionapp deployment source config-zip `
-            --resource-group $resourceGroupName `
-            --name $functionAppName `
-            --src $zipFilePath `
-            --build-remote true
+    Write-Host "Attempt ${i}: Deploying Function App..."
+    az functionapp deployment source config-zip `
+        --resource-group $resourceGroupName `
+        --name $functionAppName `
+        --src $zipFilePath `
+        --build-remote true
 
-        Write-Host "Deployment succeeded on attempt $i."
-        $success = $true
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Deployment succeeded on attempt ${i}."
         break
-    } catch {
-        Write-Host "Attempt $i failed. Waiting $delaySeconds seconds before retrying..."
+    } else {
+        Write-Host "Deployment failed with exit code $LASTEXITCODE. Retrying in $delaySeconds seconds..."
         Start-Sleep -Seconds $delaySeconds
     }
-}
 
-if (-not $success) {
-    throw "Deployment failed after $maxRetries attempts."
+    if ($i -eq $maxRetries) {
+        throw "Deployment failed after $maxRetries attempts."
+    }
 }

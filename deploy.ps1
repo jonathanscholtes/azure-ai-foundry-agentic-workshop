@@ -153,7 +153,7 @@ $apiAppName = $deploymentOutputJson.apiAppName.value
 
 Write-Host "Waiting for App Services before pushing code"
 
-$waitTime = 60  # Total wait time in seconds 200
+$waitTime = 60  # Total wait time in seconds 60
 
 # Display counter
 for ($i = $waitTime; $i -gt 0; $i--) {

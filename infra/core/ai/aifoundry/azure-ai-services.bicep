@@ -25,9 +25,7 @@ resource aiServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   properties: {
     customSubDomainName: customSubdomain
     publicNetworkAccess: 'Enabled'
-    apiProperties: {
-      statisticsEnabled: false
-    }
+   
   }
 }
 
@@ -55,3 +53,4 @@ resource roleAssignmentML 'Microsoft.Authorization/roleAssignments@2020-04-01-pr
 output aiservicesID string = aiServices.id
 output aiservicesTarget string = aiServices.properties.endpoint
 output OpenAIEndPoint string = 'https://${customSubdomain}.openai.azure.com'
+output aiServicesName string = aiServicesName
