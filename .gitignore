@@ -10,3 +10,4 @@ __pycache__/
 project_users.json
 project_resource_config.json
 
+src/Notebooks/evaluate_test_data.jsonl

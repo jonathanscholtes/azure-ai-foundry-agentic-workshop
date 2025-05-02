@@ -1,4 +1,5 @@
 azure-ai-projects==1.0.0b10
+azure-ai-ml
 azure-ai-evaluation
 azure-search-documents
 azure-core

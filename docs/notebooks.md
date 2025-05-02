@@ -157,6 +157,7 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
    *Notebook: `langchain_08-azure-ai-mcp`*  
    This notebook demonstrates how to connect to a remote MCP Server using LangChain's MultiServerMCPClient. The Model Context Protocol (MCP) allows for the modularization and scaling of tools, enabling efficient tool invocation across distributed systems. This example shows how to define and use tools hosted on a remote server for seamless agent interaction and task execution.
 
+<img src="../media/agents/mcp_agent.png" alt="SubGraph Dataframe" style="height:400px; width:auto;">
 
 ### Semantic Kernel Agents  
 
