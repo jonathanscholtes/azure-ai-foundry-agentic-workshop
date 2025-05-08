@@ -74,7 +74,7 @@ Discover interactive Notebooks and guides that walk you through building intelli
 
 ## 📐 Workshop Design and Architecture
 
-![design](/media/diagram3.png)
+![design](/media/diagram4.png)
 
 This solution combines the power of **Azure AI Foundry**, **LangGraph**, and the **Azure AI Agents Service** to build an advanced, modular AI orchestration framework. It demonstrates a production-ready architecture designed for scalable, intelligent applications that require real-time reasoning, search, and structured data integration.
 
