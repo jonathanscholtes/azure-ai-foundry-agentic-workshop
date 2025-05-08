@@ -2,10 +2,12 @@
 
 These notebooks show how to build intelligent, agent-powered applications using **Azure AI Foundry**, **Azure AI Search**, and the **Azure AI Agent Service**. You’ll explore:
 
-- 🔍 **Vector Search** & **RAG** for grounding responses  
-- 🤖 **Agentic AI** with **LangGraph**, **Semantic Kernel** and **Azure AI Agent Service** for orchestrating workflows  
-- 🔗 **OpenAPI** and **GraphQL** integration for real-time actions  
-- 🧭 **Tracing** for step-by-step visibility into agent behavior  
+- 🔍 **Vector Search** & **Retrieval-Augmented Generation (RAG)** to ground agent responses in enterprise data  
+- 🤖 Agentic AI Orchestration using **LangGraph**, **Semantic Kernel**, and **Azure AI Agent Service** for structured, multi-step workflows  
+- 🔗 Real-time integrations with **OpenAPI**, **GraphQL**, and **Model Context Protocol (MCP)** to enable dynamic tool use and system interaction  
+- 🧭 **Tracing with Azure AI Inference Tracer** for step-by-step visibility into agent reasoning and behavior  
+- ✅ **Evaluations with Azure AI Evaluation SDK** to ensure outputs are grounded, coherent, and contextually aligned—minimizing hallucinations and improving trustworthiness  
+
 
 From simple chat agents to complex, multi-step interactions, these examples help you deliver smart, context-aware AI—fast.
 
@@ -79,7 +81,7 @@ AZURE_STORAGE_CONNECTION_STRING='Your Storage Account Connection String for test
 
 # Azure OpenAI
 AZURE_OPENAI_EMBEDDING='text-embedding'
-AZURE_OPENAI_API_VERSION='2024-06-01'
+AZURE_OPENAI_API_VERSION='2024-08-01-preview'
 AZURE_OPENAI_ENDPOINT='Endpoint from deployed Azure AI Service or Azure OpenAI Service'
 AZURE_OPENAI_API_KEY='Key from deployed Azure AI Service or Azure OpenAI Service'
 AZURE_OPENAI_MODEL='gpt-4o'
@@ -92,7 +94,7 @@ OPENAPI_URL='Endpoint to deployed API openAPI json schema - https://api-foundry-
 GRAPHQL_URL='Endpoint to deployed GraphQL - https://api-foundry-lab-[random].azurewebsites.net/graphql'
 
 # MCP Servers
-MCP_WEATHER_SERVER_URL='https://mcp-weather-lab-[random].azurewebsites.net'
+MCP_SERVER_URL='https://ca-mcp-foundry-lab-[random].eastus2.azurecontainerapps.io'
 ```
 
 --- 
@@ -123,6 +125,8 @@ These samples are built using **Azure AI Foundry** and demonstrate practical pat
    This notebook introduces a **supervisor agent** that orchestrates multiple specialized agents to solve complex tasks. It uses vectorized data from **Azure AI Search** for grounding, ensuring context-aware responses. The workflow is evaluated using the **Azure AI Evaluation SDK**, which measures the coherence and groundedness of the agent outputs.
 
    🔗 [LangGraph Multi-agent Supervisor](https://langchain-ai.github.io/langgraph/tutorials/multi_agent/agent_supervisor/)
+
+   🔗 [Evaluate your Generative AI application locally with the Azure AI Evaluation SDK](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/evaluate-sdk)
 
    <img src="../media/agents/rag_agent_tools.png" alt="Agent with Tools" style="height:350px; width:auto;">
 
@@ -185,6 +189,7 @@ These notebooks, powered by **Azure AI Foundry**, showcase practical patterns fo
    This notebook showcases the **Semantic Kernel Process Framework**, an orchestration SDK that streamlines the development and execution of AI-driven processes. It demonstrates how an agent can dynamically generate and run Python code to query structured data—in this case, a Parquet file stored in an Azure Storage Account—by filtering a pandas DataFrame to retrieve relevant information in response to user queries.
 
    🔗 [Semantic Kernel Process Framework](https://learn.microsoft.com/en-us/semantic-kernel/frameworks/process/process-framework)
+
 <br/>
 
 4. **Remote Integration with MCP and Semantic Kernel**  
@@ -205,6 +210,13 @@ It simplifies the creation of **context-aware, tool-using agents** by offering f
 
    🔗 [Azure AI Agent Service with OpenAPI Specified Tools](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/openapi-spec?tabs=python&pivots=overview)
 
+<br/>
+
+2. **Agent with Multiple Tooling**  
+   *Notebook: `azure_ai_agent_02-multiple-tools`*  
+   This notebook demonstrates how to deploy an Azure AI Agent with multiple tools—combining an **OpenAPI-based integration** and a vector search tool using **Azure AI Search**. The result is a versatile agent capable of retrieving live data and grounding responses in enterprise knowledge.
+
+   🔗 [Use an existing AI Search index with the Azure AI Search tool](https://learn.microsoft.com/en-us/azure/ai-services/agents/how-to/tools/azure-ai-search?tabs=azurecli%2Cpython&pivots=code-examples)
 
 ---
 
