@@ -49,6 +49,8 @@ git clone --no-checkout https://github.com/jonathanscholtes/azure-ai-foundry-age
 # Navigate into the repo folder
 cd azure-ai-foundry-agentic-workshop
 
+git remote remove origin
+
 # Enable sparse checkout to download only the notebooks folder
 git sparse-checkout init --cone
 git sparse-checkout set src/Notebooks
