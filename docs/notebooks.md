@@ -43,20 +43,10 @@ You can run these notebooks directly on your Azure AI Foundry compute instance. 
 Once your environment is up and running, you can download the sample notebooks directly from the GitHub repository using the following commands:
 
 ```bash
-# Clone the repository without checking out all files
-git clone --no-checkout https://github.com/jonathanscholtes/azure-ai-foundry-agentic-workshop.git
-
-# Navigate into the repo folder
-cd azure-ai-foundry-agentic-workshop
-
-git remote remove origin
-
-# Enable sparse checkout to download only the notebooks folder
-git sparse-checkout init --cone
-git sparse-checkout set src/Notebooks
-
-# Checkout the selected content
-git checkout
+curl -L https://github.com/jonathanscholtes/azure-ai-foundry-agentic-workshop/archive/refs/heads/main.zip -o workshop.zip
+unzip workshop.zip
+mv azure-ai-foundry-agentic-workshop-main/src/Notebooks ./Notebooks
+rm -rf azure-ai-foundry-agentic-workshop-main workshop.zip
 ```
 
 This approach downloads only the relevant [src/Notebooks](../src/Notebooks) directory, keeping your workspace clean and lightweight.
