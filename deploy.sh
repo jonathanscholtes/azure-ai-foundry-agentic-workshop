@@ -72,11 +72,10 @@ appServicePlanName=$(echo "$deploymentOutput" | jq -r '.appServicePlanName.value
 storageAccountName=$(echo "$deploymentOutput" | jq -r '.storageAccountName.value')
 logAnalyticsWorkspaceName=$(echo "$deploymentOutput" | jq -r '.logAnalyticsWorkspaceName.value')
 applicationInsightsName=$(echo "$deploymentOutput" | jq -r '.applicationInsightsName.value')
-keyVaultUri=$(echo "$deploymentOutput" | jq -r '.keyVaultUri.value')
+keyVaultName=$(echo "$deploymentOutput" | jq -r '.keyVaultName.value')
 OpenAIEndPoint=$(echo "$deploymentOutput" | jq -r '.OpenAIEndPoint.value')
-searchServiceEndpoint=$(echo "$deploymentOutput" | jq -r '.searchServiceEndpoint.value')
 containerRegistryName=$(echo "$deploymentOutput" | jq -r '.containerRegistryName.value')
-azureAISearchKey=$(echo "$deploymentOutput" | jq -r '.azureAISearchKey.value')
+searchServicename=$(echo "$deploymentOutput" | jq -r '.searchServicename.value')
 
 echo "=== Building Images for MCP Server ==="
 echo "Using ACR: $containerRegistryName"
@@ -128,10 +127,9 @@ deploymentOutputApps=$(az deployment sub create \
         containerRegistryName="$containerRegistryName" \
         appServicePlanName="$appServicePlanName" \
         storageAccountName="$storageAccountName" \
-        keyVaultUri="$keyVaultUri" \
+        keyVaultName="$keyVaultName" \
         OpenAIEndPoint="$OpenAIEndPoint" \
-        searchServiceEndpoint="$searchServiceEndpoint" \
-        azureAISearchKey="$azureAISearchKey" \
+        searchServicename="$searchServicename" \
     --query "properties.outputs")
 
 # Parse output using jq

@@ -1,5 +1,7 @@
 param appServicePlanName string
 param webAppName string
+
+@description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 param StorageAccountName string
 param identityName string

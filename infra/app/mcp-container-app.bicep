@@ -1,24 +1,25 @@
-@description('Name of the Container App')
+@description('Base name of the Azure Container App to be deployed')
 param containerAppBaseName string
 
-@description('Azure region for deployment')
+@description('Azure region where the resources will be deployed (e.g., "eastus")')
 param location string
 
-@description('Name of the User Assigned Managed Identity')
+@description('Name of the User Assigned Managed Identity to be used by the Container App')
 param managedIdentityName string
 
-@description('Name of the Log Analytics Workspace')
+@description('Name of the Log Analytics Workspace for monitoring and diagnostics')
 param logAnalyticsWorkspaceName string
 
-
-@description('Name of the Azure Container Registry')
+@description('Name of the Azure Container Registry for storing and managing container images')
 param containerRegistryName string
 
+@description('Endpoint URL of the Azure Cognitive Search service (e.g., https://<service>.search.windows.net)')
 param searchServiceEndpoint string
 
-
+@description('Endpoint URL of the Azure OpenAI resource (e.g., https://<resource>.openai.azure.com/)')
 param OpenAIEndPoint string
 
+@description('URL of the OpenAPI (Swagger) endpoint used by the application or agents')
 param openAPIEndpoint string
 
 

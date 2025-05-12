@@ -1,5 +1,10 @@
+@description('Name of the Azure Cognitive Search service instance')
 param searchServicename string
+
+@description('Name of the User Assigned Managed Identity to assign to deployed services')
 param managedIdentityName string
+
+@description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 
 module search_service 'search-service.bicep' = { 
@@ -26,4 +31,4 @@ module search_roles 'search-roles.bicep' = {
 
 output searchServiceId string = search_service.outputs.searchServiceId
 output searchServiceEndpoint string = search_service.outputs.searchServiceEndpoint
-output azureAISearchKey string = search_service.outputs.azureAISearchKey
+

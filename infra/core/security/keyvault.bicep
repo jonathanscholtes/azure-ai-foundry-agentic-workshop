@@ -8,7 +8,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   location: location
   properties: {
     createMode: 'default'
-    publicNetworkAccess: 'disabled'
+    publicNetworkAccess: 'enabled'
     enabledForDeployment: false
     enabledForDiskEncryption: false
     enabledForTemplateDeployment: false
@@ -25,3 +25,4 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
 
 output keyVaultId string = keyVault.id
 output keyVaultUri string = keyVault.properties.vaultUri
+output keyVaultName string = keyVaultName

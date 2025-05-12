@@ -1,5 +1,10 @@
+@description('Name of the Azure Key Vault used to store secrets and configuration values')
 param keyVaultName string
+
+@description('Name of the User Assigned Managed Identity to assign to deployed services')
 param managedIdentityName string
+
+@description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 
 
@@ -20,14 +25,14 @@ module keyVault 'keyvault.bicep' = {
 }
 
 
-//module securiyRoles 'security-roles.bicep' = { 
-//  name:'securiyRoles'
-//  params: {
-//    keyVaultName: keyVaultName
-//    managedIdentityName: managedIdentityName
-//  }
-//  dependsOn: [keyVault,managedIdentity]
-//}
+module securiyRoles 'security-roles.bicep' = { 
+  name:'securiyRoles'
+  params: {
+    keyVaultName: keyVaultName
+    managedIdentityName: managedIdentityName
+  }
+  dependsOn: [keyVault,managedIdentity]
+}
 
 
 output managedIdentityName string = managedIdentity.outputs.managedIdentityName

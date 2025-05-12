@@ -1,19 +1,34 @@
+@description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
+
+@description('Name of the Azure AI Hub to be created or referenced')
 param aiHubName string
+
+@description('Number of compute instances to allocate for the project')
 param numberComputeInstances int
+
+@description('Name of the AI project to be created within the AI Hub')
 param aiProjectName string
+
+@description('Token or string used to uniquely identify this resource deployment (e.g., build ID, commit hash)')
 param resourceToken string
+
+@description('Name of the User Assigned Managed Identity to assign to deployed services')
 param identityName string
+
+@description('Name representing the deployment environment (e.g., "dev", "test", "prod", "lab")')
 param environmentName string
 
-@description('Name for Ai Search connection.')
+@description('Name for AI Search connection')
 param aiSearchConnectionName string
 
-@description('Name for ACS connection.')
+@description('Name for Azure OpenAI connection')
 param aoaiConnectionName string
 
+@description('Resource ID of the Azure AI Hub instance')
 param aiHubResourceId string
 
+@description('Array of user configuration objects to be assigned roles or permissions in the deployment')
 param users array = []
 
 

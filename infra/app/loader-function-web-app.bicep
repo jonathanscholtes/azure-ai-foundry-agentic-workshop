@@ -1,5 +1,7 @@
 param functionAppName string
 param functionAppPlanName string
+
+@description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 param StorageAccountName string
 param identityName string
@@ -47,6 +49,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   }
   properties: {
     serverFarmId: appServicePlan.id
+    keyVaultReferenceIdentity: managedIdentity.id
     siteConfig: {
       appSettings: [
         {

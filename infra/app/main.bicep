@@ -2,45 +2,51 @@ targetScope = 'subscription'
 
 @minLength(1)
 @maxLength(64)
-@description('Name which is used to generate a short unique hash for each resource')
+@description('Name representing the deployment environment (e.g., "dev", "test", "prod", "lab"); used to generate a short, unique hash for each resource')
 param environmentName string
 
 @minLength(1)
 @maxLength(64)
-@description('Name which is used to generate a short unique hash for each resource')
+@description('Name used to identify the project; also used to generate a short, unique hash for each resource')
 param projectName string
 
 @minLength(1)
-@description('Primary location for all resources')
+@description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 
+@description('Name of the resource group where resources will be deployed')
 param resourceGroupName string
 
+@description('Token or string used to uniquely identify this resource deployment (e.g., build ID, commit hash)')
 param resourceToken string
 
-
-@description('Name of the User Assigned Managed Identity')
+@description('Name of the User Assigned Managed Identity to assign to deployed services')
 param managedIdentityName string
 
-@description('Name of the Log Analytics Workspace')
+@description('Name of the Log Analytics Workspace for centralized monitoring')
 param logAnalyticsWorkspaceName string
 
+@description('Name of the Application Insights instance for telemetry')
 param appInsightsName string
 
-@description('Name of the Azure Container Registry')
+@description('Name of the Azure Container Registry for storing container images')
 param containerRegistryName string
 
+@description('Name of the App Service Plan for hosting web apps or APIs')
 param appServicePlanName string
 
+@description('Name of the Azure Storage Account used for blob or file storage')
 param storageAccountName string
 
-param keyVaultUri string
+@description('Name of the Azure Key Vault used to store secrets and keys securely')
+param keyVaultName string
 
+@description('Endpoint URL of the Azure OpenAI resource (e.g., https://your-resource.openai.azure.com/)')
 param OpenAIEndPoint string
 
-param searchServiceEndpoint string
+@description('Name of the Azure AI Search service instance')
+param searchServicename string
 
-param azureAISearchKey string
 
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' existing =  {
@@ -48,6 +54,15 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' existing 
 }
 
 
+module appSecurity 'app-secrets.bicep' = {
+  name: 'appSecurity'
+  scope: resourceGroup
+  params: {
+   keyVaultName:keyVaultName
+   searchServicename: searchServicename
+
+  }
+}
 
 module loaderFunctionWebApp 'loader-function-web-app.bicep' = {
   name: 'loaderFunctionWebApp'
@@ -60,10 +75,10 @@ module loaderFunctionWebApp 'loader-function-web-app.bicep' = {
     StorageAccountName: storageAccountName
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     appInsightsName: appInsightsName
-    keyVaultUri:keyVaultUri
+    keyVaultUri:appSecurity.outputs.keyVaultUri
     OpenAIEndPoint: OpenAIEndPoint
-    searchServiceEndpoint: searchServiceEndpoint
-    azureAISearchKey:azureAISearchKey
+    searchServiceEndpoint: appSecurity.outputs.searchServiceEndpoint
+    azureAISearchKey: appSecurity.outputs.AzureAISearchKey
     azureAiSearchBatchSize: 100
     documentChunkOverlap: 500
     documentChunkSize: 2000
@@ -83,7 +98,7 @@ module apiWebApp 'api-web-app.bicep' = {
     StorageAccountName: storageAccountName
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     appInsightsName: appInsightsName
-    keyVaultUri:keyVaultUri
+    keyVaultUri:appSecurity.outputs.keyVaultUri
   }
 }
 
@@ -97,7 +112,7 @@ module mcpContainerApps 'mcp-container-app.bicep' = {
     containerAppBaseName: '${projectName}-${environmentName}-${resourceToken}'
     containerRegistryName: containerRegistryName
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-    searchServiceEndpoint: searchServiceEndpoint
+    searchServiceEndpoint: appSecurity.outputs.searchServiceEndpoint
     OpenAIEndPoint: OpenAIEndPoint
     openAPIEndpoint:apiWebApp.outputs.webAppNameURL
   }

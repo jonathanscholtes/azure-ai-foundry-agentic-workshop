@@ -1,4 +1,7 @@
+@description('Name of the Azure Container Registry used to store and manage container images')
 param containerRegistryName string
+
+@description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 
 

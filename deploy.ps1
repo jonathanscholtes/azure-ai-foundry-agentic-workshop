@@ -89,11 +89,10 @@ $appServicePlanName = $deploymentOutputJsonInfra.appServicePlanName.value
 $storageAccountName = $deploymentOutputJsonInfra.storageAccountName.value
 $logAnalyticsWorkspaceName = $deploymentOutputJsonInfra.logAnalyticsWorkspaceName.value
 $applicationInsightsName = $deploymentOutputJsonInfra.applicationInsightsName.value
-$keyVaultUri = $deploymentOutputJsonInfra.keyVaultUri.value
+$keyVaultName = $deploymentOutputJsonInfra.keyVaultName.value
 $OpenAIEndPoint = $deploymentOutputJsonInfra.OpenAIEndPoint.value
-$searchServiceEndpoint = $deploymentOutputJsonInfra.searchServiceEndpoint.value 
 $containerRegistryName = $deploymentOutputJsonInfra.containerRegistryName.value
-$azureAISearchKey = $deploymentOutputJsonInfra.azureAISearchKey.value
+$searchServicename = $deploymentOutputJsonInfra.searchServicename.value
 
 Write-Host "=== Building Images for MCP Server ==="
 Write-Host "Using ACR: $containerRegistryName"
@@ -139,10 +138,9 @@ $deploymentOutputApps = az deployment sub create  `
         containerRegistryName=$containerRegistryName `
         appServicePlanName=$appServicePlanName `
         storageAccountName=$storageAccountName `
-        keyVaultUri=$keyVaultUri `
+        keyVaultName=$keyVaultName `
         OpenAIEndPoint=$OpenAIEndPoint `
-        searchServiceEndpoint=$searchServiceEndpoint `
-        azureAISearchKey=$azureAISearchKey `
+        searchServicename=$searchServicename `
     --query "properties.outputs"
 
 

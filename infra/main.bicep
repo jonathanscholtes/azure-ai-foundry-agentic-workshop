@@ -2,27 +2,30 @@ targetScope = 'subscription'
 
 @minLength(1)
 @maxLength(64)
-@description('Name which is used to generate a short unique hash for each resource')
+@description('Name representing the deployment environment (e.g., "dev", "test", "prod", "lab"); used to generate a short, unique hash for each resource')
 param environmentName string
 
 @minLength(1)
 @maxLength(64)
-@description('Name which is used to generate a short unique hash for each resource')
+@description('Name used to identify the project; also used to generate a short, unique hash for each resource')
 param projectName string
 
 @minLength(1)
-@description('Primary location for all resources')
+@description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 
+@description('Name of the existing resource group where resources will be deployed')
 param resourceGroupName string
 
+@description('Token or string used to uniquely identify this resource deployment (e.g., build ID, commit hash)')
 param resourceToken string
 
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' existing =  {
+@description('Configuration settings for the project; expected to be an array of objects defining project-specific parameters')
+param projectConfig array
+
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2024-03-01' existing = {
   name: resourceGroupName
 }
-
-param projectConfig array
 
 
 module security 'core/security/main.bicep' = {
@@ -101,28 +104,13 @@ module apps 'core/app/main.bicep' ={
 }
 
 
-/*
-module mcpWeatherServer 'app/mcp--weather-web-app.bicep' = {
-  name: 'mcpWeatherServer'
-  scope: resourceGroup
-  params: { 
-    location: location
-    identityName: security.outputs.managedIdentityName
-    webAppName: 'mcp-weather-${environmentName}-${resourceToken}'
-    appServicePlanName: apps.outputs.appServicePlanName
-    logAnalyticsWorkspaceName: monitor.outputs.logAnalyticsWorkspaceName
-    appInsightsName: monitor.outputs.applicationInsightsName
-  }
-}*/
-
 
 output managedIdentityName string = security.outputs.managedIdentityName
 output appServicePlanName string = apps.outputs.appServicePlanName 
 output storageAccountName string = data.outputs.storageAccountName 
 output logAnalyticsWorkspaceName string = monitor.outputs.logAnalyticsWorkspaceName
 output applicationInsightsName string = monitor.outputs.applicationInsightsName
-output keyVaultUri string = security.outputs.keyVaultUri
+output keyVaultName string = security.outputs.keyVaultName
 output OpenAIEndPoint string = ai.outputs.OpenAIEndPoint 
-output searchServiceEndpoint string = ai.outputs.searchServiceEndpoint 
 output containerRegistryName string = platform.outputs.containerRegistryName
-output azureAISearchKey string = ai.outputs.azureAISearchKey
+output searchServicename string = ai.outputs.searchServicename
