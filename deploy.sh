@@ -1,16 +1,14 @@
 #!/bin/bash
 
-# Usage: ./deploy.sh <subscription> [location] <dev_compute_instances> [resource_group_name]
+# Usage: ./deploy.sh <subscription> [location] [resource_group_name]
 
-location=${1:-eastus2}
-resource_group_name=$2
+subscription="$1"
+location="${2:-eastus2}"
+resource_group_name="${3}"
 
 # Variables
 project_name="foundry"
 environment_name="lab"
-
-
-
 
 # Function to generate random alphanumeric string (base62)
 generate_random_alphanumeric() {
@@ -29,12 +27,11 @@ generate_random_alphanumeric() {
 # Generate resource token
 resource_token=$(generate_random_alphanumeric 12)
 
-
 # If no resource group name is passed, generate one
 if [ -z "$resource_group_name" ]; then
-    rg_name="rg-$project_name-$environment_name-$location-$resource_token"
+    rg_name="rg-${project_name}-${environment_name}-${location}-${resource_token}"
 else
-    rg_name=$resource_group_name
+    rg_name="$resource_group_name"
 fi
 
 # Check if resource group exists
@@ -47,26 +44,26 @@ else
     echo "Resource group '$rg_name' already exists."
 fi
 
-# Variables (make sure these are already set in your environment or passed in)
-deploymentNameInfra="deployment-infra-$resourceToken"
+# Variables
+deploymentNameInfra="deployment-infra-${resource_token}"
 templateFile="infra/main.bicep"
 
 # Step 1: Deploy Infrastructure
 deploymentOutput=$(az deployment sub create \
     --name "$deploymentNameInfra" \
-    --location "$Location" \
+    --location "$location" \
     --template-file "$templateFile" \
     --parameters \
-        environmentName="$environmentName" \
-        projectName="$projectName" \
-        location="$Location" \
-        resourceGroupName="$rgName" \
-        resourceToken="$resourceToken" \
+        environmentName="$environment_name" \
+        projectName="$project_name" \
+        location="$location" \
+        resourceGroupName="$rg_name" \
+        resourceToken="$resource_token" \
         projectConfig="@./project_resource_config.json" \
     --query "properties.outputs" \
     --output json)
 
-# Parse the deployment output to get app names and resource group
+# Parse deployment output
 managedIdentityName=$(echo "$deploymentOutput" | jq -r '.managedIdentityName.value')
 appServicePlanName=$(echo "$deploymentOutput" | jq -r '.appServicePlanName.value')
 storageAccountName=$(echo "$deploymentOutput" | jq -r '.storageAccountName.value')
@@ -79,10 +76,9 @@ searchServicename=$(echo "$deploymentOutput" | jq -r '.searchServicename.value')
 
 echo "=== Building Images for MCP Server ==="
 echo "Using ACR: $containerRegistryName"
-echo "Resource Group: $rgName"
+echo "Resource Group: $rg_name"
 echo
 
-# Define image names and paths as an associative array of arrays
 images=(
     "weather-mcp ./src/MCP/weather"
     "search-mcp ./src/MCP/search"
@@ -90,16 +86,13 @@ images=(
     "nginx-mcp-gateway ./src/MCP/nginx"
 )
 
-# Build images
 for image_info in "${images[@]}"; do
     image_name=$(echo "$image_info" | awk '{print $1}')
     image_path=$(echo "$image_info" | awk '{print $2}')
     
     echo "Building image '${image_name}:latest' from '${image_path}'..."
-    echo "az acr build --resource-group $rgName --registry $containerRegistryName --image ${image_name}:latest ${image_path}"
-
     az acr build \
-        --resource-group "$rgName" \
+        --resource-group "$rg_name" \
         --registry "$containerRegistryName" \
         --image "${image_name}:latest" \
         "$image_path"
@@ -107,20 +100,19 @@ done
 
 echo "=== Step 2: Deploy Apps ==="
 
-deploymentNameApps="deployment-apps-$resourceToken"
+deploymentNameApps="deployment-apps-${resource_token}"
 appsTemplateFile="infra/app/main.bicep"
 
-# Run the deployment
 deploymentOutputApps=$(az deployment sub create \
     --name "$deploymentNameApps" \
-    --location "$Location" \
+    --location "$location" \
     --template-file "$appsTemplateFile" \
     --parameters \
-        environmentName="$environmentName" \
-        projectName="$projectName" \
-        location="$Location" \
-        resourceGroupName="$rgName" \
-        resourceToken="$resourceToken" \
+        environmentName="$environment_name" \
+        projectName="$project_name" \
+        location="$location" \
+        resourceGroupName="$rg_name" \
+        resourceToken="$resource_token" \
         managedIdentityName="$managedIdentityName" \
         logAnalyticsWorkspaceName="$logAnalyticsWorkspaceName" \
         appInsightsName="$applicationInsightsName" \
@@ -130,56 +122,36 @@ deploymentOutputApps=$(az deployment sub create \
         keyVaultName="$keyVaultName" \
         OpenAIEndPoint="$OpenAIEndPoint" \
         searchServicename="$searchServicename" \
-    --query "properties.outputs")
+    --query "properties.outputs" \
+    --output json)
 
-# Parse output using jq
 functionAppName=$(echo "$deploymentOutputApps" | jq -r '.functionAppName.value')
 apiAppName=$(echo "$deploymentOutputApps" | jq -r '.apiAppName.value')
 
 echo "Function App Name: $functionAppName"
 echo "API App Name: $apiAppName"
 
-echo "Waiting for App Services before pushing code"
+echo "Waiting for App Services before pushing code..."
 
-waitTime=60  # Total wait time in seconds
-
-# Display counter
-for ((i=$waitTime; i>0; i--)); do
+waitTime=120
+for ((i=waitTime; i>0; i--)); do
     echo -ne "\rWaiting: $i seconds remaining..."
     sleep 1
 done
-
 echo -e "\rWait time completed!"
 
-# Change directory to scripts
 cd ./scripts
 
-# Deploy Azure Function for Loading AI Search Indexes from PDFs 
 echo "*****************************************"
-echo "Deploying Function Application from scripts"
-echo "If timeout occurs, rerun the following command from scripts:"
-echo "./deploy_functionapp.sh $function_app_name $rgName"
-
-
+echo "Deploying Function Application"
 chmod +x deploy_functionapp.sh
+./deploy_functionapp.sh "$functionAppName" "$rg_name"
 
-# Run the deploy script
-./deploy_functionapp.sh "$function_app_name" "$rgName"
-
-
-# Deploy Python FastAPI for OpenAPI and GraphQL
 echo "*****************************************"
-echo "Deploying Python FastAPI from scripts"
-echo "If timeout occurs, rerun the following command from scripts:"
-echo "./deploy_api.sh $api_app_name $rgName ../src/api"
-
+echo "Deploying Python FastAPI"
 chmod +x deploy_api.sh
+./deploy_api.sh "$apiAppName" "$rg_name" "../src/api"
 
-# Run the deploy script
-./deploy_api.sh "$api_app_name" "$rgName" "../src/api"
-
-
-# Change directory back
 cd ..
 
 echo "Deployment Complete"
