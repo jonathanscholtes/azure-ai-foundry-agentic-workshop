@@ -1,5 +1,9 @@
+import base64
+import re
+import requests
 from langchain_core.messages import convert_to_messages
 from langchain_core.messages import HumanMessage,SystemMessage,AIMessage,ToolMessage
+from typing import Optional
 
 def pretty_print_messages(update):
     """
@@ -97,3 +101,127 @@ def pretty_print_response(conversation):
         else:
             print(f"Unknown Message Type: {message}")
         print("\n")
+
+
+def _kernel_process_to_mermaid(kernel_process) -> str:
+    lines = ["graph TD;"]
+
+    # Assign letter aliases to step IDs (e.g., A, B, C, ...)
+    step_id_to_alias = {}
+    step_id_to_name = {}
+    alias_iter = (chr(i) for i in range(ord("B"), ord("Z") + 1))  # Start from B, reserve A for Start
+    for step in kernel_process.steps:
+        step_id = step.state.id
+        step_name = step.state.name
+        alias = next(alias_iter)
+        step_id_to_alias[step_id] = alias
+        step_id_to_name[step_id] = step_name
+
+    # Add Start node
+    lines.append('    A([Start])')
+
+    # Connect Start to initial steps
+    for output_name, targets in kernel_process.output_edges.items():
+        for edge in targets:
+            target_id = edge.output_target.step_id
+            target_alias = step_id_to_alias[target_id]
+            target_name = step_id_to_name[target_id]
+            lines.append(f'    A--> {target_alias}[{target_name}]')
+
+    # Draw all internal edges
+    for step in kernel_process.steps:
+        source_id = step.state.id
+        source_alias = step_id_to_alias[source_id]
+        for edges in step.output_edges.values():
+            for edge in edges:
+                target_id = edge.output_target.step_id
+                target_alias = step_id_to_alias[target_id]
+                target_name = step_id_to_name[target_id]
+                lines.append(f'    {source_alias}--> {target_alias}[{target_name}]')
+
+    # Identify all source steps
+    all_sources = {step.state.id for step in kernel_process.steps}
+
+    # Identify all source steps (steps that produce outputs)
+    all_sources_outputs = {
+    step.state.id
+    for step in kernel_process.steps
+    for edges in step.output_edges.values()
+    for edge in edges  # These are the edges produced by the step
+}
+    
+    #for src in all_sources:
+    #    print(step_id_to_name[src])
+    #    print(step_id_to_alias[src])
+
+    # Identify all target steps (steps that consume outputs)
+    #all_targets = {
+    #    edge.output_target.step_id
+    ##    for step in kernel_process.steps
+    #    for edges in step.output_edges.values()
+    #    for edge in edges  # These are the steps that consume the outputs of other steps
+    #}
+
+    # Find terminal steps: steps that are sources but not targets
+    terminal_ids = all_sources - all_sources_outputs
+
+
+    # Ensure the last step (terminal step) connects to End
+    for term_id in terminal_ids:
+        source_alias = step_id_to_alias[term_id]
+        lines.append(f'    {source_alias}--> Z([End])')  # Connect terminal step to End
+
+
+    return "\n".join(lines)
+
+
+def _render_mermaid_using_api(
+    mermaid_syntax: str,
+    output_file_path: Optional[str] = None,
+    background_color: Optional[str] = "white",
+) -> bytes:
+    """Renders Mermaid graph using the Mermaid.INK API."""
+
+
+    graphbytes = mermaid_syntax.encode("utf8")
+    base64_bytes = base64.urlsafe_b64encode(graphbytes)
+    base64_string = base64_bytes.decode("ascii")
+
+
+    # Check if the background color is a hexadecimal color code using regex
+    if background_color is not None:
+        hex_color_pattern = re.compile(r"^#(?:[0-9a-fA-F]{3}){1,2}$")
+        if not hex_color_pattern.match(background_color):
+            background_color = f"!{background_color}"
+
+    image_url = (
+        f"https://mermaid.ink/svg/{base64_string}?bgColor={background_color}"
+    )
+    response = requests.get(image_url)
+    if response.status_code == 200:
+        img_bytes = response.content
+        if output_file_path is not None:
+            with open(output_file_path, "wb") as file:
+                file.write(response.content)
+
+        return img_bytes
+    else:
+        raise ValueError(
+            f"Failed to render the graph using the Mermaid.INK API. "
+            f"Status code: {response.status_code}."
+        )
+
+def draw_kernel_process_mermaid(kernel_process, debug: Optional[bool] = False, output_file_path: Optional[str] = None,
+    background_color: Optional[str] = "white",
+    padding: int = 10,
+) -> bytes:
+    mermaid_syntax = _kernel_process_to_mermaid(kernel_process)
+    
+    
+    if debug: print(mermaid_syntax)
+
+    img_bytes = _render_mermaid_using_api(
+        mermaid_syntax, output_file_path, background_color
+    )
+
+    return img_bytes
