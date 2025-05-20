@@ -1,8 +1,8 @@
 httpx
 uvicorn
-mcp
+mcp==1.9.0
 python-dotenv==1.0.0
 azure-search-documents
 azure-identity==1.17.1
 langchain-community
-langchain-azure-ai
+langchain-azure-ai==0.1.2

@@ -33,19 +33,6 @@ param keyVaultId string
 
 
 
-
-module aiServices 'azure-ai-services.bicep' = {
-  name: 'aiServices'
-  params: {
-    aiServicesName: 'ais-${projectName}-${environmentName}-${resourceToken}'
-    location: location
-    identityName: identityName
-    customSubdomain: 'openai-app-${resourceToken}'
-    
-  }
-}
-
-
 module search 'aisearch/main.bicep' = { 
   name: 'aisearch'
   params: {
@@ -55,7 +42,6 @@ module search 'aisearch/main.bicep' = {
 
   }
 
-  dependsOn:[aiServices]
 }
 
 
@@ -74,17 +60,14 @@ module aifoundry 'aifoundry/main.bicep' = {
     storageAccountId:storageAccountId
     containerRegistryID: containerRegistryID
     projectConfig:projectConfig
-    aiServicesResourceId:aiServices.outputs.aiservicesID
-    aiServicesEndpoint: '${aiServices.outputs.OpenAIEndPoint}/'
-    aiServicesName:aiServices.outputs.aiServicesName
-
+    
   }
-  dependsOn:[aiServices]
+
 }
 
 
 
-output aiservicesTarget string = aiServices.outputs.aiservicesTarget
-output OpenAIEndPoint string = aiServices.outputs.OpenAIEndPoint
+output aiservicesTarget string = aifoundry.outputs.aiservicesTarget
+output OpenAIEndPoint string = aifoundry.outputs.OpenAIEndPoint
 output searchServicename string = searchServicename
 

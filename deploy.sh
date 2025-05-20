@@ -7,7 +7,7 @@ location="${2:-eastus2}"
 resource_group_name="${3}"
 
 # Variables
-project_name="foundry"
+project_name="fndry"
 environment_name="lab"
 
 # Function to generate random alphanumeric string (base62)
@@ -133,7 +133,7 @@ echo "API App Name: $apiAppName"
 
 echo "Waiting for App Services before pushing code..."
 
-waitTime=120
+waitTime=60
 for ((i=waitTime; i>0; i--)); do
     echo -ne "\rWaiting: $i seconds remaining..."
     sleep 1

@@ -6,7 +6,7 @@ param (
 
 
 # Variables
-$projectName = "foundry"
+$projectName = "fndry"
 $environmentName = "lab"
 $timestamp = Get-Date -Format "yyyyMMddHHmmss"
 
@@ -66,7 +66,7 @@ if (-not $resourceGroup) {
 
 
 # Step 1: Deploy Infrastructure
-$deploymentNameInfra = "deployment-infra-$resourceToken"
+$deploymentNameInfra = "deployment-lab-infra-$resourceToken"
 $templateFile = "infra/main.bicep"
 $deploymentOutput = az deployment sub create `
     --name $deploymentNameInfra `
@@ -120,7 +120,7 @@ foreach ($image in $images) {
 
 
 # Step 2: Deploy Apps
-$deploymentNameApps = "deployment-apps-$resourceToken"
+$deploymentNameApps = "deployment-lab-apps-$resourceToken"
 $appsTemplateFile = "infra/app/main.bicep"
 $deploymentOutputApps = az deployment sub create  `
     --name $deploymentNameApps `
@@ -151,7 +151,7 @@ $apiAppName = $deploymentOutputJson.apiAppName.value
 
 Write-Host "Waiting for App Services before pushing code"
 
-$waitTime = 120  # Total wait time in seconds 120
+$waitTime = 60  # Total wait time in seconds 60
 
 # Display counter
 for ($i = $waitTime; $i -gt 0; $i--) {
