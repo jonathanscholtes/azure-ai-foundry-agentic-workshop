@@ -88,6 +88,24 @@ GRAPHQL_URL='Endpoint to deployed GraphQL - https://api-foundry-lab-[random].azu
 # MCP Servers
 MCP_SERVER_URL='https://ca-mcp-foundry-lab-[random].eastus2.azurecontainerapps.io'
 ```
+<br/>
+
+3. Create an Environment for Notebooks:
+
+Navigate to the Notebook directory src/Notebooks and follow these steps:
+
+- Create a Python Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+- Activate the Virtual Environment and Install Dependencies:
+
+```bash
+venv\Scripts\activate # On macOS/Linux, use `source venv/bin/activate`
+python -m pip install -r requirements.txt
+```
 
 --- 
 
