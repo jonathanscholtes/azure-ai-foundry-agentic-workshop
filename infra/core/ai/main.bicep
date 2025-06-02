@@ -31,7 +31,7 @@ param projectConfig array
 @description('Resource ID of the Key Vault used for storing secrets and connection strings')
 param keyVaultId string
 
-
+param skipModels bool = false
 
 module search 'aisearch/main.bicep' = { 
   name: 'aisearch'
@@ -60,6 +60,7 @@ module aifoundry 'aifoundry/main.bicep' = {
     storageAccountId:storageAccountId
     containerRegistryID: containerRegistryID
     projectConfig:projectConfig
+    skipModels:skipModels
     
   }
 

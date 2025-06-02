@@ -1,6 +1,7 @@
 param (
     [string]$Subscription,
     [string]$Location = "eastus2",
+    [switch]$SkipModels,
     [string]$ResourceGroupName
 )
 
@@ -76,6 +77,7 @@ $deploymentOutput = az deployment sub create `
         environmentName=$environmentName `
         projectName=$projectName `
         location=$Location `
+        skipModels=$($SkipModels.IsPresent) `
         resourceGroupName=$rgName `
         resourceToken=$resourceToken `
         projectConfig=@./project_resource_config.json `

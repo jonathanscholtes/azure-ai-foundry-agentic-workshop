@@ -2,9 +2,16 @@
 
 # Usage: ./deploy.sh <subscription> [location] [resource_group_name]
 
-subscription="$1"
-location="${2:-eastus2}"
-resource_group_name="${3}"
+location="${1:-eastus2}"
+resource_group_name="${2:-}"
+skip_models=false
+
+# Check for optional --skip-models flag
+for arg in "$@"; do
+  if [[ "$arg" == "--skip-models" ]]; then
+    skip_models=true
+  fi
+done
 
 # Variables
 project_name="fndry"
@@ -57,6 +64,7 @@ deploymentOutput=$(az deployment sub create \
         environmentName="$environment_name" \
         projectName="$project_name" \
         location="$location" \
+        skipModels="$skip_models" \
         resourceGroupName="$rg_name" \
         resourceToken="$resource_token" \
         projectConfig="@./project_resource_config.json" \

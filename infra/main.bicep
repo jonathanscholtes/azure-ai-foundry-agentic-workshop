@@ -14,6 +14,9 @@ param projectName string
 @description('Azure region where all resources will be deployed (e.g., "eastus")')
 param location string
 
+
+param skipModels bool = false
+
 @description('Name of the existing resource group where resources will be deployed')
 param resourceGroupName string
 
@@ -89,6 +92,7 @@ module ai 'core/ai/main.bicep' = {
     storageAccountId:data.outputs.storageAccountId
     containerRegistryID: platform.outputs.containerRegistryID
     projectConfig:projectConfig
+    skipModels:skipModels
   }
 }
 

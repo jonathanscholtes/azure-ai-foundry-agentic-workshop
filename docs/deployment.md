@@ -87,8 +87,22 @@ This workshop enables the deployment of multiple Azure AI Projects and can autom
 
 Run the following PowerShell command to deploy the solution. Replace the placeholders with your actual subscription name and Azure region. The `-ResourceGroupName` flag is optional for deploying to an exising Azure Resource Group. 
 
+By default, this workshop deploys the following models:  
+- **GPT-4o** (required for agents)  
+- **text-embedding-ada-002** (required for embeddings)  
+- **o1-mini** (optional)  
+
+To skip model deployment, use the `SkipModels` flag. However, you’ll need to manually provision a text embedding model and a chat completion model in Azure OpenAI to run the sample code.
+
+🔗 [Deploy Azure Open AI Model](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/deploy-models-openai)
+
+The default environment variables expect a deployed text embedding model named `text-embedding` (this name can be customized as needed).
+
+🔗 [Embedding Models](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models?tabs=global-standard%2Cstandard-chat-completions#embeddings)
+
+
 ```powershell
-.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2' -ResourceGroupName '[Name of existing resource group (optional)]' 
+.\deploy.ps1 -Subscription '[Subscription Name]' -Location 'eastus2' -SkipModels [Optional flag] -ResourceGroupName '[Name of existing resource group (optional)]' 
 ```
 
 #### 🔹 Bash (Linux)
@@ -111,7 +125,7 @@ az login --identity
 az account set --subscription '[Subscription Name]'
 
 # Deploy the solution to the secified Location, with DevComputeInstances
-./deploy.sh 'eastus2' '[Existing Resource Group Name (optional)]'
+./deploy.sh 'eastus2' '[Existing Resource Group Name (optional)]' [--skip-models (optional)]
 ```
 
 ✅ This script provisions all required Azure resources based on the specified parameters. The deployment may take up to **40 minutes** to complete.

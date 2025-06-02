@@ -37,6 +37,9 @@ param keyVaultId string
 param containerRegistryID string
 
 
+param skipModels bool = false
+
+
 module aiServices 'azure-ai-services.bicep' = {
   name: 'aiServices'
   params: {
@@ -89,7 +92,7 @@ module aiProjects 'project/main.bicep' = [for proj in projectConfig: {
   
 }]
 
-module aiModels 'ai-models.bicep' = {
+module aiModels 'ai-models.bicep' = if (skipModels == false) {
   name:'aiModels'
   params:{
     aiServicesName:aiServices.outputs.aiServicesName
