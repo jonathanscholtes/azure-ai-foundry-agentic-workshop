@@ -1,17 +1,30 @@
 #!/bin/bash
 
-# Usage: ./deploy.sh <subscription> [location] [resource_group_name]
-
 location="${1:-eastus2}"
-resource_group_name="${2:-}"
+resource_group_name=""
 skip_models=false
 
-# Check for optional --skip-models flag
+# Shift past $1 (location)
+shift
+
+# Parse remaining arguments
 for arg in "$@"; do
   if [[ "$arg" == "--skip-models" ]]; then
     skip_models=true
+  elif [[ -z "$resource_group_name" && "$arg" != --* ]]; then
+    resource_group_name="$arg"
   fi
 done
+
+# Output for verification
+echo "Location: $location"
+echo "Resource Group Name: $resource_group_name"
+echo "Skip Models: $skip_models"
+
+# Conditional message
+if $skip_models; then
+  echo "⚠️  SKIPPING MODEL DEPLOYMENT !!!"
+fi
 
 # Variables
 project_name="fndry"

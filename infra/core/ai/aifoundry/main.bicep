@@ -74,22 +74,24 @@ module aiHub 'ai-hub.bicep' = {
 
 
 
-module aiProjects 'project/main.bicep' = [for proj in projectConfig: {
-  name: 'aiProjects-${proj.projectName}'
+module aiProjects 'project/main.bicep' = [for i in range(0, length(projectConfig)): {
+  name: 'aiProjects-${projectConfig[i].projectName}'
   params: {
     aiHubResourceId: aiHub.outputs.aiHubResourceId
     location: location
-    aiProjectName: '${proj.projectName}'
+    aiProjectName: '${projectConfig[i].projectName}'
     aiSearchConnectionName: aiHub.outputs.aiServicesConnectionName
     aoaiConnectionName: aiHub.outputs.aiServicesConnectionName
     aiHubName:aiHub.outputs.aiHubName
     identityName:identityName
-    numberComputeInstances: proj.devComputeInstances
+    numberComputeInstances: projectConfig[i].devComputeInstances
     resourceToken:resourceToken
     environmentName:environmentName
-    users: proj.?users ?? []
+    users: projectConfig[i].?users ?? []
   }
-  
+  dependsOn: i == 0 ? [] : [
+    resourceId('Microsoft.Resources/deployments', 'aiProjects-${projectConfig[i - 1].projectName}')
+  ]
 }]
 
 module aiModels 'ai-models.bicep' = if (skipModels == false) {

@@ -6,6 +6,19 @@ param (
 )
 
 
+# Log the selected configuration
+Write-Host "Location: $Location"
+if ($ResourceGroupName) {
+    Write-Host "Resource Group Name: $ResourceGroupName"
+} else {
+    Write-Host "Resource Group Name: (not specified)"
+}
+
+# Conditional message for model deployment
+if ($SkipModels.IsPresent) {
+    Write-Host "SKIPPING MODEL DEPLOYMENT !!!"
+}
+
 # Variables
 $projectName = "fndry"
 $environmentName = "lab"
