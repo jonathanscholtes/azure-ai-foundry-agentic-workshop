@@ -9,7 +9,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
   name: identityName
 }
 
-resource aiServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
+resource aiServices 'Microsoft.CognitiveServices/accounts@2025-06-01' = {
   name: aiServicesName
   location: location
   identity: {
@@ -23,6 +23,7 @@ resource aiServices 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   }
   kind: 'AIServices'
   properties: {
+    allowProjectManagement: false
     customSubDomainName: customSubdomain
     publicNetworkAccess: 'Enabled'
    
